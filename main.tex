@@ -1,0 +1,38 @@
+\documentclass[a4paper, 11pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[]{graphicx}
+\usepackage[bottom=3cm]{geometry}
+\usepackage{emptypage}
+\usepackage{hyperref}
+\usepackage{graphicx}
+
+
+\begin{document}
+
+\input{TitlePage.tex}
+
+\pagebreak
+
+\pagenumbering{Roman}
+\setcounter{page}{1}
+
+\tableofcontents
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+
+  \input{Introduction.tex}
+
+  \input{Overall.tex}
+  
+  \input{Specific.tex}
+  
+  \input{Formal.tex}
+  
+  \input{Effort.tex}
+  
+  \input{References.tex}
+
+\end{document}
