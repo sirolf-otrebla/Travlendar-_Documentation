@@ -1,1 +1,126 @@
+\newpage
 \section{Definitions, Acronyms, Abbreviations}
+
+\subsection{Definitions}
+\textcolor{red}{mettere i punti alla fine delle frasi, attenzione a plurali, maiuscole e punteggiatura }
+\begin{itemize}
+	\item The Software: when referring to \emph{The Software}, this document refers to the entire \emph{Travlendar+} infrastructure, at implementation and design level.
+    
+    \item The Service:  when referring to \emph{The Service}, this document refers to the service provided by the \emph{Travlendar+} Software, at market level.
+    
+	\item Task: an appointment the user has to do. A task always has associated a location, a time slot and a priority
+    
+	\item Tasks Conflict: given two user tasks, there will be a conflict if the two time slot associated to those tasks are overlapped. Each task can possess one or more of these behaviors:
+    \begin{itemize}
+        \item \textbf{fixed time:} a task with fixed time possesses a user specified time, that the System has to consider when producing the day's schedule.
+
+	    \item \textbf{flexible time:} a task with flexible time does not possess a fixed user specified time slot, instead it possesses a wider time frame so that the System could choose when to schedule the task within the given time frame constraint, which is user specified . 
+        
+        \item \textbf{variable time:} a task with flexible time does not possess a user specified time slot, so the System will instead schedule the task relating to the other time constraints. 
+        
+       \item \textbf{fixed Day:}  a task with fixed time possesses a user specified day within the week or the month, that the System has to consider when producing the day's schedule.
+       
+       \item \textbf{flexible Day:}
+       a task with flexible time does not possess a fixed user specified day,  instead it possesses a set of days within the week or the month so that the System could choose when to schedule the task within the given set, which is user specified. 
+       
+       \item \textbf{variable Day:} a task with variable day does not possess a user specified day, so the System will instead schedule the task relating to the other time constraints within a user specified deadline. 
+       
+       \item \textbf{fixed period:} the task repeat itself exactly after the given period.
+       
+       \item \textbf{flexible period:} the task repeat itself within the given flexible period, which is an interval of one or more days length.
+       
+    \end{itemize}
+    
+    \item Road Path: the path that the user has to do. It is a road between two points
+    
+    \item Location: the place where the user either is or wants to go
+    
+    \item Private Vehicle: \textcolor{red}{Either a car or a motorbike} owns by the user
+    
+    \item \textcolor{red}{Rent Vehicle: the selected vehicle user wants to book for a trip}
+    
+    \item Public Transport: vehicles owns by the public transport society. To use it, the user must has a valid ticker
+    
+    \item Time Slot: a period of continuous time relevant for the application.
+    
+    \item Travel Solution: the proposed solution for the user that allows him to reach the destination in the way the user has specified.
+    
+    \item Application: in the document is used like a synonymous of Software.
+    
+    \item User: the final person who used the \emph{Travlendar+} software.
+    
+    \item Localization: the way our application can know the user's position.
+    
+    \item Ticket: a valid public transport document to use that service.
+    
+    \item Fixed-time Task: a task with a time slot which has both the starting hour and the ending hour that cannot be changed (E.G. The user works from 8 am to 7 pm).
+    
+    \item Flexible-time Task: a task that has a time slot with both a starting hour and a ending hour don't well specified (E.G. The user wants to go to the gym 1 hour per day).
+        
+    \item Residence: where the user lives
+    
+    \item ZTL Zone: a zone where some kind of private vehicles, such as cars or motorbikes, cannot enter. If the user has a specific document, he can enter in the ZTL with his private vehicles.
+    
+    \item Break Time: the time chosen by the user in which he doesn't want to have appointments.
+    
+    
+    \item User Preferences: all the in-application preferences that user can choice. These preferences are: 
+    \begin{itemize}
+        \item Use of the private vehicle
+        \item Use of the public transport services
+        \item Use of either the Car-Sharing or the Bike-Sharing services
+        \item \textcolor{red}{Max range of walking}
+    	\item Break time
+    \end{itemize}
+    \textcolor{red}{(we have to specify which kind of preferences we are dealing with. divide between general and task preferences? )}
+    
+    \item \textbf{Scheduling:} Wen referring to schedule we mean the sequence of user tasks for each day, and the set of travel solutions between them. these travel solutions will be suggested by the \emph{Travlendar+} software, as described under the \textbf{Goals} section. 
+    
+    \item \textbf{registered user:} a user who has registered himself within the \emph{Travlendar+} system. this kind of user will be one of the main actors interacting with the Software.
+    
+    \item \textbf{ visitor:} a user which is not registered within the \emph{Travlendar+} environment.
+    
+     \item Notifications: \begin{itemize}
+     \item \textbf{System Notification}: when referring to system notification we mean a notification issued to the user by the \emph{Travlendar+} environment, that serves as reminder for the user himself about when he needs to move from one location to another. 
+     \item \textbf{Digest}: when dealing to Digest we mean a notification issued to the user by \emph{Travlendar+} environment that regards the entire schedule for a specific day. this kind of notifications could, for example, be issued during early morning as a reminder of what the user has to do within the day.
+     \end{itemize}
+     Either \emph{system Notifications} or \emph{Digests } can be issued as e-mails or simple notification using the \emph{APIs} given by the deployment Operating System, depending on which platform the user is working on.   
+     
+     \item \textbf{extraordinary conditions:} when referring to extraordinary conditions we refer to situations that are not predictable by the Software: examples of extraordinary conditions are:
+     \begin{itemize}
+     \item Not Announced Strikes;
+     \item Public transportation failures due to incidents, technical issues...
+     \item User's private vehicle failures
+     \item user's unexpected appointment
+     \item tasks that are not being inserted within the \emph{Travlendar+} environment
+     \item extremely violent or uncommon weather conditions: hurricanes, snow storms, floods or landslides...
+     \item restrictions to the normal traffic flow, either pedestrian or vehicular, issued by the local government authorities.
+     \end{itemize}
+     
+     \item \textbf{periodic task:} a Periodic Task is a task that possesses a fixed or flexible period.
+     
+     \item \textbf{Task priority:} when referring to task priority we intend to refer to a user defined property which represent how much is important to follow that task constraints. the task priority can vary from 0 ( lowest priority) to 5 (highest priority).
+     
+     \item \textbf{working days:} we consider as working days: monday, Tuesday, Wednesday, Thursday, Friday
+ 
+     \item \textbf{weather conditions:} when referring to weather conditions we mean all those conditions dealing with weather that can affect the task scheduling. for example, \emph{rainy} is a condition that affects the task scheduling, whether \emph{cloudy} it's not. 
+     
+\end{itemize}
+
+\subsection{Acronyms}
+
+\begin{itemize}
+  \item R.A.S.D: Requirements Analysis and Specifications Document
+  \item A.P.I: Application Programming Interface 
+  
+  \item Z.T.L: Limited Traffic Zone
+\end{itemize}
+
+\subsection{Abbreviation}
+These abbreviations will be used both in this document and in the follows documents.
+
+\begin{itemize}
+	\item {[}G k{]}: The k-th goal
+    \item {[}D k{]}: The k-th Domain Assumption
+    \item {[}R k{]}: The k-th Functional Requirement
+\end{itemize}
