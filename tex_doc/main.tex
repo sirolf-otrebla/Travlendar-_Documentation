@@ -1,0 +1,47 @@
+\documentclass[a4paper, 11pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[]{graphicx}
+\usepackage[bottom=3cm]{geometry}
+\usepackage{emptypage}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage[usenames, dvipsnames]{color}
+\usepackage{enumitem}
+
+\begin{document}
+
+\input{TitlePage.tex}
+
+\pagebreak
+
+\pagenumbering{Roman}
+\setcounter{page}{1}
+
+\tableofcontents
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+	\newlist{domainList}{enumerate}{1}
+    \setlist[domainList,1]{label={[}D \arabic*{]}:}
+    
+    \newlist{goalList}{enumerate}{1}
+    \setlist[goalList,1]{label={[}G \arabic*{]}:}
+    
+    \newlist{requirementList}{enumerate}{1}
+    \setlist[requirementList,1]{label={[}R \arabic*{]}:}
+
+  \input{Introduction.tex}
+
+  \input{Overall.tex}
+  
+  \input{Specific.tex}
+  
+  \input{Formal.tex}
+  
+  \input{Effort.tex}
+  
+  \input{References.tex}
+
+\end{document}

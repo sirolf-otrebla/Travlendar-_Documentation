@@ -1,0 +1,55 @@
+\section{Assumptions, dependencies and constraints}
+In this section of the \emph{RASD} Document we describe assumptions and constraints (both from the given specification and from design constraints) to develop at the top the \emph{Travlendar+} application
+
+\subsection{Domain Assumptions}
+We suppose that these properties hold in the analyzed world:
+\begin{domainList}
+
+\item The user of \emph{Travlendar+} can always give to the application his position correctly. \textcolor{green}{If it is available, the application can use the \it GPS sensor}
+
+\item The user must be \textcolor{blue}{adult}
+
+\item Each user's task has one position and one time slot
+
+\item Every task is associated to one or more transport mean preferences
+
+\item Every task has a fixed or flexible time slot
+
+\item Every user has an unique username
+
+\item The user must specify a \textcolor{blue}{residence} within the covered area
+
+\item Every task has a location within the covered area
+
+\item The covered area is Milan \textcolor{red}{ and the Hinterland}
+
+\item User must have a payment option to buy either the car/bike sharing services or the public transport ticket
+
+\item To use the Car-Sharing service, the user must have installed the correct application
+
+\item To use the Bike-Sharing service, the user must have installed the correct application
+
+\item To buy the public transport ticket, the user must have installed the correct application
+
+\item For either the Bike-Sharing or the Car-Sharing services the user must have already an account to use them. If the user hasn't already an account, he can sign up to the service and then he has the possibility to add that to our application
+
+\item The Car-Sharing and the Bike-Sharing services give to our application always the correct positions of their vehicles
+
+\item Both the Car-Sharing and the Bike-Sharing services always allow us to detect the free vehicles correctly
+
+\item Public transport has at most 5 minutes of delay
+
+\item Car-Sharing and Bike-Sharing services give us a method to rent either a car or a bike, and once the vehicle is booked, no one is allowed to take that vehicle except for the user
+
+\item The public transport society provide a method to know when strikes are scheduled
+
+\item Public transport timetables are avaiable
+
+\item An external weather service will be used to know the week weather forecast
+
+\item \textcolor{blue}{An external map service will be used to compute all the useful information about travels}
+
+\item \textcolor{red}{The travel path given by the external maps service is the optimal solution in terms of time}
+
+\end{domainList}
+
