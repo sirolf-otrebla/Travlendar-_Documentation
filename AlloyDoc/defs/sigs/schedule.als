@@ -58,6 +58,11 @@ sig schedule{
 
 	and (all tas : tasks + dummy_start_task | some trav : travels | trav.task_from = tas)
 
+	and (all trav : travels, trav2 : travels |
+				(trav2 != trav implies trav.task_to != trav2.task_to ))
+
+	and (all trav : travels, trav2 : travels |
+				(trav2 != trav implies trav.task_from != trav2.task_from))
 		
     
 
@@ -72,39 +77,3 @@ sig schedule{
 //	all s : schedules | all t1 : tasks | some t2 : s.tasks.task | (t1 = t2)  
 //	#s.tasks > 5
 //}
-
-//sig taskSet{
-//	tasks : some task
-//} {
-//	#tasks > 6
-	
-//	no x, y : tasks | overlapped[x.time_slot,y.time_slot]
-//}
-
-pred overlapped[t,u : timeslot]{
-	u.start = t.start or
-	(u.start > t.start implies u.start < t.end) and
-	(t.start > u.start implies t.start < u.end) or eq[t,u]
-}
-
-pred eq[t, u: timeslot]{
-(t.start = u.start and t.end = u.end) or t=u
-}
-
-pred bigSchedule[s: schedule]{
-	#s.tasks > 1
-}
-//run notOverlapped for 10 timeslot, 0 task, 0 schedule
-//run  bigSchedule for 3 schedule, 6 task, 10 timeslot
-
-
-assert contained{
-no s : schedule | (
-		bigSchedule[s] and some x : s.tasks, y : s.tasks | (
-				x.time_slot.start > y.time_slot.start and x.time_slot.end < y.time_slot.end
-				)
-		)
-}
-
-
-run bigSchedule for  1 schedule, 4 task, 3 travel, 7 timeslot
