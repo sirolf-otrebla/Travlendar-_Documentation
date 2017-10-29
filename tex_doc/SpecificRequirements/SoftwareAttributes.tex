@@ -5,16 +5,17 @@ In this Section we detail the attributes that our System must guarantee to be ro
 The system will have to be designed in order to be robust and fault tolerant. In particular, the system will have to manage either software or hardware modules failures without losing information.
 
 \subsection{Availability}
-The System must be available 24/7, exception made for maintenance interventions (both exceptional and routine ones).
+The System must be available 24/7, exception made for maintenance interventions (both exceptional and routine ones). Among routine maintenance interventions we consider interventions due to: System updates or integration of new sharing based travel mean services, for instance.  
+
 
 \subsection{Security}
-The System must guarantee a secure connection between Client and Server through the HTTPS protocol. 
-Secondly, the System must properly handle and store the users data through a \textcolor{red}{recognized standard for databases encryption.} 
+Since it will handle several private information, the System must guarantee a secure connection between Client and Server through the HTTPS protocol.
+Secondly, the System must properly handle and store the users data through a recognized standard, either for databases encryption and plain data encription. 
 
 \subsection{Maintainability}
-The System must provide a detailed documentation for each software module
+The System must provide a detailed documentation for each software module to guarantee an easy adaptability of the software to a new area and to easily integrate new travel mean services.  
 \textcolor{blue}{System must be developed to be expandable.}
 
 \subsection{Portability}
 
-The software has to be able to work under different versions of the chosen work environment, either at back end level and front end level.
+The software has to be able to work under different versions of the chosen work environment, either at back end and front end level.
