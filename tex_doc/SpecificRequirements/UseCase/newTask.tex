@@ -1,6 +1,6 @@
 \subsection{Adding a new Task}
 In this section is reported the procedure used to create and add a new task to the user's calendar.
-The user can select a variety of preferences to adapt the task to his needs, indeed he can select when and where the task will take place, how he wants to reach the location of that task, the task priority and the maximum walk range. In this way our System will be able to schedule the user's calendar according to both the user preferences and the task preferences, giving more priority to the latter.
+The user can select a variety of preferences to adapt the task to his needs, indeed he can select when and where the task will take place, how he wants to reach the location of that task, the task priority and the maximum walk range. In this way our System will be able to schedule the user's calendar according to both the user preferences and the task preferences, giving more priority to the latter. If an overlap occurs or if a certain task is unreachable the System will notify the user asking respectively to choose from one of the overlapping tasks or to change some task setting. At this purpose, see the Sequence Diagram below that models this situation.     
 
 Notice that, there are some preferences which are mandatory (the ones listed below under the Events Flow voice) while other are not, thus, default values will be automatically set by the System. In addition, we must highlight that the Events Flow voices from point 2 to 5 might be executed by the user as he prefers.
 
@@ -13,7 +13,7 @@ Notice that, there are some preferences which are mandatory (the ones listed bel
     \textbf{\large{Actors}}  			& \tabitem User\\
     
     \hline
-    \textbf{\large{Goals}} 				& \ref{goal:task}; \ref{goal:taskBehavior}; \ref{goal:noTaskConflict}; \ref{goal:priority}; \ref{goal:retakeCar}\\
+    \textbf{\large{Goals}} 				& \ref{goal:task}; \ref{goal:taskBehavior}; \ref{goal:noTaskConflict}; \ref{goal:impossibleTask}; \ref{goal:priority}; \ref{goal:retakeCar}\\
     
     \hline
     \textbf{\large{Enter Condition}}	& The user should log in the \emph{Travlendar+} System and he 												is on the calendar page\\
@@ -45,7 +45,7 @@ Notice that, there are some preferences which are mandatory (the ones listed bel
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.5]{Pictures/UseCaseDiagram/Adding_a_new_task.png}
-\caption{UML Use Case Diagram for the addition of a new task AGGIUNGERE SPEC OTHER PREF NEL DIAGRAMMA (MAX WALK RANGE, PRIORITY, PREF VEHICLE) }
+\caption{UML Use Case Diagram for the addition of a new task }
 \end{figure}
 
 \begin{figure}[H]

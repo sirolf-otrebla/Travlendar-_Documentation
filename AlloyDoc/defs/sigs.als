@@ -11,7 +11,7 @@ sig task{
 sig travel {
 	task_from : one task,
 	task_to : one task,
-	time_slot : one timeslot
+	time_slot : one timeslot,
     travel_time : one int
 
 }{
@@ -23,17 +23,16 @@ sig travel {
 }
 sig schedule{
 	tasks : some task,
-	travels: some travel
+	travels: some travel,
     total_travel_time : one Int
 }{
 	(all t :tasks | no u :tasks |  t != u and overlapped[t.time_slot, u.time_slot]	)			    and
-	(all travel : travels | no task : tasks | overlapped[travel.time_slot, task.time_slot])	        and
-	(all travel : travels | no u : travels | overlapped[travel.time_slot, u.time_slot])             and
-    sum p :  
+	(all travel : travels | no task1 : tasks | overlapped[travel.time_slot, task1.time_slot])	        and
+	(all travel : travels | no u : travels | overlapped[travel.time_slot, u.time_slot])             
 }
 
 sig notOverlappedScheduleSet{
-	schedules : some schedule
+	schedules : some schedule,
 	tasks : some task
 } {
     all t : task | no u : task | overlapped[t,u] and u != t

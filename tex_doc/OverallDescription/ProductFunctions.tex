@@ -6,23 +6,25 @@ In this section of the chapter 2 we are going to talk about the main goals that 
 
 	\begin{enumerate}[label={[}G 1.\arabic*{]}]
     
-    \item \label{goal:taskBehavior} System should allow the user to add tasks with all possible behaviors as described in the \textbf{Definitions} section.
+    \item \label{goal:taskBehavior} The System should allow the user to add tasks with all possible behaviors as described in the \textbf{Definitions} section.
     
     
     \item \label{goal:breakTask}The System should allow the user to add break tasks as defined in the \textbf{Definitions} section.
     
     \item \label{goal:noTaskConflict} The System must decide the starting and ending time of each flexible and variable task, according to the given time slot and trying to avoid conflicts.
-    \item \label{goal:reachability}The System will have to suggest a travel solution in order to reach each task location, according to the user's preferences.
-    \item \label{goal:timeslot}The travel solution proposed by the System should respect the time slot of each task.  
+    \item \label{goal:reachability}The System will have to suggest a travel solution in order to reach each task location, according to the global and task related user's preferences.
+    \item \label{goal:timeslot}The travel solution proposed by the System should respect the time slot of each task.
+    \item
+    \label{goal:impossibleTask}The System should handle impossible tasks in terms of time, reachability or conflicts by notifying the user of the situation. 
 	\end{enumerate}
     
-\item \label{goal:preferences}The System will have to allow the user to choose from a set of preferences in order to schedule the user's tasks. 
+\item \label{goal:preferences}The System will have to allow the user to choose from a set of global and task dependent preferences in order to schedule the user's tasks. 
 
 \item \label{goal:travel}The System should allow the user to select from a set of different travel solutions the one he prefers.
 
-\item \label{goal:priority} The application always tries to respect the user's preferences. If it isn't possible, it tries to respect the user's preferences according to the priority given to each preference.
+\item \label{goal:priority} The application always tries to respect the user's preferences, giving more priority to the task based one. If it isn't possible, it tries to respect the user's preferences according to the priority given to each preference, otherwise the user will be notified.
 
-\item \label{goal:buyTicket}The System will have to interact with public transportation services in order to arrange trips for the user, allowing the user to buy tickets.
+\item \label{goal:buyTicket}The System will have to interact with public transportation services in order to arrange trips for the user, allowing the user to buy rides.
 
 \begin{enumerate}[label={[}G 5.\arabic*{]}]
 \item \label{goal:purchase} The purchase of season, weekly, daily tickets and carnet should be proposed when preferable in terms of money.  

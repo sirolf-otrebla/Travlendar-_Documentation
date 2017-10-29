@@ -4,7 +4,7 @@
 To reach the main goals of the \emph{Travlendar+} application we need to satisfy these functional requirements:
 
 \begin{requirementList}
-	\item The user will have to specify a residence at registration time. this home address can be updated lately, thus the Software will have to permit to modify it. 
+	\item The user will have to specify a residence at registration time. This home address can be updated lately, thus the Software will have to permit to modify it. 
    
 	\item The application must send a reminder to the user 30 minutes before he should begin the trip. Moreover, the application has to verify if a Sharing-Based vehicle is effectively available, if actually it is a user preference.
     
@@ -18,8 +18,10 @@ To reach the main goals of the \emph{Travlendar+} application we need to satisfy
     
     \item If the user wants to add, delete or update a task during the day, the Application gives a travel solution that may not respect the time constraints.
     
+    \item If the user adds a task that isn't reachable within the given time, the \emph{Travlendar+} System sends a warning to the user. 
+    
     \item Each task can be repeated a finite or infinite number of times. In particular, a task can be repeated:
-    \begin{enumerate}[label={[}R 10.\arabic*{]}:]
+    \begin{enumerate}[label={[}R 9.\arabic*{]}:]
     \item the same day of every week
     \item the same day of every month
     \item the same day of every year
@@ -28,18 +30,18 @@ To reach the main goals of the \emph{Travlendar+} application we need to satisfy
     Thus, the application should take care of repeated tasks considering the same specific preferences as defined by the user when creating the task.
     
     \item The application should consider whether the user is using private vehicles or not throughout a day.
-    \begin{enumerate}[label={[}R 11.\arabic*{]}:]
+    \begin{enumerate}[label={[}R 10.\arabic*{]}:]
     \item The Software should not suggest to use a private vehicle if the user left his residence without it.
    
     \item The software should consider that if the user left home using a private vehicle, it will be necessary to return home using the same private vehicle.
     \end{enumerate}
     
     \item The Software should permit to add or modify either general preferences, which are always taken care of, or specific preferences, which applies on a single task.
-    \begin{enumerate}[label={[}R 13.\arabic*{]}:]
+    \begin{enumerate}[label={[}R 11.\arabic*{]}:]
     \item If a specific preference conflicts with a general preference, the software will have to consider the specific one, ignoring the general one.
     \end{enumerate}
     
-    \item The application should allow the user to insert tasks which are time-variable during the week. thus, the Software should take care of these tasks scheduling them in an appropriate way, choosing day and time.
+    \item The application should allow the user to insert tasks which are time-variable during the week. Thus, the Software should take care of these tasks scheduling them in an appropriate way, choosing day and time.
     
     \item The application should permit the purchase of either public transport service or vehicle sharing services through the respective external applications.
     

@@ -407,7 +407,7 @@ pred continuous_pt3[t : travel, s :schedule]{
 
 here we present the result given by Alloy prover after running the above cited predicates and assertion. in this section we mainly omit the graphs given by the prover as result, because of their excessive reading complexity, given a reasonable number of instances for each signature.
 
-\subsection{changing task preferences}
+\subsection{Changing task preferences}
 \begin{verbatim}
 run changeTaskPrefs for 
     3 World, 
@@ -428,7 +428,7 @@ run changeTaskPrefs for
 consistent with the non formal requirements}
 \end{figure}
 
-\subsection{showing world}
+\subsection{Showing world}
 \rule{\textwidth}{0.4pt}
 \begin{verbatim}
 run showWorld for 
@@ -450,7 +450,7 @@ run showWorld for
 consistent with the non formal requirements}
 \end{figure}
 
-\subsection{remove a task}
+\subsection{Remove a task}
 \rule{\textwidth}{0.4pt}
 \begin{verbatim}
 run removeTask for 
@@ -471,7 +471,7 @@ run removeTask for
 \caption{Alloy Result for removeTask. Instance is omitted, but
 consistent with the non formal requirements}
 \end{figure}
-\subsection{adding a task}
+\subsection{Adding a task}
 \rule{\textwidth}{0.4pt}
 \begin{verbatim}
 run addTask for
@@ -510,7 +510,7 @@ run showSchedule for
 \caption{Alloy Result for showSchedule. Instance is omitted, but
 consistent with the non formal requirements}
 \end{figure}
-\subsection{checking if a schedule is connected}
+\subsection{Checking if a schedule is connected}
 \rule{\textwidth}{0.4pt}
 \begin{verbatim}
 check continuous_sched for  
@@ -527,7 +527,7 @@ check continuous_sched for
 \caption{Alloy Result for continuous_sched. Instance is omitted, but
 consistent with the non formal requirements}
 \end{figure}
-\subsection{checking tasks not overlapped}
+\subsection{Checking tasks not overlapped}
 \rule{\textwidth}{0.4pt}
 \begin{verbatim}
 check contained for 
