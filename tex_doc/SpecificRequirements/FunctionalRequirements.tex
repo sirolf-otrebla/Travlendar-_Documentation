@@ -50,7 +50,14 @@ To reach the main goals of the \emph{Travlendar+} application we need to satisfy
     \item The application should permit the selection of a single task, in order to show the relative preferences and should give the possibility to change these ones.
     
     \item The system has to guarantee new user signing up with a proper sign up page. 
-    \item If public transport is a user's preference, the system has to suggest the best ticket available with respect to the user's tasks, in order to minimize the public transport expense.
+    
+    \item The system, in order to choose the best travel solution for the user, has to consider two main parameters: cost and time of the travel. To keep this kind of information, the system uses this formula: \( y = a \cdot cost + b \cdot time\). Therefore, the system will minimize the \(y\) variable. If there is two kinds of travels which have the same \(y\) value, so the application will ask to the user.
+    
+    \item If public transport is a user's preference, the system has to suggest the best ticket available with respect to the user's tasks. 
+    \begin{enumerate}[label={[}R 18.\arabic*{]}:]
+    \item If the user has already a season ticket, then this information will be taken into account when scheduling new and old user's tasks.
+    \end{enumerate}
+
 \end{requirementList}
 
 \section{Use Case Diagram and Scenarios description}
