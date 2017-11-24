@@ -1,0 +1,37 @@
+ \documentclass[a4paper, 11pt]{report}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[]{graphicx}
+\usepackage[bottom=3cm]{geometry}
+\usepackage[usenames, dvipsnames]{color}
+\usepackage{hyperref}
+
+\begin{document}
+
+\input{titlePage.tex}
+
+\pagebreak
+
+\pagenumbering{Roman}
+\setcounter{page}{1}
+
+\tableofcontents
+
+\cleardoublepage
+\pagenumbering{arabic}
+
+%% DOCUMENT STARTS
+
+    \input{1.Introduction/0_Intro.tex}
+    \input{2.ArchitecturalDesign/0_Arch.tex}
+    \input{3.AlgorithmDesign/0_Algorithm.tex}
+    \input{4.UserInterfaceDesign/0_UserInterface.tex}
+    \input{5.RequirementTraceability/0_Traceability.tex}
+    \input{6.Implementation/0_Implementation.tex}
+    \input{7.EffortSpent/0_Effort.tex}
+    \input{8.References/0_Ref.tex}
+
+%% DOCUMENT ENDS
+
+
+\end{document}
