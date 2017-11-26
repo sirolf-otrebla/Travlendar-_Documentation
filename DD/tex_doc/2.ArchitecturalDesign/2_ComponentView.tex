@@ -2,15 +2,26 @@
 
 
 This section details the internal modules used in each component seen previously.
+<<<<<<< HEAD
 In particular, we focus on the main subcomponents of the business logic layer, as described in the previous chapter concerning the architecture overview. 
 This because the main functionalities  of our software are almost all exploited at this level, whereas the other layer's components are mainly
+=======
+in particular, we focus about the main subcomponents of the business logic layer, as described in the previous chapter concerning the architecture overview. 
+this because the main functionalities  of our software are almost all exploited at this level, whereas the other layer's components are mainly
+>>>>>>> ad258dd7c9a37861a484c05c0be22fc9761a519f
 designed in order to guarantee non functional features such as scalability or security. 
 
 At component level, the software can be divided betweeen \emph{front-end components} and \emph{back-end components}; as a five-layers architecture, the \emph{Travlendar+} frontend is mainly represented by the client layer, which, as described in the \emph{Requirement analysis and specification document}, will be implemented as a mobile application and as web application, usable via browser.
 \subsection{Front-end system}
+<<<<<<< HEAD
 In this subsection we mainly focus on the analysis of a possible generic client application, which can be implemented as a native application but also as a browser-oriented front-end.
 Nowadays it is relatively simple to develop javascript based applications which uses web-oriented technologies without having to deal with common web browsers. this is the reason why is
 natural to describe the two client interfaces using a single component diagram: the overall structure is similar, and the main differences are implementation related and thus not
+=======
+In this subsection we mainly focus on the analysis of a possible generic client application, which can be implemented as a native application but also as a browser-oriented frontend.
+Nowadays it is relatively simple to develop javascript based applications which uses web-oriented technologies without having to deal with common web browsers. this is the reason why is
+natural to describe the two client interfaces using a single component diagram: the overall structure is mainly similar, and the main differences are implementation related and thus not
+>>>>>>> ad258dd7c9a37861a484c05c0be22fc9761a519f
 discussed in this document.
 \begin{figure}[H]
     \centering
@@ -21,6 +32,7 @@ discussed in this document.
 
 As seen in Figure \ref{component:client}, the main components are:
 \begin{itemize}
+<<<<<<< HEAD
     \item \textbf{the Renderer}: this component is meant to show data from the back end and display the interface from whom the user interacts with the application.
                                  in particular, the renderer is designed to be observed by other components, as in a traditional \emph{observable - observer pattern}:
                                  this choice has been made in order to make the renderer as much indipendent as possible with respect to the overall application, and
@@ -38,10 +50,20 @@ As seen in Figure \ref{component:client}, the main components are:
                                               will mainly communicate with the back end using requests that are followed by proper responses. that is the reason why it is 
                                               simple to design the communication between the client and the server using HTTPS and REST requests. the responses will then 
                                               handled by the JSON parser, which will also update the graphic interface.
+=======
+    \item \textbf{the Renderer}: this component is meant to show datas from the back end and display the interface from whom the user interacts whith the application.
+                                 in particular, the renderer is designed to be observed by other components, as in a traditional \emph{observable - observer pattern}:
+                                 this choice has been made in order to make the renderer as much indipendent as possible with respect to the overrall application, and
+                                 vice versa, thus permitting to  
+    \item \textbf{the JSON parser}
+    \item \textbf{the event handler}
+    \item \textbf{the REST invocation layer}:
+>>>>>>> ad258dd7c9a37861a484c05c0be22fc9761a519f
 \end{itemize}
 
 
 \subsection{Back-end system}
+<<<<<<< HEAD
 As claimed previously, the server software architecture is fairly more complex than the client software. the main reasons about this unbalance are simple:
 \begin{itemize}
     \item the client hosts only the front-end, without operating any kind of business logic functionality.
@@ -68,11 +90,15 @@ discuss only about how the software architecture is designed a priori. \\
         
         
         \newpage
+=======
+\newpage
+>>>>>>> ad258dd7c9a37861a484c05c0be22fc9761a519f
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.2]{Pictures/ComponentDiagram/componentDiagram.png}
     \caption{UML component diagram about back-end components}
 \end{figure}
+<<<<<<< HEAD
 \newpage
 
 \textbf{the Business Logic layer} is the main topic of this section. it can be divided in several different components which performs specific operations. here we present the main functionalities and the overall structure in terms of subcomponents, leaving the the subsection regarding the \emph{selected architectural styles and patterns} to describes how these subcomponents are meant to be implemented.
@@ -101,4 +127,6 @@ the business logic layer is composed by:
     
     \item \textbf{the Task fetcher}: as the other component, the main goal of the \emph{task fetcher} is either to create an high level representation of data from the data layer. in particular, the task fetcher needs to build the task entities using data from the access manager, from those extracting only the ones who are relevant to the scheduling, modifying them when needed and performing other similar operations.
 \end{itemize}
+=======
+>>>>>>> ad258dd7c9a37861a484c05c0be22fc9761a519f
 
