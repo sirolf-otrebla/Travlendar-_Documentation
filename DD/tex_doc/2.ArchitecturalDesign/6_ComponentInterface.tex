@@ -1,0 +1,50 @@
+\section{Component Interfaces}
+
+\subsection*{Client Interfaces}
+The Client has some internal interfaces in order to render pages, to take the user's input events and to compute some information.
+To do these stuffs, the client needs to have two main modules, one to handle the server's data and another one to handle the user's input. Indeed, the client has:
+\begin{itemize}
+    \item Parser: an interface used to receive the server's data, written in JSON format, and to translate them into                 a HTML pages.
+    \item Render: a component used to render the HTML pages previously built.
+    
+    \item User Event Handler: an interface used to take the user's input to send to the server.
+    \item REST Invocator: interface used to package the user's data to send them through the \emph{REST} protocol.
+\end{itemize}
+
+\subsection*{Server Façade Interfaces}
+The Server Façade layer takes the client's REST requests and send them to the Application Server. In order to create a easily maintainable web server, this layer has:
+\begin{itemize}
+    \item HTTP Web Interface: interface used to handle properly the client's requests and also to send back information to it.
+    \item Internal Communication Layer: used to send, through TCP connection, the client's requests to the Application Server.
+\end{itemize}
+
+\subsection*{Presenter Interfaces}
+When a client's request comes in the server, the first layer it meets is the Server Façade, that is used to create a demilitarized zone for the Application Server. Indeed, once the request comes in the Server Façade, it sends a TCP request to the Application Server. Then, the last one, to work properly, needs a layer used to call the correct business logic functionality. So, the Presenter Layer has
+\begin{itemize}
+    \item Communication Interface: module used to handle the connection with the Server Façade component, through a TCP connection.
+    \item Message Receiver: module that calls the properly Business Logic function to manage the user's request.
+    \item Message Transmitters: module uses to send back data from the business logic to the client.
+\end{itemize}
+
+\subsection*{Business Logic Interfaces}
+This module represents the main part of the \emph{Travlendar+} application. It contains the core features and the functionalities used to schedule, as well as possible (obviously according to the given preferences), the user's tasks. To do that, it needs:
+\begin{itemize}
+    \item Business WorkFlow: the first interface called by the presenter, it is used to control the operations flow to schedule the tasks in a feasible calendar, and also it sends the reminders to the user in order to let him know when he needs to start his trip, or if something changes (probably because of the unavailability of the shared-based vehicle).
+    \item Scheduler: the main component called by the Business WorkFlow, used to schedule the various tasks. Since the complexity of this one, it is divided into three main modules:
+    
+    \begin{itemize}
+        \item Cost Evaluator: module used to compute the Day schedules \emph{cost}, in this way the application can know which day schedule is the best.
+        \item Day Scheduler: module used to create a single day calendar, with both the tasks and the travels to reach each task.
+        \item Week Scheduler: module used to divide the tasks in the correct day, in order to simplify the schedule problem.
+    \end{itemize}
+    
+    \item Task Fetcher: interface used by the Business WorkFlow for the tasks loading. It interacts mainly with the Access Data Manager to load the tasks from the Database. Moreover this component is used to handle properly the tasks' specific preferences.
+    
+    \item Access Data Manager: interface that connects the Business Logic Layer with the Data Layer. Indeed is used to do the Input/Output operations. Also, this module is used to ask external services, such as the map service or the transport mean one; in this way the Business Logic can schedule the user's various trips, according to the information given by the external services.
+    
+    \item General Preferences Manager: module used to handle the general preferences, which are the preferences that the user specifies for all tasks.
+    
+\end{itemize}
+
+\subsection*{Data Layer Interfaces}
+This is the layer which is used to store the users' information. This layer has, as main interface, the connection with the DBMS in order to load or store useful information for the \emph{Travlendar+} application.

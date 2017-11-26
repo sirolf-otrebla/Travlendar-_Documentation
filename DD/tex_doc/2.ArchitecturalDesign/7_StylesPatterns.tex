@@ -1,0 +1,38 @@
+\section{Selected Architectural Styles \& Patterns}
+The aim of this section is to present the main architectural decisions about the software. In particular, given the extreme simplicity of the client application,
+the back end architecture will be mainly discussed.
+
+As seen before in the document, all software components made extensive use of simple patterns such as \emph{observable - observer} and \emph{adapter} patterns. In general, the chosen approach is to make the Business Logic as much stateless as possible: in this mean, the core components are designed to work as much functionally as possible, leaving the \emph{Business WorkFlow} in charge of managing operations in their entirety. This architecture, at back-end level, resembles a lot the \emph{Boundary - Control - Entity } pattern, where the boundary is represented by the \emph{Presenter}, the core entities are mainly designed only to contain data and not to contain methods, and the control is represented by \emph{Business WorkFlow} and other core components. A stateless approach is simpler in terms of maintainability, resource management and scalability.
+\\
+In the next two subsection two interesting topic will be presented: the first one is regarding how to manage incoming messages in the presenter layer without defining complex message visitors that are difficult to expand and to maintain; the second one is a summary about patterns that are useful when implementing the business logic. 
+
+\subsection{Message Receivers}
+The main idea about the message receivers is to accomplish the same result obtained using the \emph{visitor} pattern without actually using it. This because of the lack of scalability and flexibility imposed by that pattern. The idea is to define a general receiver which \emph{decorates} (see the \emph{Decorator} Pattern) itself (that can be done in many ways, that are almost equivalent in this context). Then, a subclass of the Receiver can be defined for each message that needs to be managed. Both the superclass and the subclass possess a \begin{verbatim} public onReceive(message);\end{verbatim} method, but when the superClass handle a generic message, the subClass handle a very specific message.
+
+\begin{verbatim}
+    public class SubReceiver<T extends Message> extends Receiver{
+        public onReceive(T message){
+            // do something
+        }
+    }
+    
+    public abstract class Receiver{
+        Receiver next;
+        
+        public onReceive(Message message){
+        
+            next.onReceive(message);
+        }
+    }
+\end{verbatim}
+
+As can be seen in the code, the \texttt{onReceive(message)} method of the subclass handle the message in its own way, but the method inside the superClass simply calls the same \texttt{onReceive(message)} method in the decorated object. In this way, a chain of Receivers where each one decorates the other can be defined, and the top Receiver serves as entry point for the chain. This one is explored until a specific Receiver that handle the message is found. If the Receiver is not found, an exception can be thrown.\\ 
+
+This pattern not only is more maintainable than the normal \emph{Visitor}, but also gives the possibility to modify at run time what messages can be received and what can not.
+
+
+\subsection{Business Logic Design Patterns}
+
+As described before, the business logic architecture is designed to be as much stateless as possible. Moreover, another design choice is to make all the business logic entities immutable once created; this can be simply done through the \emph{Factory} pattern, which is widely used to build entity objects from the data retrieved by the \emph{Data Access Manager}. In fact, the \emph{Task Fetcher} and the \emph{General Preferences Manager} are actually factories.  \\
+Another important pattern is the \emph{decorator}, which can be used to represent  user preferences as complex combinations of more "elementary" entities, both for the task or for the general preferences. 
+Eventually, another important problem that needs to be dealt with is how to actually manage preferences: our idea is to implement a \emph{Strategy} pattern, where each preference represent a strategy on how to build the correct travel and how to verify if the travel is well built or not. This can be done at cost calculation level, inside the scheduler.

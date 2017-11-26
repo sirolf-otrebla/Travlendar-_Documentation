@@ -10,25 +10,25 @@ But, before starting the integration phase, there are some precondition that sho
 
     \item The documents should be completed and written in a final version, both the \emph{RASD} and the \emph{Design Document}. Moreover, these documentation should be available to all the people involved in the project.
     
-    \item The low-level stuffs should be available to the \emph{Travlendar+} system. Indeed the \emph{Business Logic} layer, to work properly, needs to have a \emph{DBMS} ready and configured (so the \emph{Data} layer should be done), and some \emph{APIs} should be available, such as the map service, the transport service, the car-sharing and the bike-sharing services.
+    \item The low-level units should be available to the \emph{Travlendar+} system. Indeed the \emph{Business Logic} layer, to work properly, needs to have a \emph{DBMS} ready and configured (so the \emph{Data} layer should be done), and some \emph{APIs} should be available, such as the map service, the transport service, the car-sharing and the bike-sharing services.
     
 \end{itemize}
 
-Once these precondition are satisfied, when a component will be developed, it can be tested alone, and if it will work, then it can be integrated to the others components, in order to verify first the correct functionalities of the single module, and then that it works properly in the entire system.
+Once these preconditions are satisfied, when a component will be developed, it can be tested alone, and if it will work, then it can be integrated to the others components, in order to verify first the correct functionalities of the single module, and then that it works properly in the entire system.
 
-The implementation should start with the elementary component of the \emph{Business Logic} layer, in this way the testing will be focused on the main, and most important, logic features. Indeed, the firsts components to develop are:
+The implementation should start with the elementary component of the \emph{Business Logic} layer, in this way the testing will be focused on the main, and most important, logic features. Indeed, the first components to develop are:
 
 \begin{enumerate}
     \item Core Entities, in order to have the correct data structures.
     \item Access Data Manager, in this way the system can interact easily with a database.
-    \item Scheduler, the main function of the \emph{Business Logic} layer, that will be developed in the follows order:
+    \item Scheduler, the main function of the \emph{Business Logic} layer, that will be developed in the following order:
     \begin{enumerate}
         \item Cost Evaluator, component used to check the goodness of a travel or a schedule.
         \item Day Scheduler, used to know if the algorithm works properly.
-        \item Week Scheduler, used to divide test if the application can divide properly tasks through various days.
+        \item Week Scheduler, used to test if the application can divide properly tasks through various days.
     \end{enumerate}
     \item General Preferences Manager, that will interact with the scheduler to set up the user's preferences in a correct way.
-    \item Task Fetcher, indeed it should take various tasks to give them to the scheduler module
+    \item Task Fetcher, that should take various tasks to give them to the scheduler module
 \end{enumerate}
 
 After the development of the \emph{Business Logic} layer, the focus will be moved on the \emph{Presenter Layer}, in order to start the testing of the communication as soon as possible. Moreover, after the implementation and the integration of the \emph{Presenter Layer}, the Application Server can be set up to start its work.
@@ -36,7 +36,7 @@ After the development of the \emph{Business Logic} layer, the focus will be move
 Then the Application Server should interact with the internal Web Server, so the next move will be the development of the Application Façade layer, necessary to test the communication with the clients.
 In parallel, the clients can be developed, so the entire communication part of the \emph{Travlendar+} application can be tested.
 
-Here is reported the diagram that shows the testing dependencies. As a notation, the arrows that goes from a component A to a component B means that the component A should be done before the B one in order to integrate and to test properly the modules.
+Here is detailed the diagram that shows the testing dependencies. As a notation, the arrows that goes from a component A to a component B means that the component A should be done before the component B in order to integrate and test properly the modules.
 
 \begin{figure}[H]
     \centering
@@ -76,7 +76,7 @@ Here is reported the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Description}            & The system should be able to log in an user, by the verification of his                                      email and password. This procedure is done by receiving a message in the web server, send it to the Application server through the \emph{Message Receiver} component, analyzed by the \emph{Business WorkFlow} component and the \emph{DBMS} and then accept or discard, by send back a page through the Presenter's \emph{Message Transmitter} component\\
+        \textbf{Description}            & The system should be able to log in a user, by the verification of his                                      email and password. This procedure is done by receiving a message in the web server, send it to the Application server through the \emph{Message Receiver} component, analyzed by the \emph{Business WorkFlow} component and the \emph{DBMS} and then accept or discard, by send back a page through the Presenter's \emph{Message Transmitter} component\\
         
         \hline
         
@@ -106,7 +106,7 @@ Here is reported the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Input Specification}    & User's first name, last name, email and password\\
+        \textbf{Input Specification}    & User's first name, last name, email, user residence and password\\
         
         \hline
         
@@ -156,7 +156,7 @@ Here is reported the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Exception}              & The newer task conflicts with some other older tasks, and the system cannot schedule a feasible solution for the new set of tasks. In some case this situation can happen because the newer task is unreachable in a feasible time from the others tasks, according to the given contraints\\
+        \textbf{Exception}              & The newer task conflicts with some other older tasks, and the system cannot schedule a feasible solution for the new set of tasks. In some cases this situation can happen because the newer task is unreachable in a feasible time from the others tasks, according to the given constraints\\
         
         \hline
         
@@ -284,9 +284,6 @@ Here is reported the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Exception}              & The given Task ID doesn't exist, so the system show an error page. The newer preferences creates a non feasible calendar, so the system should return to the previous calendar and show to the user an error page\\
-        
-        \hline
         
         \textbf{Description}            & The user specifies what kind of settings, associated to the selected task, he wants to modify. So the system has to store these information, and then, if necessary, it needs to reschedule the user's calendar\\
         \hline
@@ -332,7 +329,7 @@ Here is reported the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Description}            & The system, 30 minutes before a trip (based on either a car-sharing or a bike-sharing service) starts, check if there is a vehicle available in the user's location. If there is, the application sends a reminder to notify the user he should rent the vehicle, otherwise, the \emph{Travlendar+} system tries to find a new way to reach the next location\\
+        \textbf{Description}            & The system, 30 minutes before a trip (based on either a car-sharing or a bike-sharing service) starts, check if there is a vehicle available in the user's location. If there is a vehicle, the application sends a reminder to notify the user he should rent the vehicle, otherwise, the \emph{Travlendar+} system tries to find a new way to reach the next location\\
         \hline
         
         \textbf{Environmental needs}    & T1: the user should be logged in the system\\

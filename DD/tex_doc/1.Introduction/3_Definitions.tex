@@ -8,6 +8,75 @@ The main definitions, acronyms and abbreviations used in the whole document are 
     \item   \textbf{Application:} in the document is used like a synonymous of Software.
   
     \item   \textbf{The Service:}  when referring to \emph{The Service}, this document refers to the service provided         by the \emph{Travlendar+} Software, at market level.
+    
+    \item \textbf{User:} the final person who use the \emph{Travlendar+} software.
+    
+    \item \textbf{Registered User:} a user who has registered himself within the \emph{Travlendar+} System.
+    
+    \item \textbf{Logged In User:} a registered user who is logged in the \emph{Travlendar+} System. This kind of user will be one of the main actors interacting with the Software.
+    
+    \item \textbf{Time Slot:} period of continuous time when a task can be schedule.
+    
+    \item \textbf{Task:} an appointment the user has to do. A task always has associated a location, a time slot and a priority. Each task can have one or more of these behaviors:
+    \begin{itemize}
+        \item \textbf{Fixed time:} a task with fixed time possesses a user specified time slot, that the System has to consider when producing the day's schedule.
+
+	    \item \textbf{Flexible time:} a task with flexible time does not possess a fixed user specified time slot, instead it possesses a wider time frame so that the System could choose when to schedule the task within the given time frame constraint, which is user specified. 
+        
+        \item \textbf{Variable time:} a task with variable time does not possess a user specified time slot, so the System will instead schedule the task relating to the other time constraints. 
+        
+       \item \textbf{Fixed Day:} a task with fixed day possesses a user specified day within the week or the month, that the System has to consider when producing the day's schedule.
+       
+       \item \textbf{Flexible Day:}
+       a task with flexible day does not possess a fixed user specified day,  instead it possesses a set of days within the week or the month so that the System could choose when to schedule the task within the given set, which is user specified. 
+       
+       \item \textbf{Variable Day:} a task with variable day does not possess a user specified day, so the System will instead schedule the task relating to the other time constraints within a user specified deadline. 
+       
+       \item \textbf{Fixed period:} the task repeat itself exactly after the given period.
+       
+       \item \textbf{Flexible period:} the task repeat itself within the given flexible period, which is an interval of one or more days length.
+       
+       \item \textbf{Not Periodic: } the task is not repeated.
+       
+    \end{itemize}
+    
+    \item \textbf{Periodic task:} a task that possesses a fixed or flexible period.
+     
+	\item \textbf{Tasks Conflict:} given two user tasks, there will be a conflict if the two time slot associated to those tasks overlaps.
+     
+    \item \textbf{Task priority:} when referring to task priority we intend to refer to a user defined property which represent how much is important to follow that task constraints. The task priority can vary from 0 (lowest priority) to 5 (highest priority).
+     
+    \item \textbf{Location:} the place where the user either is or wants to go.
+    
+    \item \textbf{ZTL:} an area where some kind of private vehicles, such as cars or motorbikes, cannot enter. If the user has specific documentation, he can enter in the ZTL with his private vehicles.
+    
+    \item \textbf{Private Vehicle:} every kind of vehicle owned by the user, such as a car, a motorbike or a bike.
+    
+    \item \textbf{Shared based Vehicle:} vehicles that the user can book, and then rent, for a trip. To use these kind of vehicle the user needs a valid account of the vehicle sharing service he wants to use.
+    
+    \item \textbf{Public Transport Vehicle:} vehicles belonging to the public transport such as: bus, metro, tram and taxis.
+        
+    \item \textbf{Ticket:} a valid public transport document to use that service.
+    
+    \item \textbf{Break Time:} the time chosen by the user in which he doesn't want to have appointments.
+    
+    \item \textbf{User Preferences:} all the in-application preferences that user can choice. These preferences are: 
+    \begin{itemize}
+        \item Use of the private vehicle.
+        \item Use of the public transport services.
+        \item Use of either the Car-Sharing or the Bike-Sharing services.
+        \item Max range of walking.
+    	\item Break time.
+    	\item Eco profile.
+    	\item Public transport allowed time slot.
+    \end{itemize}
+    These kind of preferences can be used either as global preferences or as task preferences. In the former case they are treated for all the tasks, in the latter they are treated only for the task which has them.
+    If a task has some preferences associated, then the system will consider instead of the global ones.
+    
+    \item \textbf{Travel Solution:} the proposed solution for the user that allows him to reach the destination in the way the user has specified through the preferences, which includes: travel indications for each travel mean involved, starting and arrival time.
+
+    \item \textbf{Scheduling:} when referring to schedule we mean the sequence of user tasks for each day, and the set of travel solutions between them. These travel solutions will be suggested by the \emph{Travlendar+} software, as described under the \textbf{Goals} section.
+    
 \end{itemize}
 
 \subsection{Acronyms}
@@ -15,6 +84,7 @@ The main definitions, acronyms and abbreviations used in the whole document are 
     \item R.A.S.D: Requirements Analysis and Specifications Document
     \item D.D: Design Document
     \item T.C.P: Transmission Control Protocol
+    \item H.T.T.P.S: Hypertext Transfer Protocol Secure
     \item R.E.S.T: Represantional State Transfer
     \item J.S.O.N: JavaScript Object Notation
     \item D.B.M.S: DataBase Management System
