@@ -7,6 +7,10 @@ var app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
 
+//LOGGER
+var logger = require('morgan');
+app.use(logger('dev'));
+
 //ROUTES DEFINITION
 var index = require('./routes/index');
 var login = require('./routes/login');
