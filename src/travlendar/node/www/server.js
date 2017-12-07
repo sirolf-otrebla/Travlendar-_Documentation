@@ -12,7 +12,6 @@ app.get('/', function(req, res) {
     res.render('index');
 });
 
-
 //STARTING THE SERVER
 var port = '80';
 app.listen(port);
