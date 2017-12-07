@@ -1,6 +1,7 @@
 {
   "name": "www",
   "version": "0.0.1",
+  "main": "travlendar/node/www/server.js",
   "dependencies": {
     "express": "^4.16.2",
     "ejs": "^2.5.7",
