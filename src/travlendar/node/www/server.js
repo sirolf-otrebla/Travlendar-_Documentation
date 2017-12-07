@@ -8,9 +8,12 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
 
 //ROUTES DEFINITION
-app.get('/', function(req, res) {
-    res.render('index');
-});
+var index = require('./routes/index');
+var login = require('./routes/login');
+
+//ROUTES INCLUSION
+app.use('/', index);
+app.use('/login.ejs', login);
 
 //STARTING THE SERVER
 var port = '80';
