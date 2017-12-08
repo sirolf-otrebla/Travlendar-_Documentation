@@ -35,8 +35,10 @@ function fetchUser (userId, callback){
     });
 };
 
+/*
 var id = 2;
 console.log("start search.." + id);
 fetchUser(id, function (err, result) {
     console.log("obtained -> User: "+result.Name+" date ("+result.eMail+")");
 });
+*/
