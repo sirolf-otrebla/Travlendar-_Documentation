@@ -1,0 +1,9 @@
+{
+  "servers": [
+    {
+      "name": "first",
+      "address": "localhost",
+      "port": "8081"
+    }
+  ]
+}

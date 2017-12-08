@@ -9,6 +9,7 @@ var dbClient = mysql.createConnection({
 
 function fetchUser (userId, callback){
     var self = this;
+
     this.userId = userId;
     dbClient.connect( function (err, userId) {
         if(err){
