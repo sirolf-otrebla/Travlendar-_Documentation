@@ -1,5 +1,5 @@
 
-
+var error_handler = require('../error_handler');
 
 function DataConn(ID){
     var __self  = this;
@@ -32,9 +32,26 @@ function DataAccess(){
     
     this.fetchUser = function (email, ID, callback) {
         let msg = {
-
+            email : email,
             fetch : function (dbRef) {
-
+                dbRef.connect(
+                    function (err, email) {
+                        if(err){
+                            this.err = error_handler.db_connection_error(err);
+                            return;
+                        }
+                        dbRef.query("SELECT * FROM travlendardb.User WHERE IdUser = ?",
+                            email,
+                            function (err, result) {
+                                if(err){
+                                    this.err = error_handler.query_error(err);
+                                    return;
+                                }
+                                this.user = result;
+                            }
+                        );
+                    }
+                );
             }
         }
         this.__finalize(msg, callback);
