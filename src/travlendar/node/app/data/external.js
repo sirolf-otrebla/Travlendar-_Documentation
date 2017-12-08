@@ -8,7 +8,8 @@ const travelMeans  = {
     walking : "WALKING"
 }
 
-fetchRoute("viale romagna 62, Milano, IT", "via istonia 104, Cupello, CH, IT",  travelMeans.driving, "now" , "best_guess");
+//fetchRoute("viale romagna 62, Milano, IT", "via istonia 104, Cupello, CH, IT",  travelMeans.driving, "now" , "best_guess");
+
 function fetchRoute(origin, dest, travelMean, time, traffic){
     let http = require("https");
     let queryString = require('querystring');
@@ -20,7 +21,7 @@ function fetchRoute(origin, dest, travelMean, time, traffic){
         traffic_model: traffic,
         mode : travelMean,
         key : GOOGLE_API_KEY
-    }
+    };
     let strOpt = queryString.stringify(opt, "&", "=", {encode: false});
     console.log("REQ" + strOpt);
     http.get({
