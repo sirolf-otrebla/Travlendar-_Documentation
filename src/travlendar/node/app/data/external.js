@@ -24,6 +24,9 @@ function fetchRoute(origin, dest, travelMean, time, traffic){
     };
     let strOpt = queryString.stringify(opt, "&", "=", {encode: false});
     console.log("REQ" + strOpt);
+
+    var self = this;
+
     http.get({
         protocol : "https:",
         host : DISTANCE_MATRIX_API_HOST,
@@ -34,7 +37,10 @@ function fetchRoute(origin, dest, travelMean, time, traffic){
             console.log("REQ STATUS:" + res.statusCode);
             res.on("data", function(chunk) {
                 console.log("BODY: " + chunk);
+                self.result = JSON.parse(chunk);
             });
 
     });
+
+    return this.result;
 }

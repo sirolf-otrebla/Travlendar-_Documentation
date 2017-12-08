@@ -30,26 +30,26 @@ function DataAccess(){
     this.__DBConn = new DataConn(MY_DATA_SERVER_ID);
     this.__extConn = new DataConn(MY_EXT_SERVER_ID);
     
-    this.fetchUser = function (email, ID) {
+    this.fetchUser = function (email, ID, callback) {
         let msg = {
 
             fetch : function (dbRef) {
 
             }
         }
-        //TODO
+        this.__finalize(msg, callback);
     }
-    this.fetchTasks = function (user) {
+    this.fetchTasks = function (user, callback) {
         let msg = {
 
             fetch : function (dbRef) {
 
             }
         }
-        //TODO
+        this.__finalize(msg, callback);
     }
 
-    this.addTask = function (user, task) {
+    this.addTask = function (user, task, callback ) {
         let msg = {
 
 
@@ -57,31 +57,67 @@ function DataAccess(){
 
             }
         }
-        //TODO
+        this.__finalize(msg, callback);
     }
 
-    this.removeTask = function (user, task) {
+    this.removeTask = function (user, task, callback) {
         let msg = {
 
             fetch : function (dbRef) {
 
             }
         }
-        //TODO
+        this.__finalize(msg, callback);
     }
 
-    this.getTravelCost = function (origin, dest, time) {
+    this.getTravelCost = function (or, dest, travelMean,  time, callback) {
         let msg = {
 
-            fetch : function (dbRef) {
+            // to be setted at instantiation time
+            origin : origin,
+            destination : dest,
+            departure : time,
+            travelMean : travelMean,
 
+            fetch : function (extServicesCallback) {
+                const MY_TRAFFIC_ASSUMPTION = "best_guess";
+                let result = extServicesCallback.fetchRoute(
+                    this.origin,
+                    this.destination,
+                    this.travelMean,
+                    this.departure,
+                    MY_TRAFFIC_ASSUMPTION
+                );
+
+                this.distance = {
+                    value : result.rows[0].elements[0].distance.value,
+                    text : result.rows[0].elements[0].distance.text
+                };
+
+                this.time = {
+
+                    value :  result.rows[0].elements[0].duration.value,
+                    text : result.rows[0].elements[0].duration.text
+                };
+
+                if (this.travelMean === "TRANSIT"){
+                    this.fare = {
+                        value : result.rows[0].elements[0].fare.value,
+                        text : result.rows[0].elements[0].fare.currency,
+                    }
+                }
             }
+
         }
-        //TODO
+        this.__finalize(msg, callback);
     }
 
-
-
+    this.__finalize = function(msg, callback){
+        this.connect();
+        this.__socket.write(msg);
+        var result = null;
+        this.__socket.on('data', callback(data));
+    }
 
 
 }
