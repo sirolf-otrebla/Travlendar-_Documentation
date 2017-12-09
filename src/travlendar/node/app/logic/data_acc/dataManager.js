@@ -37,23 +37,25 @@ function DataAccess(){
                 dbRef.connect(
                     function (err, email) {
                         if(err){
-                            this.err = error_handler.db_connection_error(err);
+                            self.err = error_handler.db_connection_error(err);
                             return;
                         }
                         dbRef.query("SELECT * FROM travlendardb.User WHERE IdUser = ?",
                             email,
                             function (err, result) {
                                 if(err){
-                                    this.err = error_handler.query_error(err);
+                                    self.err = error_handler.query_error(err);
                                     return;
                                 }
-                                this.user = result;
+                                self.user = result;
+                                callback();
                             }
                         );
                     }
                 );
             }
         }
+        msg.self = msg;
         //TODO
     }
     this.fetchTasks = function (user) {
