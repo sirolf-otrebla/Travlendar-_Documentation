@@ -2,7 +2,7 @@
   "servers": [
     {
       "name": "first",
-      "address": "localhost",
+      "__address": "localhost",
       "port": "8081"
     }
   ]

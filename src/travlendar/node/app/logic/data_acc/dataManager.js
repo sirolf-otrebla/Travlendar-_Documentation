@@ -8,11 +8,11 @@ function DataConn(ID){
     let serverList = JSON.parse(fs.readFileSync('./travlendar/node/app/data_acc/serverList.json')).servers;
 
     this.__connectingTO = serverList[ID];
-    this.__socket = new net.socket();
+    this.__socket = new net.__socket();
     
     this.connect = function () {
-        this.__socket.connect(this.__connectingTO.port, this.__connectingTO.address, function () {
-            console.log("CONNECTED TO : " + __self.__connectingTO.port + ":" + __self.__connectingTO.address);
+        this.__socket.connect(this.__connectingTO.port, this.__connectingTO.__address, function () {
+            console.log("CONNECTED TO : " + __self.__connectingTO.port + ":" + __self.__connectingTO.__address);
         });
     }
 
@@ -37,43 +37,97 @@ function DataAccess(){
                 dbRef.connect(
                     function (err, email) {
                         if(err){
-                            this.err = error_handler.db_connection_error(err);
+                            self.err = error_handler.db_connection_error(err);
                             return;
                         }
-                        dbRef.query("SELECT * FROM travlendardb.User WHERE IdUser = ?",
+                        dbRef.query("SELECT u.IdUser, t.* " +
+                                        "FROM travlendardb.Users AS u INNER JOIN travlendardb.Tasks AS t " +
+                                        "ON u.IdUser = t.IdUser WHERE u.eMail = ?",
                             email,
                             function (err, result) {
                                 if(err){
-                                    this.err = error_handler.query_error(err);
+                                    self.err = error_handler.query_error(err);
                                     return;
                                 }
-                                this.user = result;
+                                self.user = result;
+                                callback();
                             }
                         );
                     }
                 );
             }
         }
+
+        msg.self = msg;
         this.__finalize(msg, callback);
     }
-    this.fetchTasks = function (user, callback) {
-        let msg = {
 
+    this.fetchTasks = function (email, callback) {
+        let msg = {
             fetch : function (dbRef) {
+                dbRef.connect(
+                    function (err, email) {
+                        if(err){
+                            self.err = error_handler.db_connection_error(err);
+                            return;
+                        }
+                        dbRef.query("SELECT * FROM travlendardb.Tasks AS t, travlendardb.Users AS u" +
+                                        "WHERE IdUser = ? ",
+                            email,
+                            function (err, result) {
+                                if(err){
+                                    self.err = error_handler.query_error(err);
+                                    return;
+                                }
+                                self.user = result;
+                                callback();
+                            }
+                        );
+                    }
+                );
 
             }
         }
+
+        msg.self = msg;
         this.__finalize(msg, callback);
     }
 
     this.addTask = function (user, task, callback ) {
         let msg = {
-
-
             fetch : function (dbRef) {
-
+                dbRef.connect(
+                    function (err, user, task) {
+                        if(err){
+                            self.err = error_handler.db_connection_error(err);
+                            return;
+                        }
+                        dbRef.query("INSERT INTO travlendardb.Tasks("  +
+                            "IdTask, IdUser, Name, Description," +
+                            "Latitude, Longitude, Duration," +
+                            "StartTime, EndTime, StartDay, EndDay," +
+                            "isBreakTask, isPeriodic, DayPeriodicity)" +
+                            "VALUES ( null , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                            [user, task.name, task.description,
+                                task.latitude, task.longitude,
+                                task.duration,task.startTime, task.endTime,
+                                task.startDay, task.endDay, task.isBreakTask,
+                                task.isPeriodic, task.dayPeriodicity],
+                            function (err, result) {        //TODO check if insertion returns a confirmation msg
+                                if(err){
+                                    self.err = error_handler.query_error(err);
+                                    return;
+                                }
+                                self.user = result;
+                                callback();
+                            }
+                        );
+                    }
+                );
             }
         }
+
+        msg.self = msg;
         this.__finalize(msg, callback);
     }
 
