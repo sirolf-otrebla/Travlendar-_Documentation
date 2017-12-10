@@ -6,11 +6,15 @@ const travelMeans  = {
     bycicling : "BYCICLING",
     transit : "TRANSIT",
     walking : "WALKING"
-}
+};
+
+export {
+    travelMeans
+};
 
 //fetchRoute("viale romagna 62, Milano, IT", "via istonia 104, Cupello, CH, IT",  travelMeans.driving, "now" , "best_guess");
 
-function fetchRoute(origin, dest, travelMean, time, traffic){
+exports.fetchRoute = function fetchRoute(origin, dest, travelMean, time, traffic){
     let http = require("https");
     let queryString = require('querystring');
     let or = origin.replace(/\s/g, '+');
@@ -43,4 +47,4 @@ function fetchRoute(origin, dest, travelMean, time, traffic){
     });
 
     return this.result;
-}
+};
