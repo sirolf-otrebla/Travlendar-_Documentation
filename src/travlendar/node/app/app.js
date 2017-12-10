@@ -3,7 +3,7 @@ var net = require('net');
 
 //APPLICATION SERVER DEFINITIONS
 var server = net.createServer(function(socket) {
-    socket.write('Welcome to the application server');
+    socket.write(JSON.stringify('Welcome to the application server'));
     socket.on('data', function(data) {
         console.log(data.toString());
     })

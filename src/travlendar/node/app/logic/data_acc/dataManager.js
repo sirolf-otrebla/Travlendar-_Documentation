@@ -8,11 +8,11 @@ function DataConn(ID){
     let serverList = JSON.parse(fs.readFileSync('./travlendar/node/app/data_acc/serverList.json')).servers;
 
     this.__connectingTO = serverList[ID];
-    this.__socket = new net.socket();
+    this.__socket = new net.__socket();
     
     this.connect = function () {
-        this.__socket.connect(this.__connectingTO.port, this.__connectingTO.address, function () {
-            console.log("CONNECTED TO : " + __self.__connectingTO.port + ":" + __self.__connectingTO.address);
+        this.__socket.connect(this.__connectingTO.port, this.__connectingTO.__address, function () {
+            console.log("CONNECTED TO : " + __self.__connectingTO.port + ":" + __self.__connectingTO.__address);
         });
     }
 
