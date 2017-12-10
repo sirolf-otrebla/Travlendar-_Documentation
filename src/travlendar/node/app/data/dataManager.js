@@ -17,7 +17,7 @@ function fetchUser (userId, callback){
             return;
         }
         console.log("fetching user: " + self.userId);
-        dbClient.query("SELECT * FROM travlendardb.User WHERE IdUser = ?", self.userId,
+        dbClient.query("SELECT * FROM travlendardb.Users WHERE IdUser = ?", self.userId,
             function (err, rows) {
                 if(err){
                     console.log("get error!!!");
