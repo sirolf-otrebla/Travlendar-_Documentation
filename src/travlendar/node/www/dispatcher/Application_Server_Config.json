@@ -1,7 +1,7 @@
 {
   "servers": [
     {
-      "name": "first",
+      "id": "first",
       "address": "localhost",
       "port": "8081"
     }
