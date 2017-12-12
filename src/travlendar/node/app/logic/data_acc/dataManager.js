@@ -81,37 +81,7 @@ exports.manager = function DataAccess(){
             destination : dest,
             departure : time,
             travelMean : travelMean,
-
-            fetch : function (extServicesCallback) {
-                const MY_TRAFFIC_ASSUMPTION = "best_guess";
-
-                //TODO change this
-                let result = extServicesCallback.fetchRoute(
-                    this.origin,
-                    this.destination,
-                    this.travelMean,
-                    this.departure,
-                    MY_TRAFFIC_ASSUMPTION
-                );
-
-                this.distance = {
-                    value : result.rows[0].elements[0].distance.value,
-                    text : result.rows[0].elements[0].distance.text
-                };
-
-                this.time = {
-
-                    value :  result.rows[0].elements[0].duration.value,
-                    text : result.rows[0].elements[0].duration.text
-                };
-
-                if (this.travelMean === "TRANSIT"){
-                    this.fare = {
-                        value : result.rows[0].elements[0].fare.value,
-                        text : result.rows[0].elements[0].fare.currency,
-                    }
-                }
-            }
+            mod : "travelCost.js"
 
         };
         this.__finalize(msg, callback);
