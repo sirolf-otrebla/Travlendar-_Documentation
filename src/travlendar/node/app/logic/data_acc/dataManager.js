@@ -14,15 +14,16 @@ function DataConn(ID){
         this.__socket.connect(this.__connectingTO.port, this.__connectingTO.__address, function () {
             console.log("CONNECTED TO : " + __self.__connectingTO.port + ":" + __self.__connectingTO.__address);
         });
-    }
+    };
 
     this.write = function (msg) {
         this.__socket.write(msg);
     };
 
-};
+}
 
-function DataAccess(){
+
+exports.manager = function DataAccess(){
 
     const MY_DATA_SERVER_ID = 0;
     const MY_EXT_SERVER_ID = 1;
@@ -33,110 +34,41 @@ function DataAccess(){
     this.fetchUser = function (email, ID, callback) {
         let msg = {
             email : email,
-            fetch : function (dbRef) {
-                dbRef.connect(
-                    function (err, email) {
-                        if(err){
-                            self.err = error_handler.db_connection_error(err);
-                            return;
-                        }
-                        dbRef.query("SELECT u.IdUser, t.* " +
-                                        "FROM travlendardb.Users AS u INNER JOIN travlendardb.Tasks AS t " +
-                                        "ON u.IdUser = t.IdUser WHERE u.eMail = ?",
-                            email,
-                            function (err, result) {
-                                if(err){
-                                    self.err = error_handler.query_error(err);
-                                    return;
-                                }
-                                self.user = result;
-                                callback();
-                            }
-                        );
-                    }
-                );
-            }
-        }
+            ID : ID,
+            mod : "fetchUser.js"
+        };
 
         msg.self = msg;
         this.__finalize(msg, callback);
-    }
+    };
 
     this.fetchTasks = function (email, callback) {
         let msg = {
-            fetch : function (dbRef) {
-                dbRef.connect(
-                    function (err, email) {
-                        if(err){
-                            self.err = error_handler.db_connection_error(err);
-                            return;
-                        }
-                        dbRef.query("SELECT * FROM travlendardb.Tasks AS t, travlendardb.Users AS u" +
-                                        "WHERE IdUser = ? ",
-                            email,
-                            function (err, result) {
-                                if(err){
-                                    self.err = error_handler.query_error(err);
-                                    return;
-                                }
-                                self.user = result;
-                                callback();
-                            }
-                        );
-                    }
-                );
+            email : email,
+            mod : "fetchTasks.js"
 
-            }
-        }
+        };
 
         msg.self = msg;
         this.__finalize(msg, callback);
-    }
+    };
 
     this.addTask = function (user, task, callback ) {
         let msg = {
-            fetch : function (dbRef) {
-                dbRef.connect(
-                    function (err, user, task) {
-                        if(err){
-                            self.err = error_handler.db_connection_error(err);
-                            return;
-                        }
-                        dbRef.query("INSERT INTO travlendardb.Tasks("  +
-                            "IdTask, IdUser, Name, Description," +
-                            "Latitude, Longitude, Duration," +
-                            "StartTime, EndTime, StartDay, EndDay," +
-                            "isBreakTask, isPeriodic, DayPeriodicity)" +
-                            "VALUES ( null , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-                            [user, task.name, task.description,
-                                task.latitude, task.longitude,
-                                task.duration,task.startTime, task.endTime,
-                                task.startDay, task.endDay, task.isBreakTask,
-                                task.isPeriodic, task.dayPeriodicity],
-                            function (err, result) {        //TODO check if insertion returns a confirmation msg
-                                if(err){
-                                    self.err = error_handler.query_error(err);
-                                    return;
-                                }
-                                self.user = result;
-                                callback();
-                            }
-                        );
-                    }
-                );
-            }
-        }
+            task : task,
+            email : user,
+            mod : "addTask.js"
+        };
 
         msg.self = msg;
         this.__finalize(msg, callback);
-    }
+    };
 
     this.removeTask = function (user, task, callback) {
         let msg = {
-
-            fetch : function (dbRef) {
-
-            }
+            task : task,
+            email : user,
+            mod : "removeTask.js"
         }
         this.__finalize(msg, callback);
     }
@@ -152,6 +84,8 @@ function DataAccess(){
 
             fetch : function (extServicesCallback) {
                 const MY_TRAFFIC_ASSUMPTION = "best_guess";
+
+                //TODO change this
                 let result = extServicesCallback.fetchRoute(
                     this.origin,
                     this.destination,
@@ -179,9 +113,9 @@ function DataAccess(){
                 }
             }
 
-        }
+        };
         this.__finalize(msg, callback);
-    }
+    };
 
     this.__finalize = function(msg, callback){
         this.connect();

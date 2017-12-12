@@ -23,3 +23,5 @@ let server = net.createServer( (socket) => {
 });
 
 server.listen(EXT_FETCHER_PORT, EXT_FETCHER_IP);
+console.log("[EXT] server online");
+

@@ -1,74 +1,143 @@
-User = {
-    __ID : null,
-    __email : null,
-    __self : this,
-    User : function(email){
-        __email = email;
+exports.User = class User {
+    _email;
+
+    constructor(email){
+        this._email = email;
+    }
+
+    get email(){
+        return this._email;
     }
 
 };
 
-Task = {
-    __self : this,
-    __ID : null,
-    __userID : null,
-    __description : null,
-    __location : null,
-    __timeSlot : null,
-    __allowedTransports : null,
-    __repetition : null,
+exports.Task = class Task {
+    _ID;
+    _userEmail;
+    _description;
+    _location;
+    _timeSlot;
+    _allowedTransports;
+    _repetition;
 
-
-    Task : function (id, desc, loc, timeslot, transports) {
-        __ID = id;
-        __description = desc;
-        __location = loc;
-        __timeSlot = timeslot;
-        __allowedTransports = transports;
-
+    constructor(id, desc, loc, timeslot, transports) {
+        this._ID = id;
+        this._description = desc;
+        this._location = loc;
+        this._timeSlot = timeslot;
+        this._allowedTransports = transports;
     }
 
 
+    get ID() {
+        return this._ID;
+    }
 
-};
+    get userEmail() {
+        return this._userEmail;
+    }
 
-Travel = {
-    __startTask : null,
-    __endTask : null,
-    __transport : null,
-    __route : null,
+    get description() {
+        return this._description;
+    }
 
-    Task : function (start, end, transport, route) {
-        __startTask = start;
-        __endTask = end;
-        __transport = transport;
-        __route = route;
+    get location() {
+        return this._location;
+    }
+
+    get timeSlot() {
+        return this._timeSlot;
+    }
+
+    get allowedTransports() {
+        return this._allowedTransports;
+    }
+
+    get repetition() {
+        return this._repetition;
     }
 };
 
+exports.Travel = class Travel{
+    _startTask;
+    _endTask;
+    _transport;
+    _route;
 
 
-TimeSlot = {
-    __self : this,
+    constructor(startTask, endTask, transport, route) {
+        this._startTask = startTask;
+        this._endTask = endTask;
+        this._transport = transport;
+        this._route = route;
+    }
 
 
+    get startTask() {
+        return this._startTask;
+    }
+
+    get endTask() {
+        return this._endTask;
+    }
+
+    get transport() {
+        return this._transport;
+    }
+
+    get route() {
+        return this._route;
+    }
 };
 
+exports.TimeSlot = class Timeslot{
+    _start;
+    _end;
 
-Loc = {
-    __lat : null,
-    __long : null,
-    __desc : " ",
-    __self : this,
 
-    Location : function (desc, lat,long) {
-        __lat = lat;
-        __long = long;
-        __desc = desc;
+    constructor(start, end) {
+        this._start = start;
+        this._end = end;
+    }
 
-    },
 
-    whithinWorkingArea : function(){
+    get start() {
+        return this._start;
+    }
+
+    get end() {
+        return this._end;
+    }
+
+//TODO: ADD WEATHER ???
+};
+
+exports.Loc = class Loc{
+    _lat;
+    _long;
+    _desc;
+
+
+    constructor(lat, long, desc) {
+        this._lat = lat;
+        this._long = long;
+        this._desc = desc;
+    }
+
+
+    get lat() {
+        return this._lat;
+    }
+
+    get long() {
+        return this._long;
+    }
+
+    get desc() {
+        return this._desc;
+    }
+
+    whithinWorkingArea(){
 
         // this is a square defined using Arcore, Saronno and San Giuliano Milanese as bounds.
         const MAX_LAT = 45.631851;
@@ -82,17 +151,10 @@ Loc = {
             }
         }
         return false
-    },
-
-    getLat : function () {
-        return __lat;
-    },
-
-    getLong : function () {
-        return __long;
     }
 
 };
+
 
 
 
