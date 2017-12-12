@@ -11,10 +11,11 @@ let server = net.createServer( (socket) => {
     });
     
     socket.on('data', function (data) {
-        let ext = require('./external.js');
         let obj = JSON.parse(data);
         try{
-            obj.fetch(ext.fetchRoute);
+            let path = "./callbacks/" + obj.mod;
+            let mod = require(path);
+            mod.fetch(obj);
             socket.write(JSON.stringify(obj));
         } catch (err){
             //TODO
