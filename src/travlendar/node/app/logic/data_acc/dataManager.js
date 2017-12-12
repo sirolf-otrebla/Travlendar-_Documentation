@@ -31,10 +31,9 @@ exports.manager = function DataAccess(){
     this.__DBConn = new DataConn(MY_DATA_SERVER_ID);
     this.__extConn = new DataConn(MY_EXT_SERVER_ID);
     
-    this.fetchUser = function (email, ID, callback) {
+    this.fetchUser = function (email, callback) {
         let msg = {
             email : email,
-            ID : ID,
             mod : "fetchUser.js"
         };
 
