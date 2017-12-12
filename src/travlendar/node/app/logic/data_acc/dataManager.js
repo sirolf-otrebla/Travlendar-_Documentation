@@ -28,9 +28,11 @@ exports.manager = function DataAccess(){
     const MY_DATA_SERVER_ID = 0;
     const MY_EXT_SERVER_ID = 1;
     
-    this.__DBConn = new DataConn(MY_DATA_SERVER_ID);
-    this.__extConn = new DataConn(MY_EXT_SERVER_ID);
-    
+    this._DBConn = new DataConn(MY_DATA_SERVER_ID);
+    this._extConn = new DataConn(MY_EXT_SERVER_ID);
+    this._DBConn.connect();
+    this._extConn.connect();
+
     this.fetchUser = function (email, ID, callback) {
         let msg = {
             email : email,
@@ -39,7 +41,7 @@ exports.manager = function DataAccess(){
         };
 
         msg.self = msg;
-        this.__finalize(msg, callback);
+        this._finalize_db(msg, callback);
     };
 
     this.fetchTasks = function (email, callback) {
@@ -50,7 +52,7 @@ exports.manager = function DataAccess(){
         };
 
         msg.self = msg;
-        this.__finalize(msg, callback);
+        this._finalize_db(msg, callback);
     };
 
     this.addTask = function (user, task, callback ) {
@@ -61,7 +63,7 @@ exports.manager = function DataAccess(){
         };
 
         msg.self = msg;
-        this.__finalize(msg, callback);
+        this._finalize_db(msg, callback);
     };
 
     this.removeTask = function (user, task, callback) {
@@ -70,7 +72,7 @@ exports.manager = function DataAccess(){
             email : user,
             mod : "removeTask.js"
         }
-        this.__finalize(msg, callback);
+        this._finalize_db(msg, callback);
     }
 
     this.getTravelCost = function (or, dest, travelMean,  time, callback) {
@@ -84,15 +86,27 @@ exports.manager = function DataAccess(){
             mod : "travelCost.js"
 
         };
-        this.__finalize(msg, callback);
+        this._finalize_ext(msg, callback);
     };
 
-    this.__finalize = function(msg, callback){
-        this.connect();
-        this.__socket.write(msg);
+    this.getWeatherForecast = function (callback) {
+      let msg = {
+          mod : "getWeatherForecast.js"
+      }
+      this._finalize_ext(msg, callback);
+    };
+
+
+    this._finalize_db = function(msg, callback){
+        this._DBConn.write(msg);
         var result = null;
         this.__socket.on('data', callback(data));
     }
 
+    this._finalize_ext = function(msg, callback){
+        this._extConn.write(msg);
+        var result = null;
+        this.__socket.on('data', callback(data));
+    }
 
 }

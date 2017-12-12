@@ -53,7 +53,7 @@ exports.fetchRoute = function fetchRoute(origin, dest, travelMean, time, traffic
 };
 
 
-exports.weatherForecast = function( callback) {
+exports.weatherForecast = function(callback) {
     let http = require("http");
     let self = this;
     let queryString = require('querystring');
@@ -63,6 +63,7 @@ exports.weatherForecast = function( callback) {
         APPID : WEATHER_API_KEY
     };
     let strOpt = queryString.stringify(opt, "&", "=", {encode: false});
+
     http.get({
         protocol : "http:",
         host : WEATHER_API_HOST,
@@ -75,7 +76,7 @@ exports.weatherForecast = function( callback) {
             self.result = JSON.parse(chunk);
             callback(result);
         });
-
     });
+
 
 };
