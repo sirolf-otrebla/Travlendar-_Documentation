@@ -1,10 +1,12 @@
 var error_handler = require('../../logic/error_handler');
 
 exports.fetch = function getCalendar(msg, dbRef) {
+    let self = this;
+    this.msg = msg;
 
-    dbRef.connect(function (err, msg) {
+    dbRef.connect(function (err) {
         if (err){
-            msg.err = error_handler.db_connection_error(err);
+            self.msg.err = error_handler.db_connection_error(err);
             return;
         }
 
@@ -12,14 +14,13 @@ exports.fetch = function getCalendar(msg, dbRef) {
                     "LEFT JOIN travlendardb.Users AS u " +
                     "ON c.IdUser = u.IdUser " +
                     "WHERE u.eMail = ?",
-            [msg.email],
+            [self.msg.email],
             function (err, result) {
                 if(err){
-                    msg.err = error_handler.query_error(err);
+                    self.msg.err = error_handler.query_error(err);
                     return;
                 }
-                msg.calendar = result;
-                return;
+                self.msg.calendar = result;
             }
         );
     })

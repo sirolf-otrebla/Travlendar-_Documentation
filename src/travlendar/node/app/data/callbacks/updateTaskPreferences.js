@@ -1,14 +1,16 @@
-var error_handler = require('../../logic/error_handler');
+let error_handler = require('../../logic/error_handler');
 
 exports.fetch = function updateTaskPreferences(msg, dbRef) {
+    let self = this;
+    this.msg = msg;
 
-    dbRef.connect(function (err, msg) {
+    dbRef.connect(function (err) {
         if(err){
-            msg.err = msg.error_handler.db_connection_error(err);
+            self.msg.err = error_handler.db_connection_error(err);
             return;
         }
 
-        var task_preferences = msg.task_preferences;
+        let task_preferences = self.msg.task_preferences;
 
         //First remove (done by a trigger) and then insert
         dbRef.query("INSERT INTO travlendardb.TasksPreferences( " +
@@ -19,11 +21,10 @@ exports.fetch = function updateTaskPreferences(msg, dbRef) {
                     task_preferences.maxWalk],
                 function (err, result) {
                     if(err){
-                        msg.err = error_handler.query_error(err);
+                        self.msg.err = error_handler.query_error(err);
                         return;
                     }
-                    msg.status = result;
-                    return;
+                    self.msg.status = result;
                 }
         );
     });

@@ -1,16 +1,17 @@
-var error_handler = require('../../logic/error_handler');
+let error_handler = require('../../logic/error_handler');
 
 exports.fetch = function removeTask(msg, dbRef) {
+    let self = this;
+    this.msg = msg;
 
-    dbRef.connect(
-        function (err, msg) {
+    dbRef.connect(function (err) {
             if(err){
-                msg.err = error_handler.db_connection_error(err);
+                self.msg.err = error_handler.db_connection_error(err);
                 return;
             }
 
-            let email = msg.email;
-            let idTask = msg.task.idTask;
+            let email = self.msg.email;
+            let idTask = self.msg.idTask;
 
             dbRef.query("DELETE FROM travlendardb.Tasks " +
                         "WHERE IdTask = ? AND " +
@@ -20,11 +21,10 @@ exports.fetch = function removeTask(msg, dbRef) {
                 [idTask, email],
                 function (err, result) {
                     if(err){
-                        msg.err = error_handler.query_error(err);
+                        self.msg.err = error_handler.query_error(err);
                         return;
                     }
-                    msg.status = result;
-                    return;
+                    self.msg.status = result;
                 }
             );
         }
