@@ -1,15 +1,17 @@
 var error_handler = require('../../logic/error_handler');
 
 exports.fetch = function removeTask(msg, dbRef) {
-    let email = msg.email;
-    let idTask = msg.task.idTask;
 
     dbRef.connect(
-        function (err, email, idTask) {
+        function (err, msg) {
             if(err){
                 msg.err = error_handler.db_connection_error(err);
                 return;
             }
+
+            let email = msg.email;
+            let idTask = msg.task.idTask;
+
             dbRef.query("DELETE FROM travlendardb.Tasks " +
                         "WHERE IdTask = ? AND " +
                         "IdUser IN (SELECT u.IdUser FROM " +

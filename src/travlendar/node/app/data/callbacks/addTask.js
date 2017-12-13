@@ -1,15 +1,17 @@
 var error_handler = require('../../logic/error_handler');
 
 exports.fetch = function addTask(msg, dbRef) {
-    let task = msg.task;
-    let user = msg.user;
 
     dbRef.connect(
-        function (err) {
+        function (err, msg) {
             if(err){
                 msg.err = error_handler.db_connection_error(err);
                 return;
             }
+
+            let task = msg.task;
+            let user = msg.user;
+
             dbRef.query("INSERT INTO travlendardb.Tasks("  +
                         "IdTask, IdUser, Name, Description," +
                         "Latitude, Longitude, Duration," +
