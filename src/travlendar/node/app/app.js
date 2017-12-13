@@ -1,12 +1,14 @@
 //APPLICATION SERVER REQUIRES
-var net = require('net');
+let net = require('net');
+let presenter = require('./presenter/presenter');
+let handleFunctions = require('./presenter/handleFunctions');
 
 //APPLICATION SERVER DEFINITIONS
-var server = net.createServer(function(socket) {
+let server = net.createServer(function(socket) {
     socket.write(JSON.stringify('Welcome to the application server'));
     socket.on('data', function(data) {
-        console.log(data.toString());
-    })
+        presenter.start(data, socket, [handleFunctions.handleLogin], handleFunctions.handleError);
+    });
 });
 
 server.listen(8081);
