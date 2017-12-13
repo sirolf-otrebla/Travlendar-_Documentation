@@ -1,6 +1,5 @@
 let server = require('./serverClass');
 let fs = require('fs');
-let yetCreated = false;
 
 const __availableServer = JSON.parse(fs.readFileSync('./travlendar/node/www/dispatcher/Application_Server_Config.json')).servers;
 
@@ -39,17 +38,6 @@ class Dispatcher {
     }
 }
 
-class DispatcherFactory {
-    constructor() {
-        if(!yetCreated) {
-            this.__dispatcher = new Dispatcher();
-            yetCreated = true;
-        }
-    }
+let __singleton = new Dispatcher();
 
-    create() {
-        return this.__dispatcher;
-    }
-}
-
-module.exports = DispatcherFactory;
+module.exports = __singleton;

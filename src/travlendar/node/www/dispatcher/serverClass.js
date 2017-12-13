@@ -25,7 +25,7 @@ class ServerClass {
         this.__socket.on('data', function(data) {
             let json = JSON.parse(data);
             if(self.__usersConnected.has(json.email)) {
-                self.__usersConnected.get(json.email)();
+                self.__usersConnected.get(json.email)(data);
                 self.__usersConnected.delete(json.email);
             }
         });
