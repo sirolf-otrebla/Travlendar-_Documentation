@@ -1,21 +1,28 @@
+let error_handler = require('../../logic/error_handler');
+
 exports.fetch = function fetchUser(msg, dbRef) {
+    let self = this;
+    this.msg = msg;
+
     dbRef.connect(
-        function (err, email) {
+        function (err) {
             if(err){
-                msg.err = error_handler.db_connection_error(err);
+                self.msg.err = error_handler.db_connection_error(err);
                 return;
             }
-            dbRef.query("SELECT u.IdUser, t.* " +
-                "FROM travlendardb.Users AS u INNER JOIN travlendardb.Tasks AS t " +
-                "ON u.IdUser = t.IdUser WHERE u.eMail = ?",
-                email,
+
+            dbRef.query("SELECT * " +
+                        "FROM travlendardb.Users AS u " +
+                        "WHERE u.eMail = ?",
+                [self.msg.email],
                 function (err, result) {
                     if(err){
-                        msg.err = error_handler.query_error(err);
+                        console.log(err);
+                        self.msg.err = error_handler.query_error(err);
                         return;
                     }
-                    msg.user = result;
-                    callback();
+                    console.log(result);
+                    self.msg.user = result;
                 }
             );
         }
