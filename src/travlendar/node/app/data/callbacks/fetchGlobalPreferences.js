@@ -9,8 +9,8 @@ exports.fetch = function getGlobalPreferences(msg, dbRef) {
             self.msg.err = error_handler.db_connection_error(err);
             return;
         }
-        dbRef.query("SELECT * FROM travlendardb.UsersPreferences AS uPref " +
-                    "LEFT JOIN travelndardb.Users AS u ON uPref.IdUser = u.IdUser " +
+        dbRef.query("SELECT uPref.* FROM travlendardb.UsersPreferences AS uPref " +
+                    "LEFT JOIN travlendardb.Users AS u ON uPref.IdUser = u.IdUser " +
                     "WHERE u.eMail = ?",
                 [self.msg.email],
                 function (err, result) {
@@ -18,6 +18,7 @@ exports.fetch = function getGlobalPreferences(msg, dbRef) {
                         self.msg.err = error_handler.query_error(err);
                         return;
                     }
+                    console.log(result);
                     self.msg.global_pref = result;
                 });
     })
