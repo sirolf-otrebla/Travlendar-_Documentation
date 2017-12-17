@@ -1,4 +1,4 @@
-const EXT_FETCHER_PORT = 12345;
+const EXT_FETCHER_PORT = 12586;
 const EXT_FETCHER_IP = 'localhost';
 
 let net = require('net');
@@ -15,8 +15,9 @@ let server = net.createServer( (socket) => {
         try{
             let path = "./callbacks/" + obj.mod;
             let mod = require(path);
-            mod.fetch(obj);
-            socket.write(JSON.stringify(obj));
+            mod.fetch(obj, (msg) => {
+                socket.write(JSON.stringify(msg));
+            });
         } catch (err){
             //TODO
         }

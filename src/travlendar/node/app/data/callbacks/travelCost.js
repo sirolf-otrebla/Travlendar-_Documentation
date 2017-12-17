@@ -1,4 +1,4 @@
-exports.fetch = function (msg) {
+exports.fetch = function (msg, callback) {
         const MY_TRAFFIC_ASSUMPTION = "best_guess";
         let extServicesCallback = require('../external.js');
         //TODO change this
@@ -33,6 +33,7 @@ exports.fetch = function (msg) {
                         text : result.rows[0].elements[0].fare.currency,
                     }
                 }
+                callback(self);
             }
         );
 
