@@ -6,6 +6,8 @@ var path = require('path');
 var app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
+app.use("/styles",express.static(__dirname + "/views/styles"));
+app.use("/images",express.static(__dirname + "/views/images"));
 
 //LOGGER
 var logger = require('morgan');
@@ -17,7 +19,7 @@ var login = require('./routes/login');
 
 //ROUTES INCLUSION
 app.use('/', index);
-app.use('/login.ejs', login);
+app.use('/login', login);
 
 //STARTING THE SERVER
 var port = '80';
