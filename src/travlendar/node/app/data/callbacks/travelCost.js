@@ -1,4 +1,4 @@
-exports.fetch = function (msg) {
+exports.fetch = function (msg, callback) {
         const MY_TRAFFIC_ASSUMPTION = "best_guess";
         let extServicesCallback = require('../external.js');
         //TODO change this
@@ -15,12 +15,6 @@ exports.fetch = function (msg) {
                     text : result.rows[0].elements[0].distance.text
                 };
 
-                self.distance = {
-                    value : result.rows[0].elements[0].distance.value,
-                    text : result.rows[0].elements[0].distance.text
-                };
-
-
                 self.time = {
 
                     value :  result.rows[0].elements[0].duration.value,
@@ -33,8 +27,9 @@ exports.fetch = function (msg) {
                         text : result.rows[0].elements[0].fare.currency,
                     }
                 }
+                callback(self);
             }
         );
 
     }
-}
+

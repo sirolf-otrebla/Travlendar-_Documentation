@@ -106,7 +106,10 @@ exports.manager = function DataAccess(){
     this._finalize_ext = function(msg, callback){
         this._extConn.write(msg);
         var result = null;
-        this.__socket.on('data', callback(data));
+        this.__socket.on('data', (data) => {
+            let msg = JSON.parse(data);
+            callback(msg);
+        });
     }
 
 }
