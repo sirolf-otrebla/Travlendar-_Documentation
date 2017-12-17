@@ -15,12 +15,6 @@ exports.fetch = function (msg, callback) {
                     text : result.rows[0].elements[0].distance.text
                 };
 
-                self.distance = {
-                    value : result.rows[0].elements[0].distance.value,
-                    text : result.rows[0].elements[0].distance.text
-                };
-
-
                 self.time = {
 
                     value :  result.rows[0].elements[0].duration.value,
@@ -38,4 +32,4 @@ exports.fetch = function (msg, callback) {
         );
 
     }
-}
+

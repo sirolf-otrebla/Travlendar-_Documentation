@@ -6,17 +6,6 @@ const WEATHER_API_PATH = "/data/2.5/forecast?";
 const WEATHER_API_KEY = "9301c5733b820cf2c6860598a68d547c";
 const CITY_ID = 3173435;
 
-const travelMeans  = {
-    driving : "DRIVING",
-    bycicling : "BYCICLING",
-    transit : "TRANSIT",
-    walking : "WALKING"
-};
-
-export {
-    travelMeans
-};
-
 //fetchRoute("viale romagna 62, Milano, IT", "via istonia 104, Cupello, CH, IT",  travelMeans.driving, "now" , "best_guess");
 
 exports.fetchRoute = function fetchRoute(origin, dest, travelMean, time, traffic, callback){

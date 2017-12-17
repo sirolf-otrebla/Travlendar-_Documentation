@@ -11,6 +11,34 @@ exports.User = class User {
 
 };
 
+exports.travelMeans  = {
+    driving : "DRIVING",
+    bycicling : "BYCICLING",
+    transit : "TRANSIT",
+    walking : "WALKING"
+};
+
+exports.Day = class Day {
+    _list;
+    _weather;
+
+
+    constructor(weather) {
+        this._weather = weather;
+    }
+
+    addToList(day){
+        this._list.push(day);
+    }
+
+    getFromList(){
+        this._list.pop();
+    }
+    get weather() {
+        return this._weather;
+    }
+}
+
 exports.Task = class Task {
     _ID;
     _userEmail;
