@@ -18,6 +18,7 @@ exports.fetch = function getTaskPreferences(msg, dbRef) {
                         self.msg.err = error_handler.query_error(err);
                         return;
                     }
+                    console.log(result);
                     self.msg.taskPref = result;
                 }
             );
