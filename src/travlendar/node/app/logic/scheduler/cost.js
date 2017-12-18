@@ -9,7 +9,7 @@ exports.eval = function evaluator(day, travel){
     const TRANSPORTS_NO_BAD_WEATHER = [ent.travelMeans.walking, ent.travelMeans.bycicling];
     const BAD_WEATHER = [];
     const MEANS_WITH_FARE = [];
-    
+
     let data = require('../data_acc/dataManager');
     let manager = new data.manager();
     if (TRANSPORTS_NO_BAD_WEATHER.includes(travel.transport) && BAD_WEATHER.includes(day.weather) ){
