@@ -14,7 +14,7 @@ exports.schedule = function (tasks) {
             wd.upperBound = accumulator;
         } );
 
-        let rand = Math.random;
+        let rand = Math.random();
         for ( i = 0; i < week.length ; i++) {
             if (week[i].upperBound > rand && week[i].lowerBound <= rand){
                 wd.addTask(task);
@@ -22,7 +22,7 @@ exports.schedule = function (tasks) {
             break;
         }
     });
-    
+
 };
 
 class weekDay {
@@ -65,7 +65,7 @@ class weekDay {
     }
 
     _barycenter(day){
-        if (day.length == 0) return 0;
+        if (day.length === 0) return null;
         this._ent = require("../entities");
         var sumLat = 0;
         var sumLong = 0;
@@ -90,13 +90,12 @@ class weekDay {
 
     }
 
-    _distance(location, location2){
+    static _distance(location, location2){
         if (location2 === null) return 0;
-        let dis = Math.sqrt(
+        return Math.sqrt(
             (location.lat - location2.lat)^2 +
             (location.long -location2.long)^2
         );
-        return dis;
     }
 
 
