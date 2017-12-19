@@ -9,12 +9,13 @@ exports.eval = function evaluator(day, travel){
     const TRANSPORTS_NO_BAD_WEATHER = [ent.travelMeans.walking, ent.travelMeans.bycicling];
     const BAD_WEATHER = [];
     const MEANS_WITH_FARE = [];
-    
+
     let data = require('../data_acc/dataManager');
     let manager = new data.manager();
     if (TRANSPORTS_NO_BAD_WEATHER.includes(travel.transport) && BAD_WEATHER.includes(day.weather) ){
-        return INF;
+        this.result =  INF;
     }
+    var self = this;
     manager.getTravelCost(
         travel.startTask.location,
         travel.endTask.location,
@@ -23,12 +24,12 @@ exports.eval = function evaluator(day, travel){
         (msg) => {
             let arrival = msg.departure + msg.time.value;
             if (arrival > travel.endTask.timeSlot.start){
-                return INF;
+                self.result =  INF;
             };
             if (MEANS_WITH_FARE.includes(msg.travelMean)){
-              return _cost(msg.time.value, msg.fare.value);
+                self.result =  _cost(msg.time.value, msg.fare.value);
             } else {
-                return _cost(msg.time.value, 0);
+                self.result =  _cost(msg.time.value, 0);
             }
         });
 };

@@ -25,6 +25,11 @@ exports.Day = class Day {
 
     constructor(weather) {
         this._weather = weather;
+        this._barycenter = null;
+    }
+
+    get barycenter() {
+        return this._barycenter;
     }
 
     addToList(day){
@@ -36,6 +41,11 @@ exports.Day = class Day {
     }
     get weather() {
         return this._weather;
+    }
+
+
+    get list() {
+        return this._list;
     }
 }
 
@@ -93,11 +103,10 @@ exports.Travel = class Travel{
     _route;
 
 
-    constructor(startTask, endTask, transport, route) {
+    constructor(startTask, endTask, transport,) {
         this._startTask = startTask;
         this._endTask = endTask;
         this._transport = transport;
-        this._route = route;
     }
 
 
@@ -121,13 +130,18 @@ exports.Travel = class Travel{
 exports.TimeSlot = class Timeslot{
     _start;
     _end;
+    _duration;
 
 
     constructor(start, end) {
         this._start = start;
         this._end = end;
+        this._duration = end - start;
     }
 
+    get duration() {
+        return this._duration;
+    }
 
     get start() {
         return this._start;
