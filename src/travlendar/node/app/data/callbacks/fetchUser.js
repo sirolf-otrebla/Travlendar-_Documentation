@@ -1,6 +1,6 @@
 let error_handler = require('../../logic/error_handler');
 
-exports.fetch = function fetchUser(msg, dbRef) {
+exports.fetch = function fetchUser(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
 
@@ -8,6 +8,7 @@ exports.fetch = function fetchUser(msg, dbRef) {
         function (err) {
             if(err){
                 self.msg.err = error_handler.db_connection_error(err);
+                callback(self.msg);
                 return;
             }
 
@@ -19,10 +20,11 @@ exports.fetch = function fetchUser(msg, dbRef) {
                     if(err){
                         console.log(err);
                         self.msg.err = error_handler.query_error(err);
+                        callback(self.msg);
                         return;
                     }
-                    console.log(result);
                     self.msg.user = result;
+                    callback(self.msg);
                 }
             );
         }
