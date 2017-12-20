@@ -3,77 +3,90 @@ const INF = -1;
 // must have home as first and last task of the queue;
 // it is possible to consider as first bound a greedy approach;
 exports.schedule = function (tasks, defaultTransport) {
-    let ent = require('../entities');
-    let bound = INF;
-    let bestSchedule = null;
-    let working = true;
+    let ent = require('../entities');                                           // where to take business entities
+    let bound = INF;                                                            // actual bound in BnB algorithm
+    let bestSchedule = null;                                                    // actual best schedule found
+    let working = true;                                                         // flag for main algorithm loop
 
-    let upper_counter = 0;
-    let lower_counter = 0;
+    let upper_counter = 0;                                                      // root of analyzed subtree
+    let lower_counter = 0;                                                      // subtree level being analyzed
 
     while (working){
-        if (bound === INF) {
-            let init = generateInitSched(tasks, defaultTransport);
-            bestSchedule = new DaySchedule();
-            init.forEach((t) => {
+        if (bound === INF) {                                                    // algorithm first step
+            let init = generateInitSched(tasks, defaultTransport);              // generate a greedy solution (need a default travel mean)
+            bestSchedule = new DaySchedule();                                   // create new schedule for the newly generated sol
+            init.forEach((t) => {                                               // populate bestschedule
                 bestSchedule.addTravel(t);
             });
-            upper_counter = bestSchedule.taskList.length - 3;
+            upper_counter = bestSchedule.taskList.length - 3;                   // update upper counter so that the root is 2 levels higher than the bottom of the list
+                                                                                // in this way upper counter is set for the first iteration of the main loop.
+            bound = init.bound;                                                 // set the bound as the newly generated schedule's cost
 
-            bound = init.bound;
-
-        } else {
-            let choices = [];
-            let taskChoices = bestSchedule.taskList.slice(
+        } else {                                                                // second or higher loop iterations
+            let choices = [];                                                   // this array will contain the possible choices amongst travels
+            let taskChoices = bestSchedule.taskList.slice(                      // copy the input in another array so it can modified without side effects
                 upper_counter, bestSchedule.taskList.length);
-            let actualSchedule = new DaySchedule();
-            bestSchedule.travelList.slice(0, upper_counter).forEach(
-                (t) => {
+            let actualSchedule = new DaySchedule();                             // generate a new DaySchedule representing the actual partial result
+            bestSchedule.travelList.slice(0, upper_counter).forEach(            // populate the new schedule with every element
+                (t) => {                                                        // having index lower than the upper counter
                     actualSchedule.addTravel(t);
                 }
             );
-            taskChoices.forEach((t) => {
-                t.allowedTransports.forEach((tm) =>  {
-                    choices.push({
+            taskChoices.forEach((t) => {                                        // for each task that can be chosen we generate a set of possible choices
+                t.allowedTransports.forEach((tm) =>  {                          // each choice is a JSON object relative to a travel, with references
+                    choices.push({                                              // to the arrival and to the travel mean
                         mean : tm,
                         task : t
                     });
                 });
             });
 
-            while (lower_counter + upper_counter < bestSchedule.taskList.length ||
-                    choices.length > 0){
-                let chosenIndex = selectRandomIndex(0, choices.length);
+            while (lower_counter + upper_counter <                              // while there are possible choices OR
+                        bestSchedule.taskList.length ||                         // the actual solution is not complete (it means that every task as an associated
+                        choices.length > 0){                                    // travel within the actual solution (and so exists an order between tasks))
 
-                let lastTask = actualSchedule.taskList.pop();
-                actualSchedule.taskList.push(lastTask);
+                let chosenIndex = selectRandomIndex(0, choices.length);         // chose an index indicating the chosen choice
 
-                let chosenElement = choices[chosenIndex];
-                choices.splice(chosenIndex);
+                let lastTask = actualSchedule.taskList.pop();                   // saves the last task in the solution popping it and then pushing it back
+                actualSchedule.taskList.push(lastTask);                         // it is necessary in order to build the "real" travel object, that needs both starting and ending tasks
 
-                actualSchedule.addTravel(
-                    new ent.Travel(lastTask, chosenElement.task, chosenElement.mean)
+                let chosenElement = choices[chosenIndex];                       // extract the chosen element from the array
+                choices.splice(chosenIndex);                                    // remove the choice from the array
+
+                actualSchedule.addTravel(                                       // build the 'real' travel object and adds it to the schedule object
+                    new ent.Travel( lastTask,
+                                    chosenElement.task,
+                                    chosenElement.mean)
                 );
+                //  TODO : WRONG, THE NEW COST IS NOT CONTAINED WITHIN ACTUALSCHEDULE
+                                                                                // now we assume (IT IS WRONG, WEE NEED TO CHANGE IT) that the new cost is already present in Schedule object
+                if (actualSchedule.cost < bound){                               // if the new cost is lower than the bound :
 
-                if (actualSchedule.cost < bound){
-                    choices.forEach((c)=> {
+                    choices.forEach((c)=> {                                     // we remove each choice built for the same task!
                         if( c.task === chosenElement.task)
                             choices.splice(choices.indexOf(c));
                     });
-                    lower_counter++;
+                    lower_counter++;                                            // and them we increment the lower counter so that
+                                                                                // it is possible to add more tasks in the next iteration
                 } else{
-                    actualSchedule.removeLastTravel();
+                    actualSchedule.removeLastTravel();                          // if the new cost is lower we need to remove the last travel we added
+                                                                                // schedule deals with removing the last travel's cost
                 }
+            }                                                                   // we're exiting from the cycle that produces a solution
+
+            if(actualSchedule.taskList.length < tasks.length){                  // if not every tasks has been assigned:
+                                                                                // it means that every branch in the subtree is worse than the bound,
+                                                                                // but it can also means that something went wrong, so whe have to check it out
+                //TODO ;
             }
-            if(actualSchedule.taskList.length < tasks.length){
-                //TODO ERROR;
+
+            if (actualSchedule.cost < bestSchedule.cost){                       // if the actual schedule is better than the bound
+                bestSchedule = actualSchedule;                                  // we replace the bound with it
             }
-            if (actualSchedule.cost < bestSchedule.cost){
-                bestSchedule = actualSchedule;
-            }
-            upper_counter--;
-            if (upper_counter < 0){
-                working = false;
+            upper_counter--;                                                    // we decrement the upper counter so we can explore a wider subtree
+
+            if (upper_counter < 0){                                             // if upper counter is lesser than zero:
+                working = false;                                                // the algorithm is over and we have our best solution inside bestSchedule object
             }
         }
 
