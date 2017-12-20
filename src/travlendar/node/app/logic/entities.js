@@ -103,7 +103,7 @@ exports.Travel = class Travel{
     _route;
 
 
-    constructor(startTask, endTask, transport,) {
+    constructor(startTask, endTask, transport) {
         this._startTask = startTask;
         this._endTask = endTask;
         this._transport = transport;

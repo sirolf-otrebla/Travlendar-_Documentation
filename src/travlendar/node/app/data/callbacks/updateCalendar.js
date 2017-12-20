@@ -31,7 +31,7 @@ exports.fetch = function updateCalendar(msg, dbRef, callback) {
                     });
 
         //Insert the scheduled travels
-        for(int i = 0; i < scheduled_tasks.length; i++){
+        for(let i = 0; i < scheduled_tasks.length; i++){
             dbRef.query("INSERT INTO travlendardb.Calendars" +
                         "(IdUser, IdTask, StartDate, EndDate, StartTime, EndTime) " +
                         "VALUES ( ( SELECT u.IdUser FROM travlendardb.Users AS u " +
@@ -50,7 +50,7 @@ exports.fetch = function updateCalendar(msg, dbRef, callback) {
         }
 
         //Insert the travels
-        for(int i = 0; i < travels.length; i++){
+        for(let i = 0; i < travels.length; i++){
             dbRef.query("INSERT INTO travlendardb.Travels" +
                         "(IdTravel, IdStartTask, IdDestinationTask, " +
                         "StartPointLatitude, StartPointLongitude, EndPointLatitude, EndPointLongitude, " +

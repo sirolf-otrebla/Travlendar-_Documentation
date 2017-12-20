@@ -15,7 +15,8 @@ exports.eval = function evaluator(day, travel){
     if (TRANSPORTS_NO_BAD_WEATHER.includes(travel.transport) && BAD_WEATHER.includes(day.weather) ){
         this.result =  INF;
     }
-    var self = this;
+    let self = this;
+
     manager.getTravelCost(
         travel.startTask.location,
         travel.endTask.location,
@@ -25,7 +26,7 @@ exports.eval = function evaluator(day, travel){
             let arrival = msg.departure + msg.time.value;
             if (arrival > travel.endTask.timeSlot.start){
                 self.result =  INF;
-            };
+            }
             if (MEANS_WITH_FARE.includes(msg.travelMean)){
                 self.result =  _cost(msg.time.value, msg.fare.value);
             } else {
@@ -37,3 +38,55 @@ exports.eval = function evaluator(day, travel){
 _cost = function (time, fare) {
     return time*ALPHA + fare*BETA;
 };
+
+/** Evaluate the cost of a partial schedule solution considering:
+*   travel duration and cost
+*   additional travels for vehicle re-take
+*   weather forecast
+*   travel mean preferences
+*/
+exports.scheduleEval = function scheduleEvaluator(schedule){
+
+    let cost = 0;
+
+    let callbacks = [
+        //Evaluate travels cost and time duration
+        evalTimeAndCost,
+        //Evaluate possibility of vehicle retake
+        evalVehicleRetake,
+        //Evaluate weather forecast w.r.t. travel means
+        //TODO: is this necessary? also check kind of task vs travel mean??
+        evalWeatherForecast,
+        //Evaluate travels mean preferences
+        evalTravelMeanPreferences
+    ];
+
+    callbacks.forEach((f) => {
+        f(schedule);
+    })
+
+
+};
+
+evalTimeAndCost = function (schedule) {
+    let tasks = schedule.tasks;
+    let lastTask = tasks.get(tasks.length - 1);
+    
+};
+
+evalVehicleRetake = function (schedule) {
+
+};
+
+evalWeatherForecast = function (schedule) {
+
+};
+
+/**
+ *
+ * @param schedule
+ */
+evalTravelMeanPreferences = function (schedule) {
+
+};
+
