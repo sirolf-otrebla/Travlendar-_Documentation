@@ -1,12 +1,13 @@
 let error_handler = require('../../logic/error_handler');
 
-exports.fetch = function updateGlobalPreferences(msg, dbRef) {
+exports.fetch = function updateGlobalPreferences(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
 
     dbRef.connect(function (err) {
         if(err){
             self.msg.err = error_handler.db_connection_error(err);
+            callback(self.msg);
             return;
         }
 
@@ -27,13 +28,12 @@ exports.fetch = function updateGlobalPreferences(msg, dbRef) {
                     global_preferences.maxWalk, global_preferences.hasSeasonTicket, self.msg.email,],
                 function (err, result) {
                     if(err){
-                        console.log(err);
-
                         self.msg.err = error_handler.query_error(err);
+                        callback(self.msg);
                         return;
                     }
-                    console.log(result);
                     self.msg.status = result;
+                    callback(self.msg);
                 }
             );
     });

@@ -1,12 +1,13 @@
-var error_handler = require('../../logic/error_handler');
+let error_handler = require('../../logic/error_handler');
 
-exports.fetch = function getTaskPreferences(msg, dbRef) {
+exports.fetch = function getTaskPreferences(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
 
     dbRef.connect(function (err) {
         if(err){
             self.msg.err = error_handler.db_connection_error(err);
+            callback(self.msg);
             return;
         }
 
@@ -16,10 +17,11 @@ exports.fetch = function getTaskPreferences(msg, dbRef) {
                 function (err, result) {
                     if(err){
                         self.msg.err = error_handler.query_error(err);
+                        callback(self.msg);
                         return;
                     }
-                    console.log(result);
                     self.msg.taskPref = result;
+                    callback(self.msg);
                 }
             );
     });
