@@ -2,79 +2,183 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Travlendar+</title>
+    <title>Travlendar+ 2.0</title>
+
+    <!-- Personal style sheet -->
     <link href="styles/style.css" rel="stylesheet" type="text/css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!--  Countdown Script -->
+    <script src="js/countdown.js"></script>
+
+    <!-- Scroll reveal-->
+    <script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+
 </head>
+
 
 <body>
 
+<div class="menubar" id="prova">
+
+
+    <div class="row">
+
+        <div class="col-sm-3">
+            <img src="images/logo.png" style="width:9vw; margin-left: 25px;" class="img-responsive" alt="Logo">
+        </div>
+
+        <div class="col-sm-9">
+            <div class="item">
+                <span class="text"> <a id="homeLink" onClick="homeLinkClick()" class="selected" href="#">Home</a> </span>
+                <span class="text"> <a id="aboutLink" onClick="aboutLinkClick()" href="#">About Us</a> </span>
+                <span class="text"> <a id="signUpLink" onClick="signUpLinkClick()" href="#">Sign Up</a> </span>
+                <span class="text"> <a id="loginLink" onClick="loginClick()" href="#">Log In</a>
+				  	<div class="dropdown">
+			  		<div class="dropdown-content" id="loginForm">
+							<form method="post">
+								<input type="text" placeholder="E-Mail">
+								<input type="password" placeholder="Password">
+							</form>
+						</div>
+					</div>
+				  	</span>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
 <div class="header">
-    <img src="images/logo.png" class="logoImg" width="10%" alt="Travlendar+ Logo"/>
-    <div class="title"><strong><em>Travlendar </em></strong>
-        <div class="title plus"><strong>+</strong></div></div>
-    <div class="menu">
-        <div class="menuItem"><strong><a href="login">Log In</a></strong></div>
-        <div class="menuItem"><strong><a href="#">Sign Up</a></strong></div>
-        <div class="menuItem"><strong><a href="#">About Us</a></strong></div>
-        <div class="menuItem active"><strong><a href="#">Home</a></strong></div>
+    <div class="container">
+        <h1>Travlendar <span id="plus">+</span></h1>
+        <h2>Available on: <span id="timer"></span> </h2>
     </div>
 </div>
 
-<main>
-    <h1>Welcome to the Travlendar+ Website</h1>
-    <p>
-        This will be your personal secretary application<br>
-        Stay Tuned to receive more info!
-    </p>
-    <h2 id="timer"></h2>
-</main>
+<div class="main">
 
-<footer>© Copyright 2017</footer>
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+            <h1>Welcome to the Travlendar+ Home Page</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3 centeredPar">
+            This will be your personal assistent you always wondered
+        </div>
+    </div>
+
+    <div class="blankSpace"></div>
+
+    <div class="row" id="WorkImage">
+        <div class="col-sm-3 col-sm-offset-3">
+            <img src="images/work.jpg" width="100%" class="img-valign" alt="Placeholder image">
+        </div>
+        <div class="col-sm-4" style="height: 18vw;">
+            <div class="paragraphStyle">Do you have a lot of appointements, and you don't know how organize your life?</div>
+        </div>
+    </div>
+
+    <div class="blankSpace"></div>
+
+    <div class="row" id="CalendarImage">
+        <div class="col-sm-4 col-sm-offset-3" style="height: 18vw;">
+            <div class="paragraphStyle">Do you have a lot of appointements, and you don't know how organize your life?</div>
+        </div>
+        <div class="col-sm-3">
+            <img src="images/Calendar.png" width="100%" class="img-valign" alt="Placeholder image">
+        </div>
+    </div>
+</div>
+
+<div class="blankSpace"></div>
+
+<div class="footer">
+    <div class="footerPar"> © Copyright 2017 <em>Travlendar+</em></div>
+</div>
 
 <script>
-    $(function() {
-        $(window).on("scroll", function() {
-            if($(window).scrollTop() > 100) {
-                $(".header").addClass("active");
+    $(document).ready(function() {
+
+        $('.menubar').css('background-color', 'rgba(8,10,95,0)');
+
+        $(window).scroll(function() {
+
+            if ($(this).scrollTop() > 10) {
+
+                if($(this).scrollTop() < 400) {
+
+                    $('.menubar').css('background-color', 'rgba(8,10,95,' + $(this).scrollTop() / 400 + ')');
+
+                } else {
+
+                    $('.menubar').css('background-color', 'rgba(8,10,95,1)');
+
+                }
+
             } else {
-                //remove the background property so it comes transparent again (defined in your css)
-                $(".header").removeClass("active");
+
+                $('.menubar').css('background-color', 'rgba(8,10,95,0)');
+
             }
         });
     });
 </script>
 
 <script>
-    // Set the date we're counting down to
-    var countDownDate = new Date("Jan 7, 2018 23:59:59").getTime();
+    window.sr = ScrollReveal();
+    sr.reveal('.main');
+    sr.reveal(document.getElementById('WorkImage'));
+    sr.reveal(document.getElementById('CalendarImage'));
+</script>
 
-    // Update the count down every 1 second
-    var x = setInterval(function() {
-
-        // Get todays date and time
-        var now = new Date().getTime();
-
-        // Find the distance between now an the count down date
-        var distance = countDownDate - now;
-
-        // Time calculations for days, hours, minutes and seconds
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Display the result in the element with id="demo"
-        document.getElementById("timer").innerHTML = days + "d " + hours + "h "
-            + minutes + "m " + seconds + "s ";
-
-        // If the count down is finished, write some text
-        if (distance < 0) {
-            clearInterval(x);
-            document.getElementById("timer").innerHTML = "EXPIRED";
+<script>
+    function loginClick() {
+        $('.selected').removeClass('selected');
+        $('#loginLink').addClass('selected');
+        if($('#loginForm').css('display') == 'block') {
+            $('#loginForm').css('display', 'none');
+        } else {
+            $('#loginForm').css('display', 'block');
         }
-    }, 1000);
+    }
+</script>
+
+<script>
+    function homeLinkClick() {
+        $('.selected').removeClass('selected');
+        $('#homeLink').addClass('selected');
+        if($('#loginForm').css('display') == 'block') {
+            $('#loginForm').css('display', 'none');
+        }
+    }
+</script>
+
+<script>
+    function aboutLinkClick() {
+        $('.selected').removeClass('selected');
+        $('#aboutLink').addClass('selected');
+        if($('#loginForm').css('display') == 'block') {
+            $('#loginForm').css('display', 'none');
+        }
+    }
+</script>
+
+<script>
+    function signUpLinkClick() {
+        $('.selected').removeClass('selected');
+        $('#signUpLink').addClass('selected');
+
+    }
 </script>
 
 </body>
