@@ -47,6 +47,9 @@ _cost = function (time, fare) {
 */
 exports.scheduleEval = function scheduleEvaluator(schedule){
 
+
+    async .parallel([
+    ]);
     let cost = 0;
 
     let callbacks = [
