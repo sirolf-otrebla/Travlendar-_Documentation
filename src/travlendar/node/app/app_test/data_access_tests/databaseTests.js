@@ -1,19 +1,18 @@
 let sinon = require('sinon');
 
-let chai = require('chai');
-
-let expect = chai.expect;
+let expect = require('chai').expect;
 
 let mysql = require('mysql');
 
-let dbRef = mysql.createConnection({
+let dbRef = mysql.createPool({
+    connectionLimit: 10,
     host: "localhost",
     user: "travlendarAdmin",
     password: "",
     database: "travlendardb"
 });
 
-function addUserTest(dbRef){
+function addUserTest(dbRef, done){
     let msg = {
         email: "test2User@mail.it",
         user: {
@@ -23,68 +22,88 @@ function addUserTest(dbRef){
             password: "testPsw",
             residence: "testResidence",
         },
-        err: null
+        err: ""
     };
 
     let fetch_to_test = require('../../data/callbacks/addUser');
 
     fetch_to_test.fetch(msg, dbRef, function (result) {
-        expect(result.err).to.equal(null);
+        if(result.err)
+            console.log(result.err.code + " " + result.err.description);
+        expect(result.err).to.equal("");
         expect(result.status.affectedRows).to.equal(1);
+        done();
     });
 
 }
 
-function fetchUserTest(dbRef) {
+function fetchUserTest(dbRef, done) {
     let msg = {
         email: "test2User@mail.it",
-        err: null
+        err: ""
     };
 
     let fetch_to_test = require('../../data/callbacks/fetchUser');
 
-    fetch_to_test.fetch(msg, dbRef, function (msg) {
-        if(msg.err){
-            console.log("ERROR: " + msg.err);
-            expect(msg.err).to.equal(null);
-            return;
+    fetch_to_test.fetch(msg, dbRef, function (result) {
+        if(result.err){
+            console.log("ERROR: " + result.err.code + " " + result.err.description);
         }
+        expect(result.err).to.equal("");
+        expect(result.user.Name).to.equal("testName");
+        expect(result.user.Surname).to.equal("testSurname");
+        expect(result.user.eMail).to.equal("test2User@mail.it");
+        expect(result.user.UserResidence).to.equal("testResidence");
+
+        done();
     });
 }
 
-function removeUserTest(dbRef) {
+function removeUserTest(dbRef, done) {
     let msg = {
         email: "test2User@mail.it",
-        err: null
+        err: ""
     };
 
     let fetch_to_test = require('../../data/callbacks/removeUser');
 
-    fetch_to_test.fetch(msg, dbRef, function (msg) {
-        expect(msg.err).to.equal(null);
-
+    fetch_to_test.fetch(msg, dbRef, function (result) {
+        if(result.err)
+            console.log(result.code + " " + result.description);
+        expect(msg.err).to.equal("");
+        done();
     });
 }
 
 
-function fetchGlobalPreferencesTest(dbRef){
+function fetchGlobalPreferencesTest(dbRef, done){
     let msg = {
         email: "test2User@mail.it",
-        err: null
+        err: ""
     };
 
     let fetch_to_test = require('../../data/callbacks/fetchGlobalPreferences');
 
-    fetch_to_test.fetch(msg, dbRef, function (msg) {
-        if(msg.err){
-            console.log("ERROR: " + msg.err);
-            expect(msg.err).to.equal(null);
-            return;
+    fetch_to_test.fetch(msg, dbRef, function (result) {
+        if(result.err){
+            console.log("ERROR: " + result.err);
         }
+        expect(result.err).to.equal("");
+        let glob_pref = result.global_preferences;
+
+        //Checks the default values for the user preferences
+        expect(glob_pref.TakeCar).to.equal(false);
+        expect(glob_pref.TakeBus).to.equal(true);
+        expect(glob_pref.TakeCarSharing).to.equal(false);
+        expect(glob_pref.TakeBikeSharing).to.equal(false);
+        expect(glob_pref.MaxWalk).to.equal(500);
+        expect(glob_pref.HasSeasonTicket).to.equal(false);
+
+        done();
     });
 }
 
-function updateGlobalPreferencesTest(dbRef) {
+function updateGlobalPreferencesTest(dbRef, done) {
     let msg = {
         email: "test2User@mail.it",
         global_preferences: {
@@ -95,22 +114,23 @@ function updateGlobalPreferencesTest(dbRef) {
             maxWalk: 300,
             hasSeasonTicket: false
         },
-        err: null
+        err: ""
     };
 
     let fetch_to_test = require('../../data/callbacks/updateGlobalPreferences');
 
-    fetch_to_test.fetch(msg, dbRef, function (msg) {
-        if(msg.err){
-            console.log("ERROR: " + msg.err);
-            expect(msg.err).to.equal(null);
-            return;
+    fetch_to_test.fetch(msg, dbRef, function (result) {
+        if(result.err){
+            console.log("ERROR: " + result.err.code + " " + result.err.description);
         }
+        expect(result.err).to.equal("");
+        expect(result.status.affectedRows).to.equal(1);
+        done();
     });
 
 }
 
-function addTaskTest(dbRef){
+function addTaskTest(dbRef, done){
     let msg = {
         email: "test2User@mail.it",
         task: {
@@ -127,104 +147,108 @@ function addTaskTest(dbRef){
             isPeriodic: false,
             dayPeriodicity: 0
         },
-        err: null
+        err: ""
     };
 
     let fetch_to_test = require('../../data/callbacks/addTask');
 
-    fetch_to_test.fetch(msg, dbRef, function (msg) {
-        if(msg.err){
-            console.log("ERROR: " + msg.err);
-            expect(msg.err).to.equal(null);
-            return;
+    fetch_to_test.fetch(msg, dbRef, function (result) {
+        if(result.err){
+            console.log("ERROR: " + result.err);
         }
+        expect(result.err).to.equal("");
+        expect(result.status.affectedRows).to.equal(1);
+
+        done();
     });
 
 }
 
-function fetchTasksTest(dbRef){
+function fetchTasksTest(dbRef, done){
     let msg = {
         email: "test2User@mail.it",
-        err: null
+        err: ""
     };
 
     let fetch_to_test = require('../../data/callbacks/fetchTasks');
 
-    fetch_to_test.fetch(msg, dbRef, function (msg) {
-        if(msg.err){
-            console.log("ERROR: " + msg.err);
-            expect(msg.err).to.equal(null);
-            return;
+    fetch_to_test.fetch(msg, dbRef, function (result) {
+        if(result.err){
+            console.log("ERROR: " + result.err);
         }
+        console.log(result.tasks);
+        expect(result.err).to.equal("");
+
+        done();
     });
 
 }
 
-function updateTaskPreferencesTest(dbRef){
+function updateTaskPreferencesTest(dbRef, done){
     let msg = {
         email: "test2User@mail.it",
         task_preferences: {
-            idTask: 1,
+            idTask: 12,
             takeCar: true,
             takeBus: true,
             takeCarSharing: true,
             takeBikeSharing: false,
             maxWalk: 50
         },
-        err: null
+        err: ""
     };
 
     let fetch_to_test = require('../../data/callbacks/updateTaskPreferences');
 
-    fetch_to_test.fetch(msg, dbRef, function (msg) {
-        if(msg.err){
-            console.log("ERROR: " + msg.err);
-            expect(msg.err).to.equal(null);
-            return;
+    fetch_to_test.fetch(msg, dbRef, function (result) {
+        if(result.err){
+            console.log("ERROR: " + result.err.code + " " + result.err.description);
         }
+        expect(result.err).to.equal("");
+        done();
     });
 
 }
 
-function fetchTaskPreferencesTest(dbRef){
+function fetchTaskPreferencesTest(dbRef, done){
     let msg = {
         email: "test2User@mail.it",
         taskId: 1,
-        err: null
+        err: ""
     };
 
     let fetch_to_test = require('../../data/callbacks/fetchTaskPreferences');
 
-    fetch_to_test.fetch(msg, dbRef, function (msg) {
-        if(msg.err){
-            console.log("ERROR: " + msg.err);
-            expect(msg.err).to.equal(null);
-            return;
+    fetch_to_test.fetch(msg, dbRef, function (result) {
+        if(result.err){
+            console.log("ERROR: " + result.err);
         }
+        expect(result.err).to.equal("");
+        done();
     });
 
 }
 
-function removeTaskTest(dbRef){
+function removeTaskTest(dbRef, done){
     let msg = {
         email: "test2User@mail.it",
         idTask: 1,
-        err: null
+        err: ""
     };
 
     let fetch_to_test = require('../../data/callbacks/removeTask');
 
-    fetch_to_test.fetch(msg, dbRef, function (msg) {
-        if(msg.err){
-            console.log("ERROR: " + msg.err);
-            expect(msg.err).to.equal(null);
-            return;
+    fetch_to_test.fetch(msg, dbRef, function (result) {
+        if(result.err){
+            console.log("ERROR: " + result.err);
         }
+        expect(result.err).to.equal("");
+        done();
     });
 
 }
 
-function updateCalendarTest(dbRef){
+function updateCalendarTest(dbRef, done){
     let msg = {
         email: "test2User@mail.it",
         scheduled_task: [
@@ -249,35 +273,35 @@ function updateCalendarTest(dbRef){
             transportMean: 'bus',
             duration: 20
         },
-        err: null
+        err: ""
     };
 
     let fetch_to_test = require('../../data/callbacks/updateCalendar');
 
-    fetch_to_test.fetch(msg, dbRef, function (msg) {
-        if(msg.err){
-            console.log("ERROR: " + msg.err);
-            expect(msg.err).to.equal(null);
-            return;
+    fetch_to_test.fetch(msg, dbRef, function (result) {
+        if(result.err){
+            console.log("ERROR: " + result.err);
         }
+        expect(result.err).to.equal("");
+        done();
     });
 
 }
 
-function fetchCalendarTest(dbRef){
+function fetchCalendarTest(dbRef, done){
     let msg = {
         email: "test2User@mail.it",
-        err: null
+        err: ""
     };
 
     let fetch_to_test = require('../../data/callbacks/fetchCalendar');
 
-    fetch_to_test.fetch(msg, dbRef, function (msg) {
-        if(msg.err){
-            console.log("ERROR: " + msg.err);
-            expect(msg.err).to.equal(null);
-            return;
+    fetch_to_test.fetch(msg, dbRef, function (result) {
+        if(result.err){
+            console.log("ERROR: " + result.err);
         }
+        expect(result.err).to.equal("");
+        done();
     });
 
 }
@@ -308,66 +332,55 @@ function fetchCalendarTest(dbRef){
 
 
 describe('Database testing', function () {
-/*
+
     it('Remove user', function(done) {
         //TODO check if all the tuples related to the user do not exist anymore(re run the fetch tests)
-        removeUserTest(dbRef);
-        done();
+        removeUserTest(dbRef, done);
     });
-*/
+
     it('Add user', function(done) {
-        let result = addUserTest(dbRef);
-        console.log(result);
-        done();
+        addUserTest(dbRef, done);
     });
-/*
+
     it('Fetch user', function(done) {
-        fetchUserTest(dbRef);
-        done();
+        fetchUserTest(dbRef, done);
+
     });
 
     it('Fetch global preferences', function(done) {
-        fetchGlobalPreferencesTest(dbRef);
-        done();
+        fetchGlobalPreferencesTest(dbRef, done);
     });
 
     it('Update global preferences', function(done) {
-        updateGlobalPreferencesTest(dbRef);
-        done();
+        updateGlobalPreferencesTest(dbRef, done);
     });
 
     it('Add task', function(done) {
-        addTaskTest(dbRef);
-        done();
+        addTaskTest(dbRef, done);
     });
 
     it('Fetch task', function(done) {
-        fetchTasksTest(dbRef);
-        done();
+        fetchTasksTest(dbRef, done);
     });
 
     it('Update task preferences', function(done) {
         //TODO check if the tuple exist even before updating it(when the user is created)
-        updateTaskPreferencesTest(dbRef);
-        done();
+        updateTaskPreferencesTest(dbRef, done);
     });
 
     it('Fetch task preferences', function(done) {
-        fetchTaskPreferencesTest(dbRef);
-        done();
+        fetchTaskPreferencesTest(dbRef, done);
     });
 
     it('Remove task test', function(done) {
-        removeTaskTest(dbRef);
-        done();
+        removeTaskTest(dbRef, done);
     });
 
     it('Remove user', function(done) {
         //TODO check if all the tuples related to the user do not exist anymore(re run the fetch tests)
-        removeUserTest(dbRef);
-        done();
+        removeUserTest(dbRef, done);
     });
-*/
+
     }
 
 );

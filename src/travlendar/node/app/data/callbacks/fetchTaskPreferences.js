@@ -4,13 +4,13 @@ exports.fetch = function getTaskPreferences(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
 
-    dbRef.connect(function (err) {
+ /*   dbRef.connect(function (err) {
         if(err){
             self.msg.err = error_handler.db_connection_error(err);
             callback(self.msg);
             return;
         }
-
+*/
         dbRef.query("SELECT * FROM travlendardb.TasksPreferences AS tPref " +
                     "WHERE tPref.IdTask = ?",
                 self.msg.taskId,
@@ -24,5 +24,5 @@ exports.fetch = function getTaskPreferences(msg, dbRef, callback) {
                     callback(self.msg);
                 }
             );
-    });
+ //   });
 }

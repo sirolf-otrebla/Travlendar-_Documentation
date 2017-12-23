@@ -3,14 +3,15 @@ let error_handler = require('../../logic/error_handler');
 exports.fetch = function removeUser(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
-
+    //TODO: remove the connect commented code from all the query files
+/*
     dbRef.connect(function (err) {
             if(err){
                 self.msg.err = error_handler.db_connection_error(err);
                 callback(self.msg);
                 return;
             }
-
+*/
             let email = self.msg.email;
 
             dbRef.query("DELETE FROM travlendardb.Users " +
@@ -28,6 +29,5 @@ exports.fetch = function removeUser(msg, dbRef, callback) {
                     callback(self.msg);
                 }
             );
-        }
-    );
+        //});
 }

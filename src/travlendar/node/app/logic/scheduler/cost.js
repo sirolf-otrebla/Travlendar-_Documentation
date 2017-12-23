@@ -69,9 +69,13 @@ exports.scheduleEval = function scheduleEvaluator(schedule){
 };
 
 evalTimeAndCost = function (schedule) {
-    let tasks = schedule.tasks;
-    let lastTask = tasks.get(tasks.length - 1);
-    
+    let self = this;
+    let travels = schedule.travels;
+    let lastTravel = travels.get(travels.length - 1);
+
+    let data = require('../data_acc/dataManager');
+    let manager = new data.manager();
+
 };
 
 evalVehicleRetake = function (schedule) {

@@ -4,13 +4,13 @@ exports.fetch = function updateGlobalPreferences(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
 
-    dbRef.connect(function (err) {
+/*    dbRef.connect(function (err) {
         if(err){
             self.msg.err = error_handler.db_connection_error(err);
             callback(self.msg);
             return;
         }
-
+*/
         let global_preferences = self.msg.global_preferences;
 
         //First remove(done by trigger) and then insert
@@ -36,5 +36,5 @@ exports.fetch = function updateGlobalPreferences(msg, dbRef, callback) {
                     callback(self.msg);
                 }
             );
-    });
+//    });
 }

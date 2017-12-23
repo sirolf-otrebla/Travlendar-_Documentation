@@ -4,13 +4,13 @@ exports.fetch = function updateTaskPreferences(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
 
-    dbRef.connect(function (err) {
+  /*  dbRef.connect(function (err) {
         if(err){
             self.msg.err = error_handler.db_connection_error(err);
             callback(self.msg);
             return;
         }
-
+*/
         let task_preferences = self.msg.task_preferences;
 
         //First remove (done by a trigger) and then insert
@@ -30,5 +30,5 @@ exports.fetch = function updateTaskPreferences(msg, dbRef, callback) {
                     callback(self.msg);
                 }
         );
-    });
+//    });
 }

@@ -4,12 +4,13 @@ exports.fetch = function fetchTasks(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
 
-    dbRef.connect(function (err) {
+/*    dbRef.connect(function (err) {
             if(err){
                 self.msg.err = error_handler.db_connection_error(err);
                 callback(self.msg);
                 return;
             }
+ */
             dbRef.query("SELECT t.* " +
                         "FROM travlendardb.Users AS u INNER JOIN travlendardb.Tasks AS t " +
                         "ON u.IdUser = t.IdUser " +
@@ -25,7 +26,6 @@ exports.fetch = function fetchTasks(msg, dbRef, callback) {
                     callback(self.msg);
                 }
             );
-        }
-    );
+    //    });
 
 }

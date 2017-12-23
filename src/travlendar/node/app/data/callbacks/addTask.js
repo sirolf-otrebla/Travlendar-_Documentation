@@ -4,14 +4,14 @@ exports.fetch = function addTask(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
 
-    dbRef.connect(
+  /*  dbRef.connect(
         function (err) {
             if(err){
                 self.msg.err = error_handler.db_connection_error(err);
                 callback(self.msg);
                 return;
             }
-
+*/
             let task = self.msg.task;
             let email = self.msg.email;
 
@@ -39,6 +39,5 @@ exports.fetch = function addTask(msg, dbRef, callback) {
                     callback(self.msg);
                 }
             );
-        }
-    );
+   //     });
 }
