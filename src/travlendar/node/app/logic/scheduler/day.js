@@ -2,7 +2,49 @@ const INF = -1;
 
 // must have home as first and last task of the queue;
 // it is possible to consider as first bound a greedy approach;
-exports.schedule = function (tasks, defaultTransport) {
+exports.schedule = function (fixed, flexible, variable, day) {
+                                                                                // first thing we want is to schedule fixed Tasks
+    let occupiedTimeSlots = [];                                                 // time slots occupied by fixed tasks
+    let freeTimeSlots = [];                                                     // free time slots between fixed tasks
+    let entities = require('../entities');
+    fixed.forEach((t) => {                                                      // populating occupied timeslots
+        occupiedTimeSlots.push(t.timeSlot);
+    });
+    occupiedTimeSlots.sort((t1, t2) => {                                        // ordering time slots
+        return t2.start - t1.start;
+    });
+    let res = checkOverlappings(occupiedTimeSlots);                             // check there are not overlapping time slots
+    if (res.flag === true){
+        //TODO ERROR
+    }else {
+        occupiedTimeSlots.forEach((t, i, arr) => {
+            freeTimeSlots.push(new entities.Timeslot(t.end, arr[i + 1].start));
+        } );
+
+
+    }
+
+};
+
+scheduleFlexible = function (flexible, freeTimeSlots) {
+    let couples = [];
+    for (let i = 0; i < flexible.length; i++){
+        for(let j = 0; j < freeTimeSlots.length; j++){
+            if (flexible[i].containedIn(freeTimeSlots[j])){
+                let c = {
+                    task : flexible[i],
+                    timeSlot : freeTimeSlots[j]
+                };
+                couples.push(c);
+                break;
+            }
+        }
+    }
+
+    
+};
+
+branchNBound = function (tasks, defaultTransport) {
     let ent = require('../entities');                                           // where to take business entities
     let bound = INF;                                                            // actual bound in BnB algorithm
     let bestSchedule = null;                                                    // actual best schedule found
@@ -197,3 +239,37 @@ distance = function(location, location2){
         (location.long -location2.long)^2
     );
 };
+
+
+checkOverlappings = function(TimeSlots){
+    let overlapping = [];
+    for(let i = 0; i < TimeSlots.length; i++) {
+       let thisOverlapped = [];
+        for (let j = i; i < TimeSlots.length - i; j++) {
+
+            if (TimeSlots[j].start > TimeSlots[i].end) {
+                break;
+            }
+            else {
+                thisOverlapped.push({
+                    First: TimeSlots[i],
+                    Second: TimeSlots[j]
+                });
+            }
+
+        }
+        if (thisOverlapped.length > 0 ){
+            overlapping.push(thisOverlapped);
+        }
+    }
+    let res = {
+        overlappingList : overlapping,
+        flag : false
+    }
+
+    if (overlapping.length > 0){
+        res.flag = true;
+    }
+    return res;
+
+}

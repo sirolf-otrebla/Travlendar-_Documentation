@@ -58,12 +58,12 @@ exports.Task = class Task {
     _allowedTransports;
     _repetition;
 
-    constructor(id, desc, loc, timeslot, transports) {
+    constructor(id, desc, loc, transports) {
         this._ID = id;
         this._description = desc;
         this._location = loc;
-        this._timeSlot = timeslot;
         this._allowedTransports = transports;
+        // TODO: NEED TO ADD TIMESLOTS
     }
 
 
@@ -132,7 +132,6 @@ exports.TimeSlot = class Timeslot{
     _end;
     _duration;
 
-
     constructor(start, end) {
         this._start = start;
         this._end = end;
@@ -151,8 +150,21 @@ exports.TimeSlot = class Timeslot{
         return this._end;
     }
 
+    overlapped(timeSlot){
+        if ( timeSlot.start > this.start && timeSlot.start < this.end)
+            return true;
+        return false;
+    }
+
+    containedIn(timeSlot){
+        if (timeSlot.start < this.start && timeSlot.end > this.end)
+            return true;
+        return false;
+    }
+
 //TODO: ADD WEATHER ???
 };
+
 
 exports.Loc = class Loc{
     _lat;
