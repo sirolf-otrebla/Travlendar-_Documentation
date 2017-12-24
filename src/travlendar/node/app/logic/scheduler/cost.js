@@ -4,8 +4,10 @@ const  INF = -1;
 const ALPHA = 1;
 const BETA = 1;
 
+let ent = require("../entities");
+
 exports.eval = function evaluator(day, travel){
-    let ent = require("../entities");
+
     const TRANSPORTS_NO_BAD_WEATHER = [ent.travelMeans.walking, ent.travelMeans.bycicling];
     const BAD_WEATHER = [];
     const MEANS_WITH_FARE = [];
@@ -45,13 +47,15 @@ _cost = function (time, fare) {
 *   weather forecast
 *   travel mean preferences
 */
-exports.scheduleEval = function scheduleEvaluator(schedule){
+exports.scheduleEval = function scheduleEvaluator(schedule, callback){
 
     //Set up the proper requirements and support variables
     schedule.next_increment = 0;
-
+    let self = this;
+    self.callback = callback;
     let data = require('../data_acc/dataManager');
     let manager = new data.manager(); //Blocking code here!!!
+    let async = require('async');
 
     //Build the array of non blocking functions to use with waterfall
     //Remember to separate datamanager functions from data consuming functions
@@ -69,6 +73,10 @@ exports.scheduleEval = function scheduleEvaluator(schedule){
         evalTravelMeanPreferences
     ];
 
+    async.waterfall( callbacks, function (err, schedule) {
+        console.log("cost computation finished, increment = " + schedule.next_increment);
+        self.callback(schedule);
+    });
 
 };
 
@@ -86,12 +94,13 @@ setupTravelCost = function (dataManager, schedule, callback) {
             self.next(null, msg, dataManager, schedule);
         }
     );
-}
+};
 
 evalTimeAndCost = function (travel, dataManager, schedule, callback ) {
 
-    let arrival = travel.departure + travel.time.value;
     const MEANS_WITH_FARE = [];
+
+    let arrival = travel.departure + travel.time.value;
 
     //Check if arrival in time is granted
     if (arrival > travel.endTask.timeSlot.start){
@@ -100,27 +109,64 @@ evalTimeAndCost = function (travel, dataManager, schedule, callback ) {
 
     //Check and evaluate travel costs
     if (MEANS_WITH_FARE.includes(travel.travelMean)){
-        self.next_increment =  _cost(travel.time.value, travel.fare.value);
+        schedule.next_increment =  _cost(travel.time.value, travel.fare.value);
     } else {
-        self.next_increment =  _cost(travel.time.value, 0);
+        schedule.next_increment =  _cost(travel.time.value, 0);
     }
 
     //Call next function
-    callback(null, travel, dataManager, schedule);
+    if(schedule.next_increment === INF) {
+        let err = {
+            description: "Arrival in time cannot be granted"
+        };
+        callback(err, travel, dataManager, schedule);
+    } else
+        callback(null, travel, dataManager, schedule);
 
 };
 
 evalVehicleRetake = function (travel, dataManager, schedule, callback) {
 
     //Check if the last travel use a different vehicle
+    callback(null, travel, dataManager, schedule);
 
 };
 
 evalWeatherForecast = function (travel, dataManager, schedule, callback) {
 
+    const BAD_WEATHER = [];
+    const TRANSPORTS_NO_BAD_WEATHER = [ent.travelMeans.walking, ent.travelMeans.bycicling];
+
+    //Add the cost of the selected travel mean for the given forecast
+    if (TRANSPORTS_NO_BAD_WEATHER.includes(travel.transport) && BAD_WEATHER.includes(schedule.day.weather) ){
+        schedule.next_increment =  INF;
+    }
+
+    //Call next function
+    if(schedule.next_increment === INF) {
+        let err = {
+            description: "Cannot use this travel mean due to the weather forecast"
+        };
+        callback(err, travel, dataManager, schedule);
+    } else
+        callback(null, travel, dataManager, schedule);
+
 };
 
 evalTravelMeanPreferences = function (travel, dataManager, schedule, callback) {
+
+    //Add the cost of the selected travel mean given the user preferences
+    //TODO: check if it works (exist trav_mean_pref as a field? is it a map? where is it fetched? exist in the db??)
+    schedule.next_increment += travel.travelMean * schedule.travel_mean_preferences.get(travel.travelMean);
+
+    //Call next function
+    if(schedule.next_increment === INF) {
+        let err = {
+            description: "Cannot use this travel mean due to the user preferences"
+        };
+        callback(err, schedule);
+    } else
+        callback(null, schedule);
 
 };
 

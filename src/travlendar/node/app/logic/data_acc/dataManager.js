@@ -1,6 +1,4 @@
 
-let error_handler = require('../error_handler');
-
 function DataConn(ID){
     let __self  = this;
     let net = require('net');
