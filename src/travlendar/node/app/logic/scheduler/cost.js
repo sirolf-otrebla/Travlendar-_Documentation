@@ -47,12 +47,17 @@ _cost = function (time, fare) {
 */
 exports.scheduleEval = function scheduleEvaluator(schedule){
 
+    //Set up the proper requirements and support variables
+    schedule.next_increment = 0;
 
-    async .parallel([
-    ]);
-    let cost = 0;
+    let data = require('../data_acc/dataManager');
+    let manager = new data.manager(); //Blocking code here!!!
 
+    //Build the array of non blocking functions to use with waterfall
+    //Remember to separate datamanager functions from data consuming functions
     let callbacks = [
+        //Ask the cost of the last added task
+        setupTravelCost,
         //Evaluate travels cost and time duration
         evalTimeAndCost,
         //Evaluate possibility of vehicle retake
@@ -64,36 +69,58 @@ exports.scheduleEval = function scheduleEvaluator(schedule){
         evalTravelMeanPreferences
     ];
 
-    callbacks.forEach((f) => {
-        f(schedule);
-    })
-
 
 };
 
-evalTimeAndCost = function (schedule) {
+setupTravelCost = function (dataManager, schedule, callback) {
     let self = this;
-    let travels = schedule.travels;
-    let lastTravel = travels.get(travels.length - 1);
+    this.next = callback;
+    let travel = schedule.travels[schedule.travels.length -1];
 
-    let data = require('../data_acc/dataManager');
-    let manager = new data.manager();
+    dataManager.getTravelCost(
+        travel.startTask.location,
+        travel.endTask.location,
+        travel.transport,
+        travel.startTask.timeSlot.end,
+        function (msg) {
+            self.next(null, msg, dataManager, schedule);
+        }
+    );
+}
+
+evalTimeAndCost = function (travel, dataManager, schedule, callback ) {
+
+    let arrival = travel.departure + travel.time.value;
+    const MEANS_WITH_FARE = [];
+
+    //Check if arrival in time is granted
+    if (arrival > travel.endTask.timeSlot.start){
+        schedule.last_cost_increment = INF;
+    }
+
+    //Check and evaluate travel costs
+    if (MEANS_WITH_FARE.includes(travel.travelMean)){
+        self.next_increment =  _cost(travel.time.value, travel.fare.value);
+    } else {
+        self.next_increment =  _cost(travel.time.value, 0);
+    }
+
+    //Call next function
+    callback(null, travel, dataManager, schedule);
 
 };
 
-evalVehicleRetake = function (schedule) {
+evalVehicleRetake = function (travel, dataManager, schedule, callback) {
+
+    //Check if the last travel use a different vehicle
 
 };
 
-evalWeatherForecast = function (schedule) {
+evalWeatherForecast = function (travel, dataManager, schedule, callback) {
 
 };
 
-/**
- *
- * @param schedule
- */
-evalTravelMeanPreferences = function (schedule) {
+evalTravelMeanPreferences = function (travel, dataManager, schedule, callback) {
 
 };
 

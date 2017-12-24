@@ -11,9 +11,13 @@ exports.fetch = function fetchTasks(msg, dbRef, callback) {
                 return;
             }
  */
-            dbRef.query("SELECT t.* " +
+            //Fetch both all the tasks and the relative preferences of the given user
+            dbRef.query("SELECT t.*, " +
+                        "t_pref.TakeCar, t_pref.TakeBus, t_pref.TakeBikeSharing, t_pref.TakeCarSharing, t_pref.MaxWalk " +
                         "FROM travlendardb.Users AS u INNER JOIN travlendardb.Tasks AS t " +
                         "ON u.IdUser = t.IdUser " +
+                        "INNER JOIN travlendardb.taskspreferences AS t_pref " +
+                        "ON t.idTask = t_pref.IdTask " +
                         "WHERE u.eMail = ?",
                 [self.msg.email],
                 function (err, result) {
@@ -28,4 +32,4 @@ exports.fetch = function fetchTasks(msg, dbRef, callback) {
             );
     //    });
 
-}
+};

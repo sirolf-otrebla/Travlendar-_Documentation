@@ -1,8 +1,8 @@
 
-var error_handler = require('../error_handler');
+let error_handler = require('../error_handler');
 
 function DataConn(ID){
-    var __self  = this;
+    let __self  = this;
     let net = require('net');
     let fs = require('fs');
     let serverList = JSON.parse(fs.readFileSync('./travlendar/node/app/data_acc/serverList.json')).servers;
@@ -33,10 +33,9 @@ exports.manager = function DataAccess(){
     this._DBConn.connect();
     this._extConn.connect();
 
-    this.fetchUser = function (email, ID, callback) {
+    this.fetchUser = function (email, callback) {
         let msg = {
             email : email,
-            ID : ID,
             mod : "fetchUser.js"
         };
 
@@ -48,17 +47,47 @@ exports.manager = function DataAccess(){
         let msg = {
             email : email,
             mod : "fetchTasks.js"
-
         };
 
         msg.self = msg;
         this._finalize_db(msg, callback);
     };
 
-    this.addTask = function (user, task, callback ) {
+    this.fetchGlobalPreferences = function (email, callback) {
+        let msg = {
+            email : email,
+            mod : "fetchGlobalPreferences.js"
+        };
+
+        msg.self = msg;
+        this._finalize_db(msg, callback);
+    };
+
+    this.fetchCalendar = function (email, callback) {
+        let msg = {
+            email : email,
+            mod : "fetchCalendar.js"
+        };
+
+        msg.self = msg;
+        this._finalize_db(msg, callback);
+    };
+
+    this.addUser = function (email, user, callback) {
+        let msg = {
+            email : email,
+            user: user,
+            mod : "addUser.js"
+        };
+
+        msg.self = msg;
+        this._finalize_db(msg, callback);
+    };
+
+    this.addTask = function (email, task, callback ) {
         let msg = {
             task : task,
-            email : user,
+            email : email,
             mod : "addTask.js"
         };
 
@@ -66,14 +95,56 @@ exports.manager = function DataAccess(){
         this._finalize_db(msg, callback);
     };
 
-    this.removeTask = function (user, task, callback) {
+    //TODO: check if calendar is build in the proper way
+    this.updateCalendar = function (email, calendar, callback) {
         let msg = {
-            task : task,
-            email : user,
-            mod : "removeTask.js"
-        }
+            email : email,
+            scheduled_tasks : calendar.scheduled_tasks,
+            travels : calendar.travels,
+            mod : "updateCalendar.js"
+        };
+
         this._finalize_db(msg, callback);
-    }
+    };
+
+    this.updateGlobalPreferences = function (email, globalPreferences, callback) {
+        let msg = {
+            email : email,
+            global_preferences : globalPreferences,
+            mod : "updateGlobalPreferences.js"
+        };
+
+        this._finalize_db(msg, callback);
+    };
+
+    this.updateTaskPreferences = function (email, taskPreferences, callback) {
+        let msg = {
+            email : email,
+            task_preferences : taskPreferences,
+            mod : "updateTaskPreferences.js"
+        };
+
+        this._finalize_db(msg, callback);
+    };
+
+    this.removeTask = function (email, idTask, callback) {
+        let msg = {
+            idTask : idTask,
+            email : email,
+            mod : "removeTask.js"
+        };
+
+        this._finalize_db(msg, callback);
+    };
+
+    this.removeUser = function (email, callback) {
+        let msg = {
+            email : email,
+            mod : "removeUser.js"
+        };
+
+        this._finalize_db(msg, callback);
+    };
 
     this.getTravelCost = function (or, dest, travelMean,  time, callback) {
         let msg = {
@@ -92,20 +163,20 @@ exports.manager = function DataAccess(){
     this.getWeatherForecast = function (callback) {
       let msg = {
           mod : "getWeatherForecast.js"
-      }
+      };
       this._finalize_ext(msg, callback);
     };
 
 
     this._finalize_db = function(msg, callback){
         this._DBConn.write(msg);
-        var result = null;
+        let result = null;
         this.__socket.on('data', callback(data));
-    }
+    };
 
     this._finalize_ext = function(msg, callback){
         this._extConn.write(msg);
-        var result = null;
+        let result = null;
         this.__socket.on('data', (data) => {
             let msg = JSON.parse(data);
             callback(msg);
