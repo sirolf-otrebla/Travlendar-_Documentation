@@ -1,154 +1,159 @@
 @charset "utf-8";
 
-@media (max-width: 1589px){
+.img-valign {
+  vertical-align: middle;
 }
 
-[class*="col-"] {
-    float: left;
-    padding: 15px;
-    border: 1px solid red;
+.menubar {
+	position: fixed;
+	width: 100%;
+	height: 100px;
+	top: 0;
+	background-color: rgba(8,10,95,1.00);
+	z-index: 10;
 }
 
-.col-1 {width: 8.33%;}
-.col-2 {width: 16.66%;}
-.col-3 {width: 25%;}
-.col-4 {width: 33.33%;}
-.col-5 {width: 41.66%;}
-.col-6 {width: 50%;}
-.col-7 {width: 58.33%;}
-.col-8 {width: 66.66%;}
-.col-9 {width: 75%;}
-.col-10 {width: 83.33%;}
-.col-11 {width: 91.66%;}
-.col-12 {width: 100%;}
-
-.row::after {
-    content: "";
-    clear: both;
-    display: table;
+.menubar .item {
+	float: right;
+	height: 100px;
+	margin-top: 40px;
 }
 
-body {
+.menubar .item .text {
+	color: whitesmoke;
+	text-align: center;
+	margin-right: 20px;
+	font-family: "Arial Black", Gadget, sans-serif;
+	vertical-align: bottom;
+	text-shadow: 0px 2px 20px rgba(0,0,0,1.00);
+	font-size: 25px;
+}
 
-    margin: 0;
-    /* Location of the image */
-    background-image: url(../images/sfondo.jpg);
+.menubar .item .text a {
+	text-decoration: none;
+	color: whitesmoke;
+}
 
-    /* Background image is centered vertically and horizontally at all times */
-    background-position: center center;
+.menubar .item .text a:hover {
+	text-decoration: none;
+	color: greenyellow;
+}
 
-    /* Background image doesn't tile */
-    background-repeat: no-repeat;
+.menubar .item .text .selected {
+	color: greenyellow;
+}
 
-    /* Background image is fixed in the viewport so that it doesn't move when
-       the content's height is greater than the image's height */
-    background-attachment: fixed;
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
 
-    /* This is what makes the background image rescale based
-       on the container's size */
-    background-size: cover;
-
-    /* Set a background color that will be displayed
-       while the background image is loading */
-    background-color: #464646;
-
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    padding: 12px 16px;
+    z-index: 1;
+	color: dimgrey;
+	font-size: 1vw;
+	margin-top: 25px;
+	right: 0;
 }
 
 .header {
-    width: 100%;
-    height: 150px;
-    background-color: rgba(36,55,97,0.80);
-    position: fixed;
-    transition: all 0.25s ease-in-out;
-    top: 0;
+	width: 100%; height: 600px;
+	background: url('../images/sfondo.jpg') no-repeat center top;
+	z-index: -1;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
 }
 
-.header.active {
-    width: 100%;
-    height: 150px;
-    background-color: rgba(36,55,97,1);
-    position: fixed;
-    top: 0;
+.header .container {
+	background-color: rgba(0,0,255,0.30);
+	width: 100%;
+	height: 100%;
 }
 
-.logoImg {
-    vertical-align: middle
+.header h1 {
+	margin-top: 250px;
+	vertical-align: middle;
+	text-align: center;
+	color: white;
+	font-size: 8vw;
+	font-family: "Arial Black", Gadget, sans-serif;
 }
 
-.title {
-    font-family: Lucida Grande, Lucida Sans Unicode, Lucida Sans, DejaVu Sans, Verdana," sans-serif";
-    font-size: 50px;
-    color: white;
-    display: inline-flex;
-    vertical-align: middle;
+.header h2 {
+	font-size: 3vw;
+	color: white;
+	text-align: center;
+	font-family: "Arial", Gadget, sans-serif;
 }
 
-.title .plus {
-    color: greenyellow;
-    font-style: oblique;
+#plus {
+	color: greenyellow;
 }
 
-.menu {
-    display: inline;
-    vertical-align: middle;
+.blankSpace {
+	height: 100px;
+	width: 100%;
 }
 
-.menuItem {
-    font-family: Lucida Grande, Lucida Sans Unicode, Lucida Sans, DejaVu Sans, Verdana," sans-serif";
-    display: inline;
-    color: white;
-    float: right;
-    vertical-align: middle;
-    line-height: 150px;
-    font-size: 30px;
-    padding-right: 25px;
-
+.main {
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	color: rgba(8,10,95,1.00);
 }
 
-a {
-    text-decoration: none;
-    color: inherit;
+.main h1 {
+	text-align: center;
+	color: rgba(8,10,95,1.00);
+	font-family: "Arial", Gadget, sans-serif;
+	font-size: 3vw;
+	font-weight: bold;
 }
 
-.menuItem.active {
-    color: greenyellow;
+.centeredPar {
+	font-family: "Arial", Gadget, sans-serif;
+	text-align: center;
+	font-size: 25px;
+	color: rgba(8,10,95,1.00);
 }
 
-.menuItem:hover:not(.active) {
-    color: greenyellow;
+.paragraphStyle {
+	font-family: "Arial", Gadget, sans-serif;
+	text-align: left;
+	font-size: 20px;
+	width: 100%;
+	color: rgba(8,10,95,1.00);
+	border: 10px solid white;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	height: 100%;
+	resize: vertical;
+	overflow: auto;
 }
 
-main {
-    width: inherit;
-    height: 1000px;
-    margin-top: 150px;;
-    background-color: rgba(36,55,97,0.80);
-    padding: 10px;
+.footer {
+	width: 100%;
+	height: 100px;
+	background-color: black;
+	color: white;
+	text-align: center;
 }
 
-main h1{
-    color: white;
-    font-size: 50px;
-    text-align: center;
-}
-
-main h2 {
-    color: white;
-    font-size: 40px;
-    text-align: center;
-}
-
-main p {
-    color: white;
-    text-align: center;
-    font-size: 35px;
-}
-
-footer {
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    background-color: rgba(19,29,52,1.00);
-    text-align: center;
-    color: white;
+.footerPar {
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	resize: vertical;
 }
