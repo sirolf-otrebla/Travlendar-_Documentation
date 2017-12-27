@@ -4,7 +4,7 @@ let presenter = require('./presenter');
 exports.handleLogin = function (message, socket, callbacks) {
     let json = JSON.parse(message);
 
-    if(message.requestedFunction === 'login') {
+    if(json.requestedService === 'login') {
         console.log('The Application Server received a Login Message');
     } else
         presenter.nextCallback(message, socket, callbacks);
@@ -12,7 +12,8 @@ exports.handleLogin = function (message, socket, callbacks) {
 
 //FUNCTION TO HANDLE THE ERROR IN PRESENTER
 exports.handleError = function (message, socket) {
-    console.log(message.toString());
-    socket.write(message);
+    let json = JSON.parse(message);
+    console.log(json.toString());
+    socket.write(JSON.stringify({"email":json.email,"requestedService":json.requestedService,"errorType":"Message isn't recognised"}));
 };
 
