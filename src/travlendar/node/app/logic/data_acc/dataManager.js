@@ -15,7 +15,7 @@ function DataConn(ID){
     };
 
     this.write = function (msg) {
-        this.__socket.write(msg);
+        this.__socket.write(JSON.stringify(msg));
     };
 
 }
@@ -37,7 +37,6 @@ exports.manager = function DataAccess(){
             mod : "fetchUser.js"
         };
 
-        msg.self = msg;
         this._finalize_db(msg, callback);
     };
 
@@ -47,7 +46,6 @@ exports.manager = function DataAccess(){
             mod : "fetchTasks.js"
         };
 
-        msg.self = msg;
         this._finalize_db(msg, callback);
     };
 
@@ -57,7 +55,6 @@ exports.manager = function DataAccess(){
             mod : "fetchGlobalPreferences.js"
         };
 
-        msg.self = msg;
         this._finalize_db(msg, callback);
     };
 
@@ -67,7 +64,6 @@ exports.manager = function DataAccess(){
             mod : "fetchCalendar.js"
         };
 
-        msg.self = msg;
         this._finalize_db(msg, callback);
     };
 
@@ -78,7 +74,6 @@ exports.manager = function DataAccess(){
             mod : "addUser.js"
         };
 
-        msg.self = msg;
         this._finalize_db(msg, callback);
     };
 
@@ -89,7 +84,6 @@ exports.manager = function DataAccess(){
             mod : "addTask.js"
         };
 
-        msg.self = msg;
         this._finalize_db(msg, callback);
     };
 
@@ -169,22 +163,25 @@ exports.manager = function DataAccess(){
     this._finalize_db = function(msg, callback){
         this._DBConn.write(msg);
         let result = null;
-        this.__socket.on('data', callback(data));
+        this._DBConn.__socket.on('data', (data) => {
+            let msg = JSON.parse(data);
+            callback(msg);
+        });
     };
 
     this._finalize_ext = function(msg, callback){
         this._extConn.write(msg);
         let result = null;
-        this.__socket.on('data', (data) => {
+        this._extConn.__socket.on('data', (data) => {
             let msg = JSON.parse(data);
             callback(msg);
         });
     }
 
-}
+};
 
 let man = require('./dataManager');
 let temp = new man.manager();
 temp.fetchUser("sfsdf", function (msg) {
-    console.log("risposta ricevuta porco diooo: " + msg);
+    console.log("risposta ricevuta : " + msg.user.eMail);
 } );

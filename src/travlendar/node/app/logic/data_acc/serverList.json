@@ -1,11 +1,11 @@
 {
   "servers": [
     {
-      "name": "first",
+      "name": "database",
       "__address": "localhost",
-      "port": "8090"
+      "port": "12346"
     }, {
-      "name": "second",
+      "name": "ext_servicies",
       "__address": "localhost",
       "port": "8091"
     }
