@@ -3,7 +3,12 @@
     {
       "name": "first",
       "__address": "localhost",
-      "port": "8081"
+      "port": "8090"
+    }, {
+      "name": "second",
+      "__address": "localhost",
+      "port": "8091"
     }
+
   ]
 }

@@ -3,7 +3,8 @@ const DB_FETCHER_IP = 'localhost';
 
 var mysql = require('mysql');
 
-var dbClient = mysql.createConnection({
+var dbClient = mysql.createPool({
+    connectionLimit: 10,
     host: "localhost",
     user: "travlendarAdmin",
     password: "",

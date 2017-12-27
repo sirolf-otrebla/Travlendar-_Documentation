@@ -74,6 +74,8 @@ exports.scheduleEval = function scheduleEvaluator(schedule, callback){
     ];
 
     async.waterfall( callbacks, function (err, schedule) {
+        if(err)
+            console.log("error in the cost evaluation: " + err);
         console.log("cost computation finished, increment = " + schedule.next_increment);
         self.callback(schedule);
     });
@@ -98,7 +100,7 @@ setupTravelCost = function (dataManager, schedule, callback) {
 
 evalTimeAndCost = function (travel, dataManager, schedule, callback ) {
 
-    const MEANS_WITH_FARE = [];
+    const MEANS_WITH_FARE = [ent.travelMeans.transit];
 
     let arrival = travel.departure + travel.time.value;
 
@@ -128,6 +130,8 @@ evalTimeAndCost = function (travel, dataManager, schedule, callback ) {
 evalVehicleRetake = function (travel, dataManager, schedule, callback) {
 
     //Check if the last travel use a different vehicle
+
+    //Call next function
     callback(null, travel, dataManager, schedule);
 
 };

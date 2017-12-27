@@ -3,11 +3,11 @@ function DataConn(ID){
     let __self  = this;
     let net = require('net');
     let fs = require('fs');
-    let serverList = JSON.parse(fs.readFileSync('./travlendar/node/app/data_acc/serverList.json')).servers;
+    let serverList = JSON.parse(fs.readFileSync('./serverList.json')).servers;
 
     this.__connectingTO = serverList[ID];
-    this.__socket = new net.__socket();
-    
+    this.__socket = new net.Socket();
+
     this.connect = function () {
         this.__socket.connect(this.__connectingTO.port, this.__connectingTO.__address, function () {
             console.log("CONNECTED TO : " + __self.__connectingTO.port + ":" + __self.__connectingTO.__address);
@@ -182,3 +182,9 @@ exports.manager = function DataAccess(){
     }
 
 }
+
+let man = require('./dataManager');
+let temp = new man.manager();
+temp.fetchUser("sfsdf", function (msg) {
+    console.log("risposta ricevuta porco diooo: " + msg);
+} );

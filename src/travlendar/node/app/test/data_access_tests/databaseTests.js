@@ -71,6 +71,7 @@ function removeUserTest(dbRef, done) {
         if(result.err)
             console.log(result.code + " " + result.description);
         expect(msg.err).to.equal("");
+        expect(msg.status.affectedRows).to.equal(1);
         done();
     });
 }
@@ -177,7 +178,20 @@ function fetchTasksTest(dbRef, done){
             console.log("ERROR: " + result.err);
         }
         console.log(result.tasks);
-        expect(result.err).to.equal("");
+
+        expect(result.err).to.equal();
+        expect(result[0].name).to.equal("testTask");
+        expect(result[0].description).to.equal("task test description");
+        expect(result[0].latitude).to.equal(15.5);
+        expect(result[0].longitude).to.equal(15.5);
+        expect(result[0].duration).to.equal(17);
+        expect(result[0].startTime).to.equal('19:00:00');
+        expect(result[0].endTime).to.equal('23:30:00');
+        expect(result[0].startDay).to.equal('2017-12-24');
+        expect(result[0].endDay).to.equal('2017-12-24');
+        expect(result[0].isBreakTask).to.equal(false);
+        expect(result[0].isPeriodic).to.equal(false);
+        expect(result[0].dayPeriodicity).to.equal(0);
 
         done();
     });
@@ -335,7 +349,8 @@ describe('Database testing', function () {
 
     it('Remove user', function(done) {
         //TODO check if all the tuples related to the user do not exist anymore(re run the fetch tests)
-        removeUserTest(dbRef, done);
+       // removeUserTest(dbRef, done);
+        done();
     });
 
     it('Add user', function(done) {
