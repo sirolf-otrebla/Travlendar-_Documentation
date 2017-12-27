@@ -5,7 +5,6 @@ let handleFunctions = require('./presenter/handleFunctions');
 
 //APPLICATION SERVER DEFINITIONS
 let server = net.createServer(function(socket) {
-    socket.write(JSON.stringify('Welcome to the application server'));
     socket.on('data', function(data) {
         presenter.start(data, socket, [handleFunctions.handleLogin], handleFunctions.handleError);
     });
