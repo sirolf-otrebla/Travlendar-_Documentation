@@ -24,7 +24,7 @@ exports.fetch = function fetchUser(msg, dbRef, callback) {
                         return;
                     }
 
-                    self.msg.user.eMail = result[0].eMail;
+                    self.msg.user = result[0];
                     callback(self.msg);
                 }
             );

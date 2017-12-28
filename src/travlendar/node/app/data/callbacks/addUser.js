@@ -1,4 +1,5 @@
-let error_handeler = require('../../logic/error_handler');
+let error_handler = require('../../logic/error_handler');
+let db_adapter = require('travlendar/node/app/data/database_adapter');
 
 exports.fetch = function addUser(msg, dbRef, callback) {
     let self = this;
@@ -19,7 +20,7 @@ exports.fetch = function addUser(msg, dbRef, callback) {
                 [self.msg.email, user.name, user.surname, user.password, user.residence],
                 function (err, result) {
                     if(err){
-                        self.msg.err = error_handeler.query_error(err);
+                        self.msg.err = error_handler.query_error(err);
                         callback(self.msg);
                         return;
                     }
