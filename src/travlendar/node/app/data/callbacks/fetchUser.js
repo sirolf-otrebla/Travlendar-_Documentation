@@ -23,7 +23,8 @@ exports.fetch = function fetchUser(msg, dbRef, callback) {
                         callback(self.msg);
                         return;
                     }
-                    self.msg.user = result[0];
+
+                    self.msg.user.eMail = result[0].eMail;
                     callback(self.msg);
                 }
             );

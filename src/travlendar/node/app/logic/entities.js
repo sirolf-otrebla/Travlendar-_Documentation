@@ -1,13 +1,26 @@
 exports.User = class User {
+    _idUser;
     _email;
+    _name;
+    _surname;
+    _password;
+    _user_residence;
 
-    constructor(email){
+    constructor(idUser, email, name, surname, password, user_residence){
+        this._idUser = idUser;
         this._email = email;
+        this._email = email;
+        this._name = name;
+        this._surname = surname;
+        this._password = password;
+        this._user_residence = user_residence;
     }
 
     get email(){
         return this._email;
     }
+
+    
 
 };
 

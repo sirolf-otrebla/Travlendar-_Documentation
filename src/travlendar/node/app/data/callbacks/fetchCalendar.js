@@ -4,12 +4,14 @@ exports.fetch = function getCalendar(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
 
+/*
     dbRef.connect(function (err) {
         if (err){
             self.msg.err = error_handler.db_connection_error(err);
             callback(self.msg);
             return;
         }
+*/
 
         dbRef.query("SELECT cl.*, tr.* " +
                     "FROM travlendardb.calendars AS cl " +
@@ -29,5 +31,5 @@ exports.fetch = function getCalendar(msg, dbRef, callback) {
                 callback(self.msg);
             }
         );
-    })
-}
+ //   });
+};

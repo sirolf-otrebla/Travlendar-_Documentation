@@ -34,7 +34,8 @@ exports.manager = function DataAccess(){
     this.fetchUser = function (email, callback) {
         let msg = {
             email : email,
-            mod : "fetchUser.js"
+            mod : "fetchUser.js",
+            user: {}
         };
 
         this._finalize_db(msg, callback);
@@ -52,7 +53,8 @@ exports.manager = function DataAccess(){
     this.fetchGlobalPreferences = function (email, callback) {
         let msg = {
             email : email,
-            mod : "fetchGlobalPreferences.js"
+            mod : "fetchGlobalPreferences.js",
+            global_preferences: {}
         };
 
         this._finalize_db(msg, callback);
@@ -165,6 +167,7 @@ exports.manager = function DataAccess(){
         let result = null;
         this._DBConn.__socket.on('data', (data) => {
             let msg = JSON.parse(data);
+            console.log("msg from db received!");
             callback(msg);
         });
     };
@@ -180,8 +183,29 @@ exports.manager = function DataAccess(){
 
 };
 
+
+//Local test to see if the connection between the application server and the data server woks
+//TO CHECK: do the connection remains open if i perfom multiple queries??
 let man = require('./dataManager');
+let man2 = require('net');
+
 let temp = new man.manager();
-temp.fetchUser("sfsdf", function (msg) {
-    console.log("risposta ricevuta : " + msg.user.eMail);
+let temp2 = man2.createServer(function (socket) {
+    socket.on('data', function (data) {
+        console.log("ciao " + data);
+    });
+});
+
+temp2.listen(9000, 'localhost');
+
+temp.fetchUser("sfsdf", function (msg2) {
+    console.log(msg2);
+    let u = msg2;
+    console.log("risposta ricevuta1 : " + u.user.eMail );
+
+    temp.fetchGlobalPreferences("sfsdf", function (ms) {
+        console.log("risposta ricevuta2 : " + ms.global_preferences);
+    } );
+
 } );
+

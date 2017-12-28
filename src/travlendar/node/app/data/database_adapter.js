@@ -1,0 +1,5 @@
+
+exports.adaptUser = function (user) {
+
+
+}
