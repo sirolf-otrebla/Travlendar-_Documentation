@@ -187,16 +187,8 @@ exports.manager = function DataAccess(){
 //Local test to see if the connection between the application server and the data server woks
 //TO CHECK: do the connection remains open if i perfom multiple queries??
 let man = require('./dataManager');
-let man2 = require('net');
 
 let temp = new man.manager();
-let temp2 = man2.createServer(function (socket) {
-    socket.on('data', function (data) {
-        console.log("ciao " + data);
-    });
-});
-
-temp2.listen(9000, 'localhost');
 
 temp.fetchUser("sfsdf", function (msg2) {
     console.log(msg2);
