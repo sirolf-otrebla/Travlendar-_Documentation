@@ -1,4 +1,4 @@
-let entities = require('travlendar/node/app/logic/entities');
+let entities = require('../logic/entities');
 
 exports.adaptUser = function (user) {
     let new_user = new entities.User(user.IdUser,

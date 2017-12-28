@@ -15,7 +15,14 @@ router.post('/', function(req, res) {
       let json = JSON.parse(message);
 
       if(json.errorType !== undefined) {
-         res.send('Error in Login');
+         res.send('Error in Login\nError: ' + json.errorType);
+      } else {
+         if(json.loggedIn === 'true') {
+            res.send("User is logged in");
+         }
+         else {
+            res.send("User isn't logged in");
+         }
       }
 
    });

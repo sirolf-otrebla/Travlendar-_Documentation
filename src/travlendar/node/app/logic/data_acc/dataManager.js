@@ -3,7 +3,7 @@ function DataConn(ID){
     let __self  = this;
     let net = require('net');
     let fs = require('fs');
-    let serverList = JSON.parse(fs.readFileSync('./serverList.json')).servers;
+    let serverList = JSON.parse(fs.readFileSync('travlendar/node/app/logic/data_acc/serverList.json')).servers;
 
     this.__connectingTO = serverList[ID];
     this.__socket = new net.Socket();
@@ -27,9 +27,9 @@ exports.manager = function DataAccess(){
     const MY_EXT_SERVER_ID = 1;
     
     this._DBConn = new DataConn(MY_DATA_SERVER_ID);
-    this._extConn = new DataConn(MY_EXT_SERVER_ID);
+    //this._extConn = new DataConn(MY_EXT_SERVER_ID);
     this._DBConn.connect();
-    this._extConn.connect();
+    //this._extConn.connect();
 
     this.fetchUser = function (email, callback) {
         let msg = {
@@ -188,7 +188,7 @@ exports.manager = function DataAccess(){
 
 //Local test to see if the connection between the application server and the data server woks
 //TO CHECK: do the connection remains open if i perfom multiple queries??
-let man = require('./dataManager');
+/*let man = require('./dataManager');
 
 let temp = new man.manager();
 
@@ -203,3 +203,4 @@ temp.fetchUser("sfsdf", function (msg2) {
 
 } );
 
+*/

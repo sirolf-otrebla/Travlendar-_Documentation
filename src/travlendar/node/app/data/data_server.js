@@ -22,19 +22,13 @@ let server = net.createServer( (socket) => {
     });
 */
     socket.on('data', function (data) {
-        let obj = JSON.parse(data);
-        try{
+            let obj = JSON.parse(data);
             let path = "./callbacks/" + obj.mod;
             let mod = require(path);
             mod.fetch(obj, dbClient, function (msg) {
-
                 socket.write(JSON.stringify(msg));
             });
-        } catch (err){
-            //TODO
-            console.log("error on data" + err);
-        }
-    })
+        });
 });
 
-server.listen(DB_FETCHER_PORT, DB_FETCHER_IP);
+server.listen(DB_FETCHER_PORT);

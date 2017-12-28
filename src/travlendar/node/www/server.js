@@ -9,6 +9,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/views'));
 app.use("/styles",express.static(__dirname + "/views/styles"));
 app.use("/images",express.static(__dirname + "/views/images"));
+app.use("/js",express.static(__dirname + "/views/js"));
 
 //BODY PARSER USAGE
 app.use(bodyParser.urlencoded({extended: true}));
