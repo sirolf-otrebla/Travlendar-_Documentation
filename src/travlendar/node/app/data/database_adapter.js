@@ -8,4 +8,4 @@ exports.adaptUser = function (user) {
                                      user.Password,
                                      user.UserResidence);
     return new_user;
-}
+};

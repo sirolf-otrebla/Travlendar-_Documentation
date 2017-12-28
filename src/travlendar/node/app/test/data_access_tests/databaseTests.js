@@ -50,10 +50,11 @@ function fetchUserTest(dbRef, done) {
             console.log("ERROR: " + result.err.code + " " + result.err.description);
         }
         expect(result.err).to.equal("");
-        expect(result.user.Name).to.equal("testName");
-        expect(result.user.Surname).to.equal("testSurname");
-        expect(result.user.eMail).to.equal("test2User@mail.it");
-        expect(result.user.UserResidence).to.equal("testResidence");
+        expect(result.user.name()).to.equal("testName");
+        expect(result.user.surname()).to.equal("testSurname");
+        expect(result.user.email()).to.equal("test2User@mail.it");
+        expect(result.user.password()).to.equal("testPsw");
+        expect(result.user.user_residence).to.equal("testResidence");
 
         done();
     });

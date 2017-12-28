@@ -44,7 +44,8 @@ exports.manager = function DataAccess(){
     this.fetchTasks = function (email, callback) {
         let msg = {
             email : email,
-            mod : "fetchTasks.js"
+            mod : "fetchTasks.js",
+            tasks : {}
         };
 
         this._finalize_db(msg, callback);
@@ -63,7 +64,8 @@ exports.manager = function DataAccess(){
     this.fetchCalendar = function (email, callback) {
         let msg = {
             email : email,
-            mod : "fetchCalendar.js"
+            mod : "fetchCalendar.js",
+            calendar : {}
         };
 
         this._finalize_db(msg, callback);
