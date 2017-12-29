@@ -21,9 +21,11 @@ app.use(logger('dev'));
 
 //ROUTES DEFINITION
 var index = require('./routes/index');
+let user = require('./routes/user');
 
 //ROUTES INCLUSION
 app.use('/', index);
+app.use('/user', user);
 
 //STARTING THE SERVER
 var port = '80';

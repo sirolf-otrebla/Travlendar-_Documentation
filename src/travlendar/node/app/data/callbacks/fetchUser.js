@@ -17,8 +17,10 @@ exports.fetch = function fetchUser(msg, dbRef, callback) {
                         return;
                     }
 
-                    if(result[0].IdUser !== undefined)
-                        self.msg.user = db_adapter.adaptUser(result[0]);
+                    if(result.lenght > 0) {
+                        if(result[0].IdUser !== undefined)
+                            self.msg.user = db_adapter.adaptUser(result[0]);
+                    }
                     callback(self.msg);
                 }
             );
