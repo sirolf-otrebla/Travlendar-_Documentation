@@ -1,12 +1,6 @@
 exports.User = class User {
-    _idUser;
-    _email;
-    _name;
-    _surname;
-    _password;
-    _user_residence;
 
-    constructor(idUser, email, name, surname, password, user_residence){
+    constructor (idUser, email, name, surname, password, user_residence){
         this._idUser = idUser;
         this._email = email;
         this._name = name;
@@ -48,13 +42,11 @@ exports.travelMeans  = {
 };
 
 exports.Day = class Day {
-    _list;
-    _weather;
-
 
     constructor(weather) {
         this._weather = weather;
         this._barycenter = null;
+        this._list = [];
     }
 
     get barycenter() {
@@ -76,22 +68,32 @@ exports.Day = class Day {
     get list() {
         return this._list;
     }
-}
+};
 
 exports.Task = class Task {
-    _ID;
-    _userEmail;
-    _description;
-    _location;
-    _timeSlot;
-    _allowedTransports;
-    _repetition;
 
-    constructor(id, desc, loc, transports) {
-        this._ID = id;
+    constructor(idTask, idUser, name, desc, loc, duration,
+                startTime, endTime, startDay, endDay, isBreakTask,
+                isPeriodic, dayPeriodicity, preferences) {
+        this._ID = idTask;
+        this._idUser = idUser;
+        this._name = name;
         this._description = desc;
         this._location = loc;
-        this._allowedTransports = transports;
+
+        this._duration = duration;
+        this._startTime = startTime;
+        this._endTime = endTime;
+        this._startDay = startDay;
+        this._endDay = endDay;
+
+        this._isBreakTask = isBreakTask;
+        this._dayPeriodicity = 0;
+        if(isPeriodic)
+            this._dayPeriodicity = dayPeriodicity;
+
+   //     this._allowedTransports = transports;
+        this._preferences = preferences;
         // TODO: NEED TO ADD TIMESLOTS
     }
 
@@ -100,8 +102,12 @@ exports.Task = class Task {
         return this._ID;
     }
 
-    get userEmail() {
-        return this._userEmail;
+    get idUser() {
+        return this._idUser;
+    }
+
+    get name(){
+        return this._name;
     }
 
     get description() {
@@ -112,25 +118,95 @@ exports.Task = class Task {
         return this._location;
     }
 
+    get duration() {
+        return this._duration;
+    }
+
+    get startTime() {
+        return this._startTime;
+    }
+
+    get endTime() {
+        return this._endTime;
+    }
+
+    get startDay() {
+        return this._startDay;
+    }
+
+    get endDay() {
+        return this._endDay;
+    }
+
+    get preferences() {
+        return this._preferences;
+    }
+
+    get isBreakTask() {
+        return this._isBreakTask;
+    }
+
+    get dayPeriodicity() {
+        return this._dayPeriodicity;
+    }
+
     get timeSlot() {
         return this._timeSlot;
     }
 
-    get allowedTransports() {
-        return this._allowedTransports;
+};
+
+exports.TaskPreferences = class TaskPreferences {
+
+    constructor(takeCar, takeBus, takeCarSharing, takeBikeSharing, maxWalk) {
+        this._takeCar = takeCar;
+        this._takeBus = takeBus;
+        this._takeCarSharing = takeCarSharing;
+        this._takeBikeSharing = takeBikeSharing;
+        this._maxWalk = maxWalk;
     }
 
-    get repetition() {
-        return this._repetition;
+    get takeCar() {
+        return this._takeCar;
+    }
+
+    get takeBus() {
+        return this._takeBus;
+    }
+
+    get takeCarSharing() {
+        return this._takeCarSharing;
+    }
+
+    get takeBikeSharing() {
+        return this._takeBikeSharing;
+    }
+
+    get maxWalk() {
+        return this._maxWalk;
+    }
+
+};
+
+exports.GlobalPreferences = class GlobalPreferences extends TaskPreferences{
+
+    constructor(takeCar, takeBus, takeCarSharing, takeBikeSharing, maxWalk, hasSeasonTicket) {
+        super(takeCar, takeBus, takeCarSharing, takeBikeSharing, maxWalk);
+        this._hasSeasonTicket = hasSeasonTicket;
+
+    }
+
+    get hasSeasonTicket(){
+        return this._hasSeasonTicket;
     }
 };
 
 exports.Travel = class Travel{
-    _startTask;
+ /*   _startTask;
     _endTask;
     _transport;
     _route;
-
+*/
 
     constructor(startTask, endTask, transport) {
         this._startTask = startTask;
@@ -157,10 +233,10 @@ exports.Travel = class Travel{
 };
 
 exports.TimeSlot = class Timeslot{
-    _start;
+  /*  _start;
     _end;
     _duration;
-
+*/
     constructor(start, end) {
         this._start = start;
         this._end = end;
@@ -196,10 +272,10 @@ exports.TimeSlot = class Timeslot{
 
 
 exports.Loc = class Loc{
-    _lat;
+  /*  _lat;
     _long;
     _desc;
-
+*/
 
     constructor(lat, long, desc) {
         this._lat = lat;

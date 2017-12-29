@@ -4,13 +4,6 @@ exports.fetch = function removeTask(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
 
- /*   dbRef.connect(function (err) {
-            if(err){
-                self.msg.err = error_handler.db_connection_error(err);
-                callback(self.msg);
-                return;
-            }
-*/
             let email = self.msg.email;
             let idTask = self.msg.idTask;
 
@@ -30,5 +23,4 @@ exports.fetch = function removeTask(msg, dbRef, callback) {
                     callback(self.msg);
                 }
             );
-    //    });
-}
+};

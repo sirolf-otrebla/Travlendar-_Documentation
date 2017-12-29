@@ -50,10 +50,10 @@ function fetchUserTest(dbRef, done) {
             console.log("ERROR: " + result.err.code + " " + result.err.description);
         }
         expect(result.err).to.equal("");
-        expect(result.user.name()).to.equal("testName");
-        expect(result.user.surname()).to.equal("testSurname");
-        expect(result.user.email()).to.equal("test2User@mail.it");
-        expect(result.user.password()).to.equal("testPsw");
+        expect(result.user.name).to.equal("testName");
+        expect(result.user.surname).to.equal("testSurname");
+        expect(result.user.email).to.equal("test2User@mail.it");
+        expect(result.user.password).to.equal("testPsw");
         expect(result.user.user_residence).to.equal("testResidence");
 
         done();
@@ -94,12 +94,12 @@ function fetchGlobalPreferencesTest(dbRef, done){
         let glob_pref = result.global_preferences;
 
         //Checks the default values for the user preferences
-        expect(glob_pref.TakeCar).to.equal(false);
-        expect(glob_pref.TakeBus).to.equal(true);
-        expect(glob_pref.TakeCarSharing).to.equal(false);
-        expect(glob_pref.TakeBikeSharing).to.equal(false);
-        expect(glob_pref.MaxWalk).to.equal(500);
-        expect(glob_pref.HasSeasonTicket).to.equal(false);
+        expect(glob_pref.takeCar).to.equal(false);
+        expect(glob_pref.takeBus).to.equal(true);
+        expect(glob_pref.takeCarSharing).to.equal(false);
+        expect(glob_pref.takeBikeSharing).to.equal(false);
+        expect(glob_pref.maxWalk).to.equal(500);
+        expect(glob_pref.hasSeasonTicket).to.equal(false);
 
         done();
     });
@@ -138,8 +138,7 @@ function addTaskTest(dbRef, done){
         task: {
             name: "testTask",
             description: "task test description",
-            latitude: 15.5,
-            longitude: 15.5,
+            location: "temp location address",
             duration: 17,
             startTime: '19:00:00',
             endTime: '23:30:00',
@@ -183,8 +182,7 @@ function fetchTasksTest(dbRef, done){
         expect(result.err).to.equal();
         expect(result[0].name).to.equal("testTask");
         expect(result[0].description).to.equal("task test description");
-        expect(result[0].latitude).to.equal(15.5);
-        expect(result[0].longitude).to.equal(15.5);
+        expect(result[0].location).to.equal("temp location address");
         expect(result[0].duration).to.equal(17);
         expect(result[0].startTime).to.equal('19:00:00');
         expect(result[0].endTime).to.equal('23:30:00');
@@ -360,7 +358,6 @@ describe('Database testing', function () {
 
     it('Fetch user', function(done) {
         fetchUserTest(dbRef, done);
-
     });
 
     it('Fetch global preferences', function(done) {
