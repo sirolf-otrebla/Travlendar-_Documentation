@@ -64,20 +64,21 @@ exports.adaptEntities = function(element){
     let result;
     let type = element.type;
 
-    if(type === "User")
-        result = adaptUser(element);
+    if(type === "User" && element.user !== undefined)
+        result.user = adaptUser(element.user);
 
-    if(type === "Task")
-        result = adaptTask(element);
+    else if(type === "Tasks" && element.tasks !== undefined)
+        result.tasks = adaptTask(element.tasks);
 
-    if(type === "TaskPreferences")
-        result = adaptTaskPreferences(element);
+    else if(type === "TaskPreferences" && element.task_preferences !== undefined)
+        result.task_preferences = adaptTaskPreferences(element.task_preferences);
 
-    if(type === "GlobalPreferences")
-        result = adaptGlobalPreferences(element);
+    else if(type === "GlobalPreferences" && element.global_preferences !== undefined)
+        result.global_preferences = adaptGlobalPreferences(element.global_preferences);
 
-    if(type === "Calendar")
-        result = adaptCalendar(element);
-
+    else if(type === "Calendar" && element.calendar !== undefined)
+        result.calendar = adaptCalendar(element.calendar);
+    else
+        result = element; //TODO: handle properly an error within the msg parsing
     return result;
 };

@@ -3,6 +3,7 @@ function DataConn(ID){
     let __self  = this;
     let net = require('net');
     let fs = require('fs');
+    let db_adapter = require('../../data/database_adapter');
     let serverList = JSON.parse(fs.readFileSync('travlendar/node/app/logic/data_acc/serverList.json')).servers;
 
     this.__connectingTO = serverList[ID];
@@ -169,6 +170,7 @@ exports.manager = function DataAccess(){
         let result = null;
         this._DBConn.__socket.on('data', (data) => {
             let msg = JSON.parse(data);
+            msg = db_adapter(msg);
             console.log("msg from db received!");
             callback(msg);
         });
