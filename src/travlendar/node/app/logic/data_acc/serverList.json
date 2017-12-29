@@ -1,9 +1,14 @@
 {
   "servers": [
     {
-      "name": "first",
+      "name": "database",
       "__address": "localhost",
-      "port": "8081"
+      "port": "12346"
+    }, {
+      "name": "ext_servicies",
+      "__address": "localhost",
+      "port": "8091"
     }
+
   ]
 }

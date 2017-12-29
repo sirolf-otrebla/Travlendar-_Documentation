@@ -1,8 +1,10 @@
 let error_handler = require('../../logic/error_handler');
+let whilst = require('async/whilst');
 
 exports.fetch = function fetchTasks(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
+    this.cb = callback;
 
 /*    dbRef.connect(function (err) {
             if(err){
@@ -23,13 +25,41 @@ exports.fetch = function fetchTasks(msg, dbRef, callback) {
                 function (err, result) {
                     if(err){
                         self.msg.err = error_handler.query_error(err);
-                        callback(self.msg);
+                        self.cb(self.msg);
                         return;
                     }
-                    self.msg.tasks = result;
-                    callback(self.msg);
-                }
+
+                    let index = 0;
+                    whilst(
+                        function (index) {
+                            return index <= result.length();
+                        },
+                        function () {
+                            result[index].isBreakTask = parse(result[index].isBreakTask);
+                            result[index].isPeriodic = parse(result[index].isPeriodic);
+
+                            result[index].TakeCar = parse(result[index].TakeCar);
+                            result[index].TakeBus = parse(result[index].TakeBus);
+                            result[index].TakeCarSharing = parse(result[index].TakeCarSharing);
+                            result[index].TakeBikeSharing = parse(result[index].TakeBikeSharing);
+                            result[index].HasSeasonTicket = parse(result[index].HasSeasonTicket);
+
+                            index--;
+                        },
+                        function (err) {
+                            self.msg.err = err;
+                            self.msg.tasks = result;
+                            self.cb(self.msg);
+                        });
+                    }
             );
     //    });
 
 };
+
+
+//Convert from tiny int to boolean value
+let parse = function (value) {
+    value = !!+value;
+    return value;
+}

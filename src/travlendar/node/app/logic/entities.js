@@ -1,14 +1,43 @@
 exports.User = class User {
+    _idUser;
     _email;
+    _name;
+    _surname;
+    _password;
+    _user_residence;
 
-    constructor(email){
+    constructor(idUser, email, name, surname, password, user_residence){
+        this._idUser = idUser;
         this._email = email;
+        this._name = name;
+        this._surname = surname;
+        this._password = password;
+        this._user_residence = user_residence;
+    }
+
+    get idUser(){
+        return this._idUser;
     }
 
     get email(){
         return this._email;
     }
 
+    get name(){
+        return this._name;
+    }
+
+    get surname(){
+        return this._surname;
+    }
+
+    get password(){
+        return this._password;
+    }
+
+    get user_residence(){
+        return this._user_residence;
+    }
 };
 
 exports.travelMeans  = {

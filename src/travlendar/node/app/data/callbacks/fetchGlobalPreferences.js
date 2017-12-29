@@ -35,6 +35,7 @@ exports.fetch = function getGlobalPreferences(msg, dbRef, callback) {
  //   });
 }
 
+//Convert from tiny int to boolean value
 let parse = function (value) {
     value = !!+value;
     return value;

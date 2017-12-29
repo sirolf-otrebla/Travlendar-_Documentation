@@ -3,11 +3,11 @@ function DataConn(ID){
     let __self  = this;
     let net = require('net');
     let fs = require('fs');
-    let serverList = JSON.parse(fs.readFileSync('./travlendar/node/app/data_acc/serverList.json')).servers;
+    let serverList = JSON.parse(fs.readFileSync('travlendar/node/app/logic/data_acc/serverList.json')).servers;
 
     this.__connectingTO = serverList[ID];
-    this.__socket = new net.__socket();
-    
+    this.__socket = new net.Socket();
+
     this.connect = function () {
         this.__socket.connect(this.__connectingTO.port, this.__connectingTO.__address, function () {
             console.log("CONNECTED TO : " + __self.__connectingTO.port + ":" + __self.__connectingTO.__address);
@@ -15,7 +15,7 @@ function DataConn(ID){
     };
 
     this.write = function (msg) {
-        this.__socket.write(msg);
+        this.__socket.write(JSON.stringify(msg));
     };
 
 }
@@ -27,47 +27,47 @@ exports.manager = function DataAccess(){
     const MY_EXT_SERVER_ID = 1;
     
     this._DBConn = new DataConn(MY_DATA_SERVER_ID);
-    this._extConn = new DataConn(MY_EXT_SERVER_ID);
+    //this._extConn = new DataConn(MY_EXT_SERVER_ID);
     this._DBConn.connect();
-    this._extConn.connect();
+    //this._extConn.connect();
 
     this.fetchUser = function (email, callback) {
         let msg = {
             email : email,
-            mod : "fetchUser.js"
+            mod : "fetchUser.js",
+            user: {}
         };
 
-        msg.self = msg;
         this._finalize_db(msg, callback);
     };
 
     this.fetchTasks = function (email, callback) {
         let msg = {
             email : email,
-            mod : "fetchTasks.js"
+            mod : "fetchTasks.js",
+            tasks : {}
         };
 
-        msg.self = msg;
         this._finalize_db(msg, callback);
     };
 
     this.fetchGlobalPreferences = function (email, callback) {
         let msg = {
             email : email,
-            mod : "fetchGlobalPreferences.js"
+            mod : "fetchGlobalPreferences.js",
+            global_preferences: {}
         };
 
-        msg.self = msg;
         this._finalize_db(msg, callback);
     };
 
     this.fetchCalendar = function (email, callback) {
         let msg = {
             email : email,
-            mod : "fetchCalendar.js"
+            mod : "fetchCalendar.js",
+            calendar : {}
         };
 
-        msg.self = msg;
         this._finalize_db(msg, callback);
     };
 
@@ -78,7 +78,6 @@ exports.manager = function DataAccess(){
             mod : "addUser.js"
         };
 
-        msg.self = msg;
         this._finalize_db(msg, callback);
     };
 
@@ -89,7 +88,6 @@ exports.manager = function DataAccess(){
             mod : "addTask.js"
         };
 
-        msg.self = msg;
         this._finalize_db(msg, callback);
     };
 
@@ -169,16 +167,40 @@ exports.manager = function DataAccess(){
     this._finalize_db = function(msg, callback){
         this._DBConn.write(msg);
         let result = null;
-        this.__socket.on('data', callback(data));
+        this._DBConn.__socket.on('data', (data) => {
+            let msg = JSON.parse(data);
+            console.log("msg from db received!");
+            callback(msg);
+        });
     };
 
     this._finalize_ext = function(msg, callback){
         this._extConn.write(msg);
         let result = null;
-        this.__socket.on('data', (data) => {
+        this._extConn.__socket.on('data', (data) => {
             let msg = JSON.parse(data);
             callback(msg);
         });
     }
 
-}
+};
+
+
+//Local test to see if the connection between the application server and the data server woks
+//TO CHECK: do the connection remains open if i perfom multiple queries??
+/*let man = require('./dataManager');
+
+let temp = new man.manager();
+
+temp.fetchUser("sfsdf", function (msg2) {
+    console.log(msg2);
+    let u = msg2;
+    console.log("risposta ricevuta1 : " + u.user.eMail );
+
+    temp.fetchGlobalPreferences("sfsdf", function (ms) {
+        console.log("risposta ricevuta2 : " + ms.global_preferences);
+    } );
+
+} );
+
+*/

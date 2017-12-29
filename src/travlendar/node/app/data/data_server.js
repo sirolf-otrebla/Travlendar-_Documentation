@@ -1,9 +1,10 @@
 const DB_FETCHER_PORT = 12346;
 const DB_FETCHER_IP = 'localhost';
 
-var mysql = require('mysql');
+let mysql = require('mysql');
 
-var dbClient = mysql.createConnection({
+let dbClient = mysql.createPool({
+    connectionLimit: 10,
     host: "localhost",
     user: "travlendarAdmin",
     password: "",
@@ -16,21 +17,18 @@ let server = net.createServer( (socket) => {
 
     console.log("data access manager connected");
 
-    socket.on('end', function () {
+    /*socket.on('end', function () {
         console.log("data access manager disconnected");
     });
-
+*/
     socket.on('data', function (data) {
-        let obj = JSON.parse(data);
-        try{
+            let obj = JSON.parse(data);
             let path = "./callbacks/" + obj.mod;
             let mod = require(path);
-            mod.fetch(obj, dbClient);
-            socket.write(JSON.stringify(obj));
-        } catch (err){
-            //TODO
-        }
-    })
+            mod.fetch(obj, dbClient, function (msg) {
+                socket.write(JSON.stringify(msg));
+            });
+        });
 });
 
-server.listen(DB_FETCHER_PORT, DB_FETCHER_IP);
+server.listen(DB_FETCHER_PORT);
