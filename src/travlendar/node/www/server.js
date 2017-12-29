@@ -2,6 +2,7 @@
 let express = require('express');
 let path = require('path');
 let bodyParser = require('body-parser');
+let session = require('express-session');
 
 //WEB SERVER DEFINITIONS
 var app = express();
@@ -14,6 +15,16 @@ app.use("/js",express.static(__dirname + "/views/js"));
 //BODY PARSER USAGE
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+//SESSION COOKIE DEFINITION
+
+app.use(session(
+    {
+        secret: 'jifjapok93i41ko@°é+sùa§*)"=!=DBSYBida adòlap11||',
+        resave: true,
+        saveUninitialized: true,
+        cookie: { maxAge: 1 * 60 * 1000 },                  //FORMAT: MM * SS * MS
+    }));
 
 //LOGGER
 var logger = require('morgan');

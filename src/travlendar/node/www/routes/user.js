@@ -3,7 +3,10 @@ let router = express.Router();
 
 //GET HOME PAGE
 router.get('/', function(req, res) {
-    res.render('user');
+    if(req.session.isLoggedIn === 'true' && req.session.email !== undefined)
+        res.render('user', {email: req.session.email});
+    else
+        res.send('The  current user cannot access to this personal area');
 });
 
 module.exports = router;
