@@ -18,7 +18,9 @@ exports.fetch = function getCalendar(msg, dbRef, callback) {
                     callback(self.msg);
                     return;
                 }
+
                 self.msg.calendar = result;
+                self.msg.type = "Calendar";
                 callback(self.msg);
             }
         );

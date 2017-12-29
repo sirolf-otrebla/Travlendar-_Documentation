@@ -1,6 +1,4 @@
 let error_handler = require('../../logic/error_handler');
-let db_adapter = require('../../data/database_adapter');
-
 
 exports.fetch = function getGlobalPreferences(msg, dbRef, callback) {
     let self = this;
@@ -23,7 +21,8 @@ exports.fetch = function getGlobalPreferences(msg, dbRef, callback) {
                     result[0].TakeBikeSharing = parse(result[0].TakeBikeSharing);
                     result[0].HasSeasonTicket = parse(result[0].HasSeasonTicket);
 
-                    self.msg.global_preferences = db_adapter.adaptGlobalPreferences(result[0]);
+                    self.msg.global_preferences = result[0];
+                    self.msg.type = "GlobalPreferences";
                     callback(self.msg);
                 }
         );

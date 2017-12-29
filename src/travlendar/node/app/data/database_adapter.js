@@ -1,6 +1,6 @@
 let entities = require('../logic/entities');
 
-exports.adaptUser = function (user) {
+function adaptUser (user) {
 
     let new_user = new entities.User(user.IdUser,
                                      user.eMail,
@@ -9,10 +9,10 @@ exports.adaptUser = function (user) {
                                      user.Password,
                                      user.UserResidence);
     return new_user;
-};
+}
 
 
-exports.adaptTask = function (task) {
+function adaptTask (task) {
     let new_preferences = new entities.TaskPreferences( task.TakeCar,
                                                         task.TakeBus,
                                                         task.TakeCarSharing,
@@ -31,15 +31,15 @@ exports.adaptTask = function (task) {
                                         task.isPeriodic, task.DayPeriodicity,
                                         new_preferences);
     return new_task;
-};
+}
 
-exports.adaptCalendar = function (calendar) {
+function adaptCalendar (calendar) {
     let new_calendar = new entities.Calendar();
 
     return new_calendar;
-};
+}
 
-exports.adaptGlobalPreferences = function (global_preferences){
+function adaptGlobalPreferences (global_preferences){
     let new_glob_pref = new entities.GlobalPreferences( global_preferences.TakeCar,
                                                         global_preferences.TakeBus,
                                                         global_preferences.TakeCarSharing,
@@ -48,9 +48,9 @@ exports.adaptGlobalPreferences = function (global_preferences){
                                                         global_preferences.HasSeasonTicket);
 
     return new_glob_pref;
-};
+}
 
-exports.adaptTaskPreferences = function(preferences) {
+function adaptTaskPreferences (preferences) {
     let new_task_pref = new entities.TaskPreferences(   preferences.TakeCar,
                                                         preferences.TakeBus,
                                                         preferences.TakeCarSharing,
@@ -58,4 +58,26 @@ exports.adaptTaskPreferences = function(preferences) {
                                                         preferences.MaxWalk);
 
     return new_task_pref;
+}
+
+exports.adaptEntities = function(element){
+    let result;
+    let type = element.type;
+
+    if(type === "User")
+        result = adaptUser(element);
+
+    if(type === "Task")
+        result = adaptTask(element);
+
+    if(type === "TaskPreferences")
+        result = adaptTaskPreferences(element);
+
+    if(type === "GlobalPreferences")
+        result = adaptGlobalPreferences(element);
+
+    if(type === "Calendar")
+        result = adaptCalendar(element);
+
+    return result;
 };

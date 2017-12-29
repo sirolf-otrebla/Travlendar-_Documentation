@@ -1,5 +1,4 @@
 let error_handler = require('../../logic/error_handler');
-let db_adapter = require('../../data/database_adapter');
 
 let whilst = require('async/whilst');
 
@@ -25,7 +24,6 @@ exports.fetch = function fetchTasks(msg, dbRef, callback) {
                     }
 
                     let index = 0;
-                    let new_tasks = {};
 
                     whilst(
                         function (index) {
@@ -41,13 +39,13 @@ exports.fetch = function fetchTasks(msg, dbRef, callback) {
                             result[index].TakeBikeSharing = parse(result[index].TakeBikeSharing);
                             result[index].HasSeasonTicket = parse(result[index].HasSeasonTicket);
 
-                            new_tasks.push(db_adapter.adaptTask(result[index]));
                             index++;
                         },
                         function (err) {
                             if(err)
                                 self.msg.err = err;
-                            self.msg.tasks = new_tasks;
+                            self.msg.tasks = result;
+                            self.msg.type = "Tasks";
                             self.cb(self.msg);
                         });
                     }
@@ -60,4 +58,4 @@ exports.fetch = function fetchTasks(msg, dbRef, callback) {
 let parse = function (value) {
     value = !!+value;
     return value;
-}
+};

@@ -50,11 +50,11 @@ function fetchUserTest(dbRef, done) {
             console.log("ERROR: " + result.err.code + " " + result.err.description);
         }
         expect(result.err).to.equal("");
-        expect(result.user.name).to.equal("testName");
-        expect(result.user.surname).to.equal("testSurname");
-        expect(result.user.email).to.equal("test2User@mail.it");
-        expect(result.user.password).to.equal("testPsw");
-        expect(result.user.user_residence).to.equal("testResidence");
+        expect(result.user.Name).to.equal("testName");
+        expect(result.user.Surname).to.equal("testSurname");
+        expect(result.user.eMail).to.equal("test2User@mail.it");
+        expect(result.user.Password).to.equal("testPsw");
+        expect(result.user.UserResidence).to.equal("testResidence");
 
         done();
     });
@@ -94,12 +94,12 @@ function fetchGlobalPreferencesTest(dbRef, done){
         let glob_pref = result.global_preferences;
 
         //Checks the default values for the user preferences
-        expect(glob_pref.takeCar).to.equal(false);
-        expect(glob_pref.takeBus).to.equal(true);
-        expect(glob_pref.takeCarSharing).to.equal(false);
-        expect(glob_pref.takeBikeSharing).to.equal(false);
-        expect(glob_pref.maxWalk).to.equal(500);
-        expect(glob_pref.hasSeasonTicket).to.equal(false);
+        expect(glob_pref.TakeCar).to.equal(false);
+        expect(glob_pref.TakeBus).to.equal(true);
+        expect(glob_pref.TakeCarSharing).to.equal(false);
+        expect(glob_pref.TakeBikeSharing).to.equal(false);
+        expect(glob_pref.MaxWalk).to.equal(500);
+        expect(glob_pref.HasSeasonTicket).to.equal(false);
 
         done();
     });
@@ -180,17 +180,17 @@ function fetchTasksTest(dbRef, done){
         console.log(result.tasks);
 
         expect(result.err).to.equal("");
-        expect(result[0].name).to.equal("testTask");
-        expect(result[0].description).to.equal("task test description");
-        expect(result[0].location).to.equal("temp location address");
-        expect(result[0].duration).to.equal(17);
-        expect(result[0].startTime).to.equal('19:00:00');
-        expect(result[0].endTime).to.equal('23:30:00');
-        expect(result[0].startDay).to.equal('2017-12-24');
-        expect(result[0].endDay).to.equal('2017-12-24');
+        expect(result[0].Name).to.equal("testTask");
+        expect(result[0].Description).to.equal("task test description");
+        expect(result[0].Location).to.equal("temp location address");
+        expect(result[0].Duration).to.equal(17);
+        expect(result[0].StartTime).to.equal('19:00:00');
+        expect(result[0].EndTime).to.equal('23:30:00');
+        expect(result[0].StartDay).to.equal('2017-12-24');
+        expect(result[0].EndDay).to.equal('2017-12-24');
         expect(result[0].isBreakTask).to.equal(false);
         expect(result[0].isPeriodic).to.equal(false);
-        expect(result[0].dayPeriodicity).to.equal(0);
+        expect(result[0].DayPeriodicity).to.equal(0);
 
         done();
     });

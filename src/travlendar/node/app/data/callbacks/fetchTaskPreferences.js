@@ -1,5 +1,4 @@
 let error_handler = require('../../logic/error_handler');
-let db_adapter = require('../../data/database_adapter');
 
 exports.fetch = function getTaskPreferences(msg, dbRef, callback) {
     let self = this;
@@ -20,15 +19,16 @@ exports.fetch = function getTaskPreferences(msg, dbRef, callback) {
                     result[0].TakeCarSharing = parse(result[0].TakeCarSharing);
                     result[0].TakeBikeSharing = parse(result[0].TakeBikeSharing);
                     result[0].HasSeasonTicket = parse(result[0].HasSeasonTicket);
-
-                    self.msg.task_preferences = db_adapter.adaptTaskPreferences(result[0]);
+                    //TODO: add an enum type in entities for msg type ref
+                    self.msg.task_preferences = result[0];
+                    self.msg.type = "TaskPreferences";
                     callback(self.msg);
                 }
             );
-}
+};
 
 //Convert from tiny int to boolean value
 let parse = function (value) {
     value = !!+value;
     return value;
-}
+};
