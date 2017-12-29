@@ -95,60 +95,79 @@ scheduleFixed = function(fixed, costEvaluator, upper_callback) {
 
                 let choices = [];                                                                // this array will contain the possible choices for each recursion step
                 let actualSchedule = new DaySchedule();                                          // we want to define a schedule representing the branch we are exploring
-
+                let lower_counter = 0;                                                           // this is the index defining the exploration depth of the subtree
                 bestSchedule.travels.slice(0, upper_counter).forEach(                            // we push all travels  that are on the left of the
                     (travel) => {                                                                // upper_counter, without calculating the cost
-                        actualSchedule.addTravel(travel);
+                        actualSchedule.addTravel(travel);                                        // that's because we will do it later, outside the loop
                     }
                 );
 
-                let subTreeWorkingLoop = function (lower_counter, actualSchedule) {
-                    if (lower_counter + upper_counter < bestSchedule.travels.length ||
-                        choices.length > 0) {
-                        bestSchedule.tasks[lower_counter].allowedTransports().forEach(
-                            (transport) => {
-                                choices.push(transport);
-                            }
-                        );
-                        let chosenIndex = selectRandomIndex(0, choices.length);
-                        let chosenElement = choices[chosenIndex];
-                        let newTravel = new Travel(
-                            bestSchedule.tasks[lower_counter - 1],
-                            bestSchedule.tasks[lower_counter],
+                bestSchedule.tasks[upper_counter+ lower_counter].allowedTransports().forEach(    // we populate the choices list defined before with all possible
+                    (transport) => {                                                             // transport means for the next task ( remember that tasks are fixed an so is
+                        choices.push(transport);                                                 // their sequence, so all possible choices are only regarding transport means
+                    }
+                );
+
+
+                let subTreeWorkingLoop = function (actualSchedule) {                             // this function represents the loop that explores the current subtree branch
+                    if (lower_counter + upper_counter < bestSchedule.travels.length ||           // loop condition, if we have not explored the branch and bound tree
+                        choices.length > 0) {                                                    // in all its depth
+
+                        let chosenIndex = selectRandomIndex(0, choices.length);                  // we then select a random index in order to chose an element from choices list
+                        let chosenElement = choices[chosenIndex];                                // we extract that element
+                        let newTravel = new Travel(                                              // we build a travel using our information regarding the selected
+                            bestSchedule.tasks[lower_counter - 1],                               // travel mean and the two tasks involved ( which are selected by using
+                            bestSchedule.tasks[lower_counter],                                   // the lower counter)
                             chosenElement);
-                        choices = [];
-                        actualSchedule.addTravel(newTravel);
-                        actualSchedule.incrementCost(costCalculator, (actualSchedule) => {
-                            if (actualSchedule.cost() < bound) {
-                                subTreeWorkingLoop(lower_counter + 1, actualSchedule);
+                        choices.splice(chosenIndex);                                             // we clear the choices list from the chosen object
+                        actualSchedule.addTravel(newTravel);                                     // we add the new travel to the actual schedule list
+                        actualSchedule.incrementCost(costCalculator, (actualSchedule) => {       // and then we increment cost. this call is asynchronous, so we need a callback
+                            if (actualSchedule.cost() < bound) {                                 //     WHITHIN THE CALLBACK: if the actual cost is higher than the bound:
+                                subTreeWorkingLoop(lower_counter + 1, actualSchedule);           //         we proceed for another iteration
                             }
-                            else {
-                                actualSchedule.removeLastTravel();
-                                actualSchedule.decrementCost();
+                            else {                                                               //     else:
+                                actualSchedule.removeLastTravel();                               //         we clean the actualschedule from the last travel
+                                actualSchedule.decrementCost();                                  //         we restore the cost
+                                subTreeWorkingLoop(lower_counter, actualSchedule);               //         and then we call another loop iteration with the same arguments.
                             }
                         })
-                    } else {
-                        if (actualSchedule.cost < bound) {
-                            bound = actualSchedule.cost;
-                            bestSchedule = actualSchedule;
+                    } else {                                                                     // if the loop condition is not satisfied it means that we have explored
+                                                                                                 // the branch in all of its depth.
+                        if (actualSchedule.cost < bound) {                                       // if the actual schedule is better than the bound,
+                            bound = actualSchedule.cost;                                         // we update the bound and then
+                            bestSchedule = actualSchedule;                                       // we update the best schedule
+                            workingLoop(upper_counter - 1);                                      // finally we call another loop iteration.
                         }
                     }
-                }
-                workingLoop(upper_counter - 1);
-            } else {
-                callback(bestSchedule, cost);
-            }
-        }
+                };
 
-        workingLoop(schedule.travels.length - 3, (schedule, cost) => {
-            upper_callback(schedule);
+
+
+                costCalculator.completeScheduleEval({
+                    tasks : actualSchedule.taskList,
+                    travels : actualSchedule.travelList
+                },      // here we call the initial schedule evaluation, and within its callback
+                    (res) => {                                                                  // we call the subtree working loop
+                    actualSchedule.cost(res);
+                    subTreeWorkingLoop(0, actualSchedule);
+                });
+            } else {                                                                            // if the upper counter is equal to 0 it means that we explored completely
+                callback(bestSchedule, cost);                                                   // the branch and bound tree, so we can complete the algorithm calling the callback
+            }
+        };
+
+        // ============================E N D   I N N E R   R E C U R S I V E   L O O P S   F U N C T I O N S ================================
+
+        workingLoop(schedule.travels.length - 3, (schedule, cost) => {                          // here we call the main working loop, working loop
+            upper_callback(schedule);                                                           // and here we set as main working loop callback the algorithm upper callback
             //TODO VERIFY
         });
 
 
-    }
-    genInitSched(fixed, schedule, "TRANSIT");
-    initEvalLoop(0, schedule, 0, fixedBranchNBound);
+    };
+    // --------------------------------E N D   A U X I L I A R Y   I N N E R   F U N C T I O N S   D E F S -----------------------------
+    genInitSched(fixed, schedule, "TRANSIT");                                                  // here we generate the initial scheduling
+    initEvalLoop(0, schedule, 0, fixedBranchNBound);                                           // here we evaluate the initial scheduling and call the fixedBranchNBound;
 
 }
     ;
