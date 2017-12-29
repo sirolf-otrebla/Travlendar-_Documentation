@@ -97,6 +97,9 @@ exports.Task = class Task {
         // TODO: NEED TO ADD TIMESLOTS
     }
 
+    allowedTransports(){
+        //TODO
+    }
 
     get ID() {
         return this._ID;

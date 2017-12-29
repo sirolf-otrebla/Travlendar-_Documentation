@@ -112,6 +112,11 @@ class DaySchedule{
 
     }
 
+
+    set cost(value) {
+        this._cost = value;
+    }
+
     decrementCost(){
         this._cost -= this._lastTravelCost;
     }
