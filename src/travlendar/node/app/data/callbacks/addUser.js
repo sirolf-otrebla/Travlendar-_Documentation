@@ -4,13 +4,6 @@ exports.fetch = function addUser(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
 
-  /*  dbRef.connect(function (err) {
-        if(err){
-            self.msg.err = error_handeler.db_connection_error(err);
-            callback(self.msg);
-            return;
-        }
-*/
         let user = self.msg.user;
 
         dbRef.query("INSERT INTO travlendardb.Users( " +
@@ -27,5 +20,4 @@ exports.fetch = function addUser(msg, dbRef, callback) {
                     callback(self.msg);
                 }
             );
-  //  });
-}
+};

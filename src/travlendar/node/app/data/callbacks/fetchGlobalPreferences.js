@@ -1,16 +1,11 @@
-var error_handler = require('../../logic/error_handler');
+let error_handler = require('../../logic/error_handler');
+let db_adapter = require('../../data/database_adapter');
+
 
 exports.fetch = function getGlobalPreferences(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
 
- /*   dbRef.connect(function (err) {
-        if(err){
-            self.msg.err = error_handler.db_connection_error(err);
-            callback(self.msg);
-            return;
-        }
-   */
         dbRef.query("SELECT uPref.* FROM travlendardb.UsersPreferences AS uPref " +
                     "LEFT JOIN travlendardb.Users AS u ON uPref.IdUser = u.IdUser " +
                     "WHERE u.eMail = ?",
@@ -28,11 +23,10 @@ exports.fetch = function getGlobalPreferences(msg, dbRef, callback) {
                     result[0].TakeBikeSharing = parse(result[0].TakeBikeSharing);
                     result[0].HasSeasonTicket = parse(result[0].HasSeasonTicket);
 
-                    self.msg.global_preferences = result[0];
+                    self.msg.global_preferences = db_adapter.adaptGlobalPreferences(result[0]);
                     callback(self.msg);
                 }
         );
- //   });
 }
 
 //Convert from tiny int to boolean value

@@ -1,16 +1,10 @@
 let error_handler = require('../../logic/error_handler');
+let db_adapter = require('../../data/database_adapter');
 
 exports.fetch = function getTaskPreferences(msg, dbRef, callback) {
     let self = this;
     this.msg = msg;
 
- /*   dbRef.connect(function (err) {
-        if(err){
-            self.msg.err = error_handler.db_connection_error(err);
-            callback(self.msg);
-            return;
-        }
-*/
         dbRef.query("SELECT * FROM travlendardb.TasksPreferences AS tPref " +
                     "WHERE tPref.IdTask = ?",
                 self.msg.taskId,
@@ -27,11 +21,10 @@ exports.fetch = function getTaskPreferences(msg, dbRef, callback) {
                     result[0].TakeBikeSharing = parse(result[0].TakeBikeSharing);
                     result[0].HasSeasonTicket = parse(result[0].HasSeasonTicket);
 
-                    self.msg.task_preferences = result[0];
+                    self.msg.task_preferences = db_adapter.adaptTaskPreferences(result[0]);
                     callback(self.msg);
                 }
             );
- //   });
 }
 
 //Convert from tiny int to boolean value

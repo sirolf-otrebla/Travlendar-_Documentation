@@ -10,7 +10,7 @@ exports.handleLogin = function (message, socket, callbacks) {
     if(json.requestedService === 'login') {
         manager.fetchUser(json.email, function(result) {
             if(result.user !== undefined) {
-                if(result.user.Password === json.password && result.user.eMail === json.email) {
+                if(result.user._password === json.password && result.user._email === json.email) {
                     socket.write(JSON.stringify({"email" :json.email, "requestedService": json.requestedService, "loggedIn": "true"}) + '\n');
                     return;
                 }
@@ -31,7 +31,7 @@ exports.handleError = function (message, socket) {
 
 exports.handleAddTask = function (message,socket, callbacks) {
     let json = JSON.parse(message);
-    if(message.requestedFunction === 'addTask') {
+    if(json.requestedService === 'addTask') {
         console.log('The Application Server received a Login Message');
     } else
         presenter.nextCallback(message, socket, callbacks);
@@ -39,7 +39,7 @@ exports.handleAddTask = function (message,socket, callbacks) {
 
 exports.handleRemoveTask = function (message,socket, callbacks) {
     let json = JSON.parse(message);
-    if(message.requestedFunction === 'removeTask') {
+    if(json.requestedService === 'removeTask') {
         console.log('The Application Server received a Login Message');
     } else
         presenter.nextCallback(message, socket, callbacks);
@@ -47,7 +47,7 @@ exports.handleRemoveTask = function (message,socket, callbacks) {
 
 exports.handleModifyTask = function (message,socket, callbacks) {
     let json = JSON.parse(message);
-    if(message.requestedFunction === 'modifyTask') {
+    if(json.requestedService === 'modifyTask') {
         console.log('The Application Server received a Login Message');
     } else
         presenter.nextCallback(message, socket, callbacks);
@@ -56,7 +56,7 @@ exports.handleModifyTask = function (message,socket, callbacks) {
 
 exports.handleGetSchedule = function (message,socket, callbacks) {
     let json = JSON.parse(message);
-    if(message.requestedFunction === 'getSchedule') {
+    if(json.requestedService === 'getSchedule') {
         console.log('The Application Server received a Login Message');
     } else
         presenter.nextCallback(message, socket, callbacks);
@@ -65,7 +65,7 @@ exports.handleGetSchedule = function (message,socket, callbacks) {
 
 exports.handleModifyPrefs = function (message,socket, callbacks) {
     let json = JSON.parse(message);
-    if(message.requestedFunction === 'modifyPrefs') {
+    if(json.requestedService === 'modifyPrefs') {
         console.log('The Application Server received a Login Message');
     } else
         presenter.nextCallback(message, socket, callbacks);
@@ -74,7 +74,7 @@ exports.handleModifyPrefs = function (message,socket, callbacks) {
 
 exports.handleGetPrefs = function (message,socket, callbacks) {
     let json = JSON.parse(message);
-    if(message.requestedFunction === 'getPrefs') {
+    if(json.requestedService === 'getPrefs') {
         console.log('The Application Server received a Login Message');
     } else
         presenter.nextCallback(message, socket, callbacks);
