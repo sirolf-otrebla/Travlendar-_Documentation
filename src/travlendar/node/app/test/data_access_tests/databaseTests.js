@@ -155,7 +155,7 @@ function addTaskTest(dbRef, done){
 
     fetch_to_test.fetch(msg, dbRef, function (result) {
         if(result.err){
-            console.log("ERROR: " + result.err);
+            console.log("ERROR: " + result.err.code + " " + result.err.description);
         }
         expect(result.err).to.equal("");
         expect(result.status.affectedRows).to.equal(1);
@@ -175,22 +175,22 @@ function fetchTasksTest(dbRef, done){
 
     fetch_to_test.fetch(msg, dbRef, function (result) {
         if(result.err){
-            console.log("ERROR: " + result.err);
+            console.log("ERROR: " + result.err.code + " " + result.err.description);
         }
         console.log(result.tasks);
-
+        let res = result.tasks[0];
         expect(result.err).to.equal("");
-        expect(result[0].Name).to.equal("testTask");
-        expect(result[0].Description).to.equal("task test description");
-        expect(result[0].Location).to.equal("temp location address");
-        expect(result[0].Duration).to.equal(17);
-        expect(result[0].StartTime).to.equal('19:00:00');
-        expect(result[0].EndTime).to.equal('23:30:00');
-        expect(result[0].StartDay).to.equal('2017-12-24');
-        expect(result[0].EndDay).to.equal('2017-12-24');
-        expect(result[0].isBreakTask).to.equal(false);
-        expect(result[0].isPeriodic).to.equal(false);
-        expect(result[0].DayPeriodicity).to.equal(0);
+        expect(res.Name).to.equal("testTask");
+        expect(res.Description).to.equal("task test description");
+        expect(res.Location).to.equal("temp location address");
+        expect(res.Duration).to.equal(17);
+        expect(res.StartTime).to.equal('19:00:00');
+        expect(res.EndTime).to.equal('23:30:00');
+        expect(res.StartDay).to.equal('2017-12-24');
+        expect(res.EndDay).to.equal('2017-12-24');
+        expect(res.isBreakTask).to.equal(false);
+        expect(res.isPeriodic).to.equal(false);
+        expect(res.DayPeriodicity).to.equal(0);
 
         done();
     });
@@ -234,7 +234,7 @@ function fetchTaskPreferencesTest(dbRef, done){
 
     fetch_to_test.fetch(msg, dbRef, function (result) {
         if(result.err){
-            console.log("ERROR: " + result.err);
+            console.log("ERROR: " + result.err.code + " " + result.err.description);
         }
         expect(result.err).to.equal("");
         done();
@@ -253,7 +253,7 @@ function removeTaskTest(dbRef, done){
 
     fetch_to_test.fetch(msg, dbRef, function (result) {
         if(result.err){
-            console.log("ERROR: " + result.err);
+            console.log("ERROR: " + result.err.code + " " + result.err.description);
         }
         expect(result.err).to.equal("");
         done();
@@ -293,7 +293,7 @@ function updateCalendarTest(dbRef, done){
 
     fetch_to_test.fetch(msg, dbRef, function (result) {
         if(result.err){
-            console.log("ERROR: " + result.err);
+            console.log("ERROR: " + result.err.code + " " + result.err.description);
         }
         expect(result.err).to.equal("");
         done();
@@ -311,7 +311,7 @@ function fetchCalendarTest(dbRef, done){
 
     fetch_to_test.fetch(msg, dbRef, function (result) {
         if(result.err){
-            console.log("ERROR: " + result.err);
+            console.log("ERROR: " + result.err.code + " " + result.err.description);
         }
         expect(result.err).to.equal("");
         done();

@@ -1,5 +1,4 @@
 let error_handler = require('../../logic/error_handler');
-let db_adapter = require('../../data/database_adapter');
 
 exports.fetch = function fetchUser(msg, dbRef, callback) {
     let self = this;
@@ -16,10 +15,10 @@ exports.fetch = function fetchUser(msg, dbRef, callback) {
                         callback(self.msg);
                         return;
                     }
-                    console.log(result);
+
                     if(result[0] !== undefined) {
                         if(result[0].IdUser !== undefined)
-                            self.msg.user = db_adapter.adaptUser(result[0]);
+                            self.msg.user = result[0];
                     }
                     callback(self.msg);
                 }

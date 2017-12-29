@@ -7,14 +7,14 @@ exports.fetch = function addTask(msg, dbRef, callback) {
             let task = self.msg.task;
             let email = self.msg.email;
 
-            dbRef.query("INSERT INTO travlendardb.Tasks("  +
-                        "IdTask, IdUser, Name, Description," +
-                        "Location, Duration," +
-                        "StartTime, EndTime, StartDay, EndDay," +
-                        "isBreakTask, isPeriodic, DayPeriodicity)" +
+            dbRef.query("INSERT INTO travlendardb.Tasks( "  +
+                        "IdTask, IdUser, Name, Description, " +
+                        "Location, Duration, " +
+                        "StartTime, EndTime, StartDay, EndDay, " +
+                        "isBreakTask, isPeriodic, DayPeriodicity) " +
                         "VALUES ( null, " +
                         "(SELECT u.IdUser FROM travlendardb.Users AS u WHERE u.eMail = ?), " +
-                        "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                        "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 [email, task.name, task.description,
                     task.location,
                     task.duration,task.startTime, task.endTime,
