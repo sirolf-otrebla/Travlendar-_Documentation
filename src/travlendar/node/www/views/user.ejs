@@ -1,40 +1,70 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Documento senza titolo</title>
-<link href="styles/style.css" rel="stylesheet" type="text/css">
-<link href="styles/flatly.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.css" />
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<!-- Latest compiled JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<meta charset="utf-8">
+	<title>UserPage</title>
+	<link href="styles/style.css" rel="stylesheet" type="text/css">
+	<link href="styles/flatly.css" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.css" />
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.min.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.1/moment.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.0/fullcalendar.min.js"></script>
 </head>
 
 <body>
-	<div id="calendar" style="width: 50%; height: 50%; margin-left: 20%;"></div>
-	
-	<script>
-		
-		$(document).ready(function() {
-			$("#calendar").fullCalendar({
-				themeSystem: "standard",
-				eventLimit: true,
-				editable: true,
-				header: {
-					left: 'prev,next today',
-					center: 'title',
-					right: 'month,agendaWeek'
-				},
-			});
-		});
-	
-	</script>
-	
+
+<div class="menubar" id="prova">
+
+
+	<div class="row">
+
+		<div class="col-sm-3">
+			<img src="images/logo.png" style="width:9vw; margin-left: 25px;" class="img-responsive" alt="Logo">
+		</div>
+
+		<div class="col-sm-9">
+			<div class="item">
+				<span class="text"> <a id="homeLink" onClick="homeLinkClick()" class="selected" href="#">Home</a> </span>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+<div class="main" style="margin-top: 100px;">
+
+	<div class="row">
+		<div class="col-sm-6 col-sm-offset-3">
+			<h1>Welcome: <%= email %></h1>
+			<div class="blankSpace"></div>
+			<div id="calendar" style="width: 100%; height: 100%;"></div>
+		</div>
+	</div>
+
+</div>
+
+<script>
+
+    $(document).ready(function() {
+        $("#calendar").fullCalendar({
+            themeSystem: "standard",
+            eventLimit: true,
+            editable: true,
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek'
+            },
+        });
+    });
+
+</script>
+
 </body>
 </html>
