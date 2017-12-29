@@ -77,7 +77,7 @@ exports.scheduleEval = function scheduleEvaluator(schedule, callback){
         if(err)
             console.log("error in the cost evaluation: " + err);
         console.log("cost computation finished, increment = " + schedule.next_increment);
-        self.callback(schedule);
+        self.callback(schedule.next_increment);
     });
 
 };

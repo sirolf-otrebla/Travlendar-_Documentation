@@ -13,8 +13,8 @@ The same is valid for the Log in process but in such a case if the data are corr
     \label{fig:sequenceSignUp}
 \end{figure}
 
-\subsection{Add a Task}
-The creation of a new Task starts with the Client sending all the information required for the creation of a new Task (see \textcolor{red}{Task entity}) to the Application Façade. This information will be properly packed in an HTTPS message and sent to the Presenter. At this point the message will be parsed and dispatched to the Business Logic component in charge for the Business work flow; now the system will try to schedule the newly inserted task in the calendar (loaded from the Database) and if no conflicts occur, then the new schedule will be sent to the user through the Presenter and the Application Façade. If the calendar is approved by the client then it will be stored in the Database.
+\subsection{Add a FixedTask}
+The creation of a new FixedTask starts with the Client sending all the information required for the creation of a new FixedTask (see \textcolor{red}{FixedTask entity}) to the Application Façade. This information will be properly packed in an HTTPS message and sent to the Presenter. At this point the message will be parsed and dispatched to the Business Logic component in charge for the Business work flow; now the system will try to schedule the newly inserted task in the calendar (loaded from the Database) and if no conflicts occur, then the new schedule will be sent to the user through the Presenter and the Application Façade. If the calendar is approved by the client then it will be stored in the Database.
 Notice that a very similar process is performed when the Client require to modify a task preference or wants to remove a task. 
 
 \begin{figure}[H]

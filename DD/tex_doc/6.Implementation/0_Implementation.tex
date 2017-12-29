@@ -28,7 +28,7 @@ The implementation should start with the elementary component of the \emph{Busin
         \item Week Scheduler, used to test if the application can divide properly tasks through various days.
     \end{enumerate}
     \item General Preferences Manager, that will interact with the scheduler to set up the user's preferences in a correct way.
-    \item Task Fetcher, that should take various tasks to give them to the scheduler module
+    \item FixedTask Fetcher, that should take various tasks to give them to the scheduler module
 \end{enumerate}
 
 After the development of the \emph{Business Logic} layer, the focus will be moved on the \emph{Presenter Layer}, in order to start the testing of the communication as soon as possible. Moreover, after the implementation and the integration of the \emph{Presenter Layer}, the Application Server can be set up to start its work.
@@ -132,7 +132,7 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
 
 
 
-\subsection*{Add Task System}
+\subsection*{Add FixedTask System}
 
 \begin{table}[H]
     \centering
@@ -148,7 +148,7 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Input Specification}    & Task's Information\\
+        \textbf{Input Specification}    & FixedTask's Information\\
         
         \hline
         
@@ -168,13 +168,13 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         \hline
         
     \end{tabular}
-    \caption{Testing Description of Add Task System}
+    \caption{Testing Description of Add FixedTask System}
 \end{table}
 
 
 
 
-\subsection*{Remove Task System}
+\subsection*{Remove FixedTask System}
 
 \begin{table}[H]
     \centering
@@ -186,11 +186,11 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Involved Components}    & Application Façade, Message Transmitter, Message Receiver, Business                                          WorkFlow, Scheduler, Access Data Manager, Task Fetcher, DBMS\\
+        \textbf{Involved Components}    & Application Façade, Message Transmitter, Message Receiver, Business                                          WorkFlow, Scheduler, Access Data Manager, FixedTask Fetcher, DBMS\\
         
         \hline
         
-        \textbf{Input Specification}    & Task ID that will be removed\\
+        \textbf{Input Specification}    & FixedTask ID that will be removed\\
         
         \hline
         
@@ -198,7 +198,7 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Exception}              & The given Task ID doesn't exist, so the system show an error page\\
+        \textbf{Exception}              & The given FixedTask ID doesn't exist, so the system show an error page\\
         
         \hline
         
@@ -210,13 +210,13 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         \hline
         
     \end{tabular}
-    \caption{Testing Description of Remove Task System}
+    \caption{Testing Description of Remove FixedTask System}
 \end{table}
 
 
 
 
-\subsection*{Modify Task System}
+\subsection*{Modify FixedTask System}
 
 \begin{table}[H]
     \centering
@@ -228,11 +228,11 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Involved Components}    & Application Façade, Message Transmitter, Message Receiver, Business                                          WorkFlow, Scheduler, Access Data Manager, Task Fetcher, DBMS\\
+        \textbf{Involved Components}    & Application Façade, Message Transmitter, Message Receiver, Business                                          WorkFlow, Scheduler, Access Data Manager, FixedTask Fetcher, DBMS\\
         
         \hline
         
-        \textbf{Input Specification}    & Task ID that will be modified\\
+        \textbf{Input Specification}    & FixedTask ID that will be modified\\
         
         \hline
         
@@ -240,7 +240,7 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Exception}              & The given Task ID doesn't exist, so the system show an error page. The newer preferences creates a non feasible calendar, so the system should return to the previous calendar and show to the user an error page\\
+        \textbf{Exception}              & The given FixedTask ID doesn't exist, so the system show an error page. The newer preferences creates a non feasible calendar, so the system should return to the previous calendar and show to the user an error page\\
         
         \hline
         
@@ -248,12 +248,12 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         \hline
         
         \textbf{Environmental needs}    & T1: the user should be logged in the system\\
-                                        & T3, T4: the system should work properly with the add and the remove procedures of the Task management \\
+                                        & T3, T4: the system should work properly with the add and the remove procedures of the FixedTask management \\
         
         \hline
         
     \end{tabular}
-    \caption{Testing Description of Modify Task System}
+    \caption{Testing Description of Modify FixedTask System}
     
 \end{table}
 
@@ -289,7 +289,7 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         \hline
         
         \textbf{Environmental needs}    & T1: the user should be logged in the system\\
-                                        & T3, T4: the system should work properly with the add and the remove procedures of the Task management \\
+                                        & T3, T4: the system should work properly with the add and the remove procedures of the FixedTask management \\
         
         \hline
         
@@ -338,14 +338,14 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         \hline
         
     \end{tabular}
-    \caption{Testing Description of Modify Task System}
+    \caption{Testing Description of Modify FixedTask System}
     
 \end{table}
 
 
 
 
-\subsection*{Break Time Task}
+\subsection*{Break Time FixedTask}
 
 \begin{table}[H]
     \centering
@@ -383,6 +383,6 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         \hline
         
     \end{tabular}
-    \caption{Testing Description of Modify Task System}
+    \caption{Testing Description of Modify FixedTask System}
     
 \end{table}
