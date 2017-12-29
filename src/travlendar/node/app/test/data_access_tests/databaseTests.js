@@ -179,7 +179,7 @@ function fetchTasksTest(dbRef, done){
         }
         console.log(result.tasks);
 
-        expect(result.err).to.equal();
+        expect(result.err).to.equal("");
         expect(result[0].name).to.equal("testTask");
         expect(result[0].description).to.equal("task test description");
         expect(result[0].location).to.equal("temp location address");

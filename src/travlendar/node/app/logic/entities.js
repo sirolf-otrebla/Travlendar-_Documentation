@@ -188,7 +188,9 @@ exports.TaskPreferences = class TaskPreferences {
 
 };
 
-exports.GlobalPreferences = class GlobalPreferences extends TaskPreferences{
+let t_pref = require('./entities').TaskPreferences;
+
+exports.GlobalPreferences = class GlobalPreferences extends t_pref{
 
     constructor(takeCar, takeBus, takeCarSharing, takeBikeSharing, maxWalk, hasSeasonTicket) {
         super(takeCar, takeBus, takeCarSharing, takeBikeSharing, maxWalk);

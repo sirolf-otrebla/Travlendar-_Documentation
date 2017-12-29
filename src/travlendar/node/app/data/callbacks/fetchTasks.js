@@ -45,7 +45,8 @@ exports.fetch = function fetchTasks(msg, dbRef, callback) {
                             index++;
                         },
                         function (err) {
-                            self.msg.err = err;
+                            if(err)
+                                self.msg.err = err;
                             self.msg.tasks = new_tasks;
                             self.cb(self.msg);
                         });
