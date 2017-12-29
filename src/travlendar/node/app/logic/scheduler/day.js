@@ -1,9 +1,181 @@
+import * as ent from "../entities";
+
 const INF = -1;
+const TRANSPORTS = 3;
+import DaySchedule from 'sched_entities';
+import {Travel} from "../entities";
 
 // must have home as first and last task of the queue;
 // it is possible to consider as first bound a greedy approach;
-exports.schedule = function (fixed, flexible, variable, day) {
-                                                                                // first thing we want is to schedule fixed Tasks
+exports.schedule = function (tasks, day) {
+
+};
+/**
+ *
+ * @param tasks { fixed
+ *                flexible
+ *                variable
+ *                }
+ * @param callbacks  = { flexible => callback for flexible scheduling
+ *                       BnB => callback for Branch and Bound
+ *                       end => ending callback
+ *                   }
+ */
+scheduleFixed = function(tasks, upper_callback){
+    if (tasks.variable.length === 0 && tasks.flexible === 0){
+        let cost = require('cost');
+        let schedule = {
+            tasks : [],
+            travels : [],
+            next_increment: 0,
+            cost : 0,
+        };
+        // TODO NEEDS DUMMY INIT AND ENDING TASK
+        let genInitSched = function (fixed, schedule, defaultTransport) {
+            for (let i = 1 ; i < fixed.length; i++){
+                schedule.tasks.push(fixed[i]);
+                schedule.travels.push(new Travel(fixed[i-1], fixed[i], defaultTransport));
+            }
+        } ;
+        let initEvalLoop = function (index, schedule, increment, callback) {
+            if (index < fixed.length){
+                cost.scheduleEval(schedule.slice(0,index +1), (res) => {
+                    initEvalLoop(index+1, schedule, res, callback);
+                })
+            } else {
+                callback(increment, schedule);
+            }
+        };
+
+        let fixedBranchNBound = function(cost, schedule){
+            let bound = cost;
+            let bestSchedule = new DaySchedule();
+            schedule.travels.forEach((t) => {
+                bestSchedule.addTravel(t);
+            });
+
+            let workingLoop = function (upper_counter, callback) {
+                if (upper_counter > 0) {
+
+                    let choices = [];
+                    let actualSchedule = new DaySchedule();
+                    bestSchedule.travels.slice(0, upper_counter).forEach(
+                        (travel) => {
+                            actualSchedule.addTravel(travel);
+                        }
+                    );
+                    let subTreeWorkingLoop = function (lower_counter, actualSchedule) {
+                        if (lower_counter + upper_counter < bestSchedule.travels.length ||
+                            choices.length > 0) {
+                            bestSchedule.tasks[lower_counter].allowedTransports().forEach(
+                                (transport) => {
+                                    choices.push(transport);
+                                }
+                            );
+                            let chosenIndex = selectRandomIndex(0, choices.length);
+                            let chosenElement = choices[chosenIndex];
+                            let newTravel = new Travel(
+                                bestSchedule.tasks[lower_counter - 1],
+                                bestSchedule.tasks[lower_counter],
+                                chosenElement);
+                            choices = [];
+                            actualSchedule.addTravel(newTravel);
+                            actualSchedule.incrementCost((actualSchedule) => {
+                                if (actualSchedule.cost() < bound) {
+                                    subTreeWorkingLoop(lower_counter + 1, actualSchedule);
+                                }
+                                else {
+                                    actualSchedule.removeLastTravel();
+                                    actualSchedule.decrementCost();
+                                }
+                            })
+                        } else {
+                            if (actualSchedule.cost < bound) {
+                                bound = actualSchedule.cost;
+                                bestSchedule = actualSchedule;
+                            }
+                        }
+                    }
+                    workingLoop(upper_counter -1);
+                } else {
+                    callback(bestSchedule, cost);
+                }
+            }
+
+            workingLoop(schedule.travels.length - 3, (schedule, cost) => {
+                upper_callback(schedule);
+                //TODO VERIFY
+            });
+
+
+        }
+        genInitSched(tasks.fixed, schedule, "TRANSIT");
+        initEvalLoop(0,schedule,0, fixedBranchNBound);
+};
+/**
+ *
+ * @param flexible
+ * @param freeTimeSlots
+ * @param callback  {
+ *                       BnB => callback for Branch and Bound
+ *                       end => ending callback
+ *                   }
+ */
+scheduleFlexible = function (flexible, freeTimeSlots, callback) {
+    if (flexible.length === 0 ){
+        callback.BnB(end)
+
+    }
+    let timeSlotsFlexibleTasks = [];
+    flexible.sort((f1, f2) => {
+        return f1.duration - f2.duration;
+    });
+
+    flexible.forEach((task) => {
+        for (let index = 0; index < freeTimeslots.length; index++){
+            if (isFlexibleTaskCompliant( freeTimeslots[0], task, timeSlotsFlexibleTasks[index])){
+                timeSlotsFlexibleTasks.push(task);
+                break;
+            }
+        }
+    });
+
+};
+
+scheduleVariable = function (tasks, callback) {
+
+};
+isFlexibleTaskCompliant = function(timeslot, flexibleTask, others){
+    let checkOthers = function (others, slot, flexible) {
+        let duration = timeslot.end - timeslot.start;
+        let acc = flexible.duration;
+        others.forEach((f) => {
+            acc =+ f.duration;
+        });
+        if (acc > duration){
+            return false;
+        }
+    };
+
+    if (timeslot.start > flexibleTask.timeslot.start){
+        return false;
+    }
+    if (flexibleTask.timeslot.start > timeslot.start
+        && flexibleTask.timeslot.end < timeslot.end){
+        return checkOthers(others, timeslot, flexibleTask)
+
+    }
+    if (flexibleTask.timeSlot.start > timeslot.start
+        && flexibleTask.timeslot.end > timeslot.end){
+        if(flexibleTask.duration < timeslot.end - timeslot.start){
+            return checkOthers(others, timeslot, flexibleTask);
+        } else {
+            return false;
+        }
+    }
+    return false;
+};
+checkFreeTimeSlots = function (fixed) {
     let occupiedTimeSlots = [];                                                 // time slots occupied by fixed tasks
     let freeTimeSlots = [];                                                     // free time slots between fixed tasks
     let entities = require('../entities');
@@ -20,12 +192,9 @@ exports.schedule = function (fixed, flexible, variable, day) {
         occupiedTimeSlots.forEach((t, i, arr) => {
             freeTimeSlots.push(new entities.Timeslot(t.end, arr[i + 1].start));
         } );
-
-
+        return freeTimeSlots;
     }
-
-};
-
+}
 scheduleFlexible = function (flexible, freeTimeSlots) {
     let couples = [];
     for (let i = 0; i < flexible.length; i++){
@@ -40,11 +209,15 @@ scheduleFlexible = function (flexible, freeTimeSlots) {
             }
         }
     }
+    let timeslots = [];
+    couples.forEach((c) => {
 
-    
+    })
+
+
 };
 
-branchNBound = function (tasks, defaultTransport) {
+branchNBound = function (start, end, others, defaultTransport, endCallback) {
     let ent = require('../entities');                                           // where to take business entities
     let bound = INF;                                                            // actual bound in BnB algorithm
     let bestSchedule = null;                                                    // actual best schedule found
@@ -52,10 +225,51 @@ branchNBound = function (tasks, defaultTransport) {
 
     let upper_counter = 0;                                                      // root of analyzed subtree
     let lower_counter = 0;                                                      // subtree level being analyzed
+    tasks = others;
+    if (tasks.length === 0 ){
+        let choices = [];
+        end.allowedTransports.forEach((tm) =>  {                                // each choice is a JSON object relative to a travel, with references
+            choices.push({                                                      // to the arrival and to the travel mean
+                mean : tm,
+                task : end
+            });
+        });
+        let best = {
+            cost : Infinity,
+            schedule : null,
+        }
+        let checkBestTravel = function (index, best) {
+            let cost = require('cost');
+            let schedule = {
+                tasks : [ start, end],
+                travels : [ choices[index] ],
+                next_increment : 0
+            };
+            cost.scheduleEval(schedule, (cost) => {
+                if (index < choices.length){
+                    if (cost < best.cost ){
+                        best.schedule = new DaySchedule();
+                        best.schedule.addTravel(
+                            new ent.Travel( start,
+                                choices[index].task,
+                                choices[index].mean)
+                        );
+                        checkBestTravel(index+1, cost);
+                    }
+                    checkBestTravel(index+1, best);
+                }
+                else{
+                    endCallback(best.schedule);
 
-    while (working){
+                }
+            })
+        }
+
+
+    }
+        while (working){
         if (bound === INF) {                                                    // algorithm first step
-            let init = generateInitSched(tasks, defaultTransport);              // generate a greedy solution (need a default travel mean)
+            let init = generateInitSched(start, tasks, defaultTransport);              // generate a greedy solution (need a default travel mean)
             bestSchedule = new DaySchedule();                                   // create new schedule for the newly generated sol
             init.forEach((t) => {                                               // populate bestschedule
                 bestSchedule.addTravel(t);
@@ -99,7 +313,8 @@ branchNBound = function (tasks, defaultTransport) {
                     new ent.Travel( lastTask,
                                     chosenElement.task,
                                     chosenElement.mean)
-                );
+                )
+                ;
                 //  TODO : WRONG, THE NEW COST IS NOT CONTAINED WITHIN ACTUALSCHEDULE
                                                                                 // now we assume (IT IS WRONG, WEE NEED TO CHANGE IT) that the new cost is already present in Schedule object
                 if (actualSchedule.cost < bound){                               // if the new cost is lower than the bound :
@@ -139,15 +354,13 @@ branchNBound = function (tasks, defaultTransport) {
 };
 
 
-generateInitSched = function (tasks, defaultTransport) {
+generateInitSched = function (start, tasks, defaultTransport) {
     let ent = require('../entities');
     let startingSol = [];
     let completed = true;
-    let t = tasks[0];
-    let arr = tasks.slice(1, tasks.length);
-    startingSol.push(t);
-
-    while (completed){
+    let t = start;
+    let arr = tasks.slice(0, tasks.length);
+    for (let counter = 0 ; counter < tasks.length; counter++){
         let dist = INF;
         let best = null;
         arr.forEach((t2) => {
@@ -161,18 +374,19 @@ generateInitSched = function (tasks, defaultTransport) {
         });
         startingSol.push(best);
         arr.splice(arr.indexOf(best));
-        let startSched = new DaySchedule();
-        for (i = 0; i < startingSol.length - 1; i++){
-            startSched.addTravel( new ent.Travel (
-                startingSol[i],
-                startingSol[i+1],
-                defaultTransport ));
-        }
-        return {
+        t = best
+    }
+    let startSched = new DaySchedule();
+    for (let i = 0; i < startingSol.length - 1; i++){
+        startSched.addTravel( new ent.Travel (
+            startingSol[i],
+            startingSol[i+1],
+            defaultTransport ));
+    };
+    return {
             sched : startSched,
             bound : startSched.cost
         }
-    }
 };
 
 
@@ -182,64 +396,6 @@ selectRandomIndex = function (startingIndex, elements) {
     }
     return startingIndex + getRandomArbitrary(0, elements);
 };
-
-class DaySchedule{
-    _day;
-    _cost;
-    _lastTravelCost;
-    _travelList;
-    _taskList;
-
-    addTravel(trav){
-        if ( trav.startTask === this.taskList.pop() ||
-            this.taskList.length === 0) {
-
-            this._taskList.push(trav.startTask)
-            this._travelList.push(trav);
-            this._taskList.push(trav.endTask);
-            this.calculateCost();
-        }
-    }
-
-    calculateCost(){
-        /* let calculator = require("./cost");
-        this._cost = 0;
-        this._travelList.forEach((t) => {
-           this._cost += calculator.eval(this._day);
-           this._lastTravelCost =  calculator.eval(this._day);
-        });
-        */
-    }
-
-    removeLastTravel(){
-        this._cost -= this._lastTravelCost;
-        this._taskList.pop();
-        this._travelList.pop();
-    }
-
-    get cost() {
-        return this._cost;
-    }
-
-
-    get taskList() {
-        return this._taskList;
-    }
-
-
-    get travelList() {
-        return this._travelList;
-    }
-}
-
-distance = function(location, location2){
-    if (location2 === null) return 0;
-    return Math.sqrt(
-        (location.lat - location2.lat)^2 +
-        (location.long -location2.long)^2
-    );
-};
-
 
 checkOverlappings = function(TimeSlots){
     let overlapping = [];
@@ -265,11 +421,44 @@ checkOverlappings = function(TimeSlots){
     let res = {
         overlappingList : overlapping,
         flag : false
-    }
+    };
 
     if (overlapping.length > 0){
         res.flag = true;
     }
     return res;
 
+};
+
+let split = function (tasks) {
+
+    let fixed = [];
+    let flexible = [];
+    let variable = [];
+    let ent = require('../entities');
+    tasks.forEach((t) => {
+        //TODO REVIEW THIS
+        if (t instanceof ent.FixedTask){
+            fixed.push(t);
+        }
+    });
+    tasks.forEach((t) => {
+        //TODO REVIEW THIS
+        if (t instanceof ent.FlexibleTask){
+            flexible.push(t);
+        }
+    });
+    tasks.forEach((t) => {
+        //TODO REVIEW THIS
+        if (!( flexible.includes(t) ||fixed.includes(t))){
+            variable.push(t);
+        }
+    });
+    let res = {
+        variable : variable,
+        fixed : fixed,
+        flexible : flexible
+    }
+
+    return res;
 }

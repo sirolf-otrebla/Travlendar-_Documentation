@@ -5,12 +5,12 @@ describe("dayschedule", function () {
         describe("testing greedy solutions"), function () {
             it('should create a solution with all tasks', function () {
                 let taskList = [
-                    new Task(1,"A", new Location(1,1),),
-                    new Task(),
-                    new Task(),
-                    new Task(),
-                    new Task(),
-                    new Task()
+                    new FixedTask(1,"A", new Location(1,1),),
+                    new FixedTask(),
+                    new FixedTask(),
+                    new FixedTask(),
+                    new FixedTask(),
+                    new FixedTask()
                 ]
                 //TODO
             });

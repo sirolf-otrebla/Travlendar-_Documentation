@@ -15,16 +15,19 @@ exports.travelMeans  = {
     driving : "DRIVING",
     bycicling : "BYCICLING",
     transit : "TRANSIT",
-    walking : "WALKING"
+    walking : "WALKING",
+
 };
 
 exports.Day = class Day {
     _list;
+    _time;
     _weather;
 
 
-    constructor(weather) {
+    constructor(weather, time) {
         this._weather = weather;
+        this._time= time;
         this._barycenter = null;
     }
 
@@ -47,9 +50,90 @@ exports.Day = class Day {
     get list() {
         return this._list;
     }
-}
 
-exports.Task = class Task {
+
+    get time() {
+        return this._time;
+    }
+}
+exports.Task = class Task{
+    _ID;
+    _description;
+    _location;
+    _allowedTransports;
+
+    constructor(id, desc, loc, transports){
+        this._ID = id;
+        this._description = desc;
+        this._location = loc;
+        this._allowedTransports = transports;
+    }
+
+    get ID() {
+        return this._ID;
+    }
+
+    get description() {
+        return this._description;
+    }
+
+    get location() {
+        return this._location;
+    }
+
+    get allowedTransports() {
+        return this._allowedTransports;
+    }
+};
+
+exports.FlexibleTask = class FlexibleTask extends Task{
+    _repetition;
+    _timeSlot;
+    _duration;
+    constructor(id, desc, loc, transports, timeslot, repetition, duration) {
+        super();
+        this._timeSlot = timeslot;
+        this._repetition = repetition;
+        this._id = id;
+        this._desc = desc;
+        this._loc = loc;
+        this._transports = transports;
+        this._timeslot = timeslot;
+        this._duration = duration;
+
+        // TODO: NEED TO ADD TIMESLOTS
+    }
+
+
+    get duration() {
+        return this._duration;
+    }
+
+    get id() {
+        return this._id;
+    }
+
+    get desc() {
+        return this._desc;
+    }
+
+    get loc() {
+        return this._loc;
+    }
+
+    get transports() {
+        return this._transports;
+    }
+
+    get timeslot() {
+        return this._timeslot;
+    }
+
+    get repetition() {
+        return this._repetition;
+    }
+}
+exports.FixedTask = class FixedTask extends Task{
     _ID;
     _userEmail;
     _description;
@@ -58,11 +142,10 @@ exports.Task = class Task {
     _allowedTransports;
     _repetition;
 
-    constructor(id, desc, loc, transports) {
-        this._ID = id;
-        this._description = desc;
-        this._location = loc;
-        this._allowedTransports = transports;
+    constructor(id, desc, loc, transports, timeslot, repetition) {
+        super();
+        this._timeSlot = timeslot;
+        this._repetition = repetition;
         // TODO: NEED TO ADD TIMESLOTS
     }
 

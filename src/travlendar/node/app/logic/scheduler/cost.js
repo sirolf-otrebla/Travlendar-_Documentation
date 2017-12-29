@@ -75,7 +75,7 @@ exports.scheduleEval = function scheduleEvaluator(schedule, callback){
 
     async.waterfall( callbacks, function (err, schedule) {
         console.log("cost computation finished, increment = " + schedule.next_increment);
-        self.callback(schedule);
+        self.callback(schedule.next_increment);
     });
 
 };
