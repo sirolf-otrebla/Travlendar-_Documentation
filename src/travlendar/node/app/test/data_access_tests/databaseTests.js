@@ -348,7 +348,7 @@ describe('Database testing', function () {
 
     it('Remove user', function(done) {
         //TODO check if all the tuples related to the user do not exist anymore(re run the fetch tests)
-       // removeUserTest(dbRef, done);
+        //removeUserTest(dbRef, done);
         done();
     });
 
@@ -389,7 +389,7 @@ describe('Database testing', function () {
         removeTaskTest(dbRef, done);
     });
 
-    it('Remove user', function(done) {
+    it('Remove user and check the db is clean', function(done) {
         //TODO check if all the tuples related to the user do not exist anymore(re run the fetch tests)
         removeUserTest(dbRef, done);
     });
