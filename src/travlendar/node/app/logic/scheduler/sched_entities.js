@@ -100,8 +100,7 @@ class DaySchedule{
     _travelList;
     _taskList;
 
-    incrementCost(callback){
-        let calculator = require("./cost");
+    incrementCost(calculator, callback){
         calculator.scheduleEval({
             tasks: this.taskList,
             travels : this.travelList

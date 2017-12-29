@@ -16,8 +16,8 @@ exports.fetch = function fetchUser(msg, dbRef, callback) {
                         callback(self.msg);
                         return;
                     }
-
-                    if(result.lenght > 0) {
+                    console.log(result);
+                    if(result[0] !== undefined) {
                         if(result[0].IdUser !== undefined)
                             self.msg.user = db_adapter.adaptUser(result[0]);
                     }

@@ -81,7 +81,14 @@ exports.scheduleEval = function scheduleEvaluator(schedule, callback){
     });
 
 };
+/**
+ *
+ * @param schedule - same as the other function
+ * @param callback - callback receives RESULT as parameter
+ */
+exports.completeScheduleEval = function completeScheduleEvaluator(schedule, callback){
 
+}
 setupTravelCost = function (dataManager, schedule, callback) {
     let self = this;
     this.next = callback;
