@@ -129,8 +129,17 @@ exports.Task = class Task {
         return this._startTime;
     }
 
+    get startTimeMls() {
+        return Date.parse(this._startDay + this._startTime);
+    }
+
     get endTime() {
         return this._endTime;
+    }
+
+    get endTimeMls() {
+        let c = this._endDay + "T" + this._endTime + ".000";
+        return Date.parse(c);
     }
 
     get startDay() {
@@ -152,6 +161,7 @@ exports.Task = class Task {
     get dayPeriodicity() {
         return this._dayPeriodicity;
     }
+
 
     get timeSlot() {
         return this._timeSlot;

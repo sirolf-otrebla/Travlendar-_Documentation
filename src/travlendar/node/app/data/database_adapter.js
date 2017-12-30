@@ -61,22 +61,30 @@ function adaptTaskPreferences (preferences) {
 }
 
 exports.adaptEntities = function(element){
-    let result;
-    let type = element.type;
+    let result = {
+        email: element.email,
+        user: null,
+        tasks: null,
+        task_preferences: null,
+        global_preferences: null,
+        calendar: null
+    };
 
-    if(type === "User" && element.user !== undefined)
+    let type = element.mod;
+
+    if(type === "fetchUser.js" && element.user !== undefined)
         result.user = adaptUser(element.user);
 
-    else if(type === "Tasks" && element.tasks !== undefined)
+    else if(type === "fetchTasks.js" && element.tasks !== undefined)
         result.tasks = adaptTask(element.tasks);
 
-    else if(type === "TaskPreferences" && element.task_preferences !== undefined)
+    else if(type === "fetchTaskPreferences.js" && element.task_preferences !== undefined)
         result.task_preferences = adaptTaskPreferences(element.task_preferences);
 
-    else if(type === "GlobalPreferences" && element.global_preferences !== undefined)
+    else if(type === "fetchGlobalPreferences.js" && element.global_preferences !== undefined)
         result.global_preferences = adaptGlobalPreferences(element.global_preferences);
 
-    else if(type === "Calendar" && element.calendar !== undefined)
+    else if(type === "fetchCalendar.js" && element.calendar !== undefined)
         result.calendar = adaptCalendar(element.calendar);
     else
         result = element; //TODO: handle properly an error within the msg parsing

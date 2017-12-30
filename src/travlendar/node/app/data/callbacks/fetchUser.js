@@ -2,6 +2,7 @@ let error_handler = require('../../logic/error_handler');
 
 exports.fetch = function fetchUser(msg, dbRef, callback) {
     let self = this;
+    self.callback = callback;
     this.msg = msg;
 
             dbRef.query("SELECT * " +
@@ -12,7 +13,7 @@ exports.fetch = function fetchUser(msg, dbRef, callback) {
                     if(err){
                         console.log(err);
                         self.msg.err = error_handler.query_error(err);
-                        callback(self.msg);
+                        self.callback(self.msg);
                         return;
                     }
 
@@ -20,7 +21,7 @@ exports.fetch = function fetchUser(msg, dbRef, callback) {
                         if(result[0].IdUser !== undefined)
                             self.msg.user = result[0];
                     }
-                    callback(self.msg);
+                    self.callback(self.msg);
                 }
             );
 };

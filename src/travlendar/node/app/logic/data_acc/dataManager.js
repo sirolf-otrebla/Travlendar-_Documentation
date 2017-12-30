@@ -1,10 +1,10 @@
+let db_adapter = require('../../data/database_adapter');
 
 function DataConn(ID){
     let __self  = this;
     let net = require('net');
     let fs = require('fs');
-    let db_adapter = require('../../data/database_adapter');
-    let serverList = JSON.parse(fs.readFileSync('travlendar/node/app/logic/data_acc/serverList.json')).servers;
+    let serverList = JSON.parse(fs.readFileSync('./travlendar/node/app/logic/data_acc/serverList.json')).servers;
 
     this.__connectingTO = serverList[ID];
     this.__socket = new net.Socket();
@@ -28,9 +28,9 @@ exports.manager = function DataAccess(){
     const MY_EXT_SERVER_ID = 1;
     
     this._DBConn = new DataConn(MY_DATA_SERVER_ID);
-    //this._extConn = new DataConn(MY_EXT_SERVER_ID);
+    this._extConn = new DataConn(MY_EXT_SERVER_ID);
     this._DBConn.connect();
-    //this._extConn.connect();
+    this._extConn.connect();
 
     this.fetchUser = function (email, callback) {
         let msg = {
@@ -143,12 +143,12 @@ exports.manager = function DataAccess(){
         this._finalize_db(msg, callback);
     };
 
-    this.getTravelCost = function (or, dest, travelMean,  time, callback) {
+    this.getTravelCost = function (origin, destination, travelMean,  time, callback) {
         let msg = {
 
             // to be setted at instantiation time
             origin : origin,
-            destination : dest,
+            destination : destination,
             departure : time,
             travelMean : travelMean,
             mod : "travelCost.js"
@@ -168,20 +168,24 @@ exports.manager = function DataAccess(){
     this._finalize_db = function(msg, callback){
         this._DBConn.write(msg);
         let result = null;
+        this.cb = callback;
+        let self = this;
         this._DBConn.__socket.on('data', (data) => {
             let msg = JSON.parse(data);
-            msg = db_adapter(msg);
+            msg = db_adapter.adaptEntities(msg);
             console.log("msg from db received!");
-            callback(msg);
+            self.cb(msg);
         });
     };
 
     this._finalize_ext = function(msg, callback){
         this._extConn.write(msg);
         let result = null;
+        this.cb = callback;
+        let self = this;
         this._extConn.__socket.on('data', (data) => {
             let msg = JSON.parse(data);
-            callback(msg);
+            self.cb(msg);
         });
     }
 
@@ -197,7 +201,7 @@ let temp = new man.manager();
 temp.fetchUser("sfsdf", function (msg2) {
     console.log(msg2);
     let u = msg2;
-    console.log("risposta ricevuta1 : " + u.user.eMail );
+    console.log("risposta ricevuta1 : " + u.user.email );
 
     temp.fetchGlobalPreferences("sfsdf", function (ms) {
         console.log("risposta ricevuta2 : " + ms.global_preferences);

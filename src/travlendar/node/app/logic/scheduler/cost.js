@@ -5,6 +5,8 @@ const ALPHA = 1;
 const BETA = 1;
 
 let ent = require("../entities");
+let async = require('async');
+let whilst = require('async/whilst');
 
 exports.eval = function evaluator(day, travel){
 
@@ -55,7 +57,6 @@ exports.scheduleEval = function scheduleEvaluator(schedule, callback){
     self.callback = callback;
     let data = require('../data_acc/dataManager');
     let manager = new data.manager(); //Blocking code here!!!
-    let async = require('async');
 
     //Build the array of non blocking functions to use with waterfall
     //Remember to separate datamanager functions from data consuming functions
@@ -88,22 +89,65 @@ exports.scheduleEval = function scheduleEvaluator(schedule, callback){
  */
 exports.completeScheduleEval = function completeScheduleEvaluator(schedule, callback){
 
-}
-setupTravelCost = function (dataManager, schedule, callback) {
+    let data = require('../data_acc/dataManager');
+    let manager = new data.manager(); //Blocking code here!!!
+
+    let index = 0;
+    let cost = 0;
+
+    whilst( function () {
+                //Test to know when to finish iterating over the tasks
+                return index < schedule.tasks.length;
+            },
+            function (callback2) {
+
+                //Functions for cost eval of a single schedule element
+                async.waterfall([function (cb) {
+                        //Set up travel cost
+                        setupTravelCost(manager, schedule, index, cb);
+                    }
+
+                ], function (err, result) {
+                    //Function executed when the all the functions that calc the cost are exec
+                    if(err) {
+                        callback2(err);
+                        return;
+                    }
+                    index++;
+                    cost += result.next_increment;
+                } );
+            },
+            function (err, result) {
+            //Function for handling the final cost of the schedule result
+                if(err)
+                    console.log("error occurred during cost evaluation " + err);
+                callback(result);
+            }
+        );
+
+};
+
+function setupTravelCost(dataManager, schedule, index, callback) {
     let self = this;
     this.next = callback;
-    let travel = schedule.travels[schedule.travels.length -1];
-
-    dataManager.getTravelCost(
-        travel.startTask.location,
-        travel.endTask.location,
-        travel.transport,
-        travel.startTask.timeSlot.end,
-        function (msg) {
-            self.next(null, msg, dataManager, schedule);
-        }
-    );
-};
+    let travel = schedule.travels[index];
+    if(travel !== undefined) {
+        dataManager.getTravelCost(
+            travel.startTask.location,
+            travel.endTask.location,
+            travel.transport,
+            //travel.startTask.timeSlot.end,
+            travel.startTask.endTimeMls, //Start the travel when the previous task finishes
+            function (msg) {
+                self.next(null, msg, dataManager, schedule);
+            }
+        );
+    }
+    else {
+        let err = "Error: travel in position " + index + " is undefined!";
+        callback(err);
+    }
+}
 
 evalTimeAndCost = function (travel, dataManager, schedule, callback ) {
 

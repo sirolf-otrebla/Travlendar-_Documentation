@@ -2,6 +2,7 @@ let error_handler = require('../../logic/error_handler');
 
 exports.fetch = function getGlobalPreferences(msg, dbRef, callback) {
     let self = this;
+    self.callback = callback;
     this.msg = msg;
 
         dbRef.query("SELECT uPref.* FROM travlendardb.UsersPreferences AS uPref " +
@@ -11,7 +12,7 @@ exports.fetch = function getGlobalPreferences(msg, dbRef, callback) {
                 function (err, result) {
                     if(err){
                         self.msg.err = error_handler.query_error(err);
-                        callback(self.msg);
+                        self.callback(self.msg);
                         return;
                     }
 
@@ -22,8 +23,7 @@ exports.fetch = function getGlobalPreferences(msg, dbRef, callback) {
                     result[0].HasSeasonTicket = parse(result[0].HasSeasonTicket);
 
                     self.msg.global_preferences = result[0];
-                    self.msg.type = "GlobalPreferences";
-                    callback(self.msg);
+                    self.callback(self.msg);
                 }
         );
 }

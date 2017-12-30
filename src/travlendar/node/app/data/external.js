@@ -34,7 +34,7 @@ exports.fetchRoute = function fetchRoute(origin, dest, travelMean, time, traffic
             res.on("data", function(chunk) {
                 console.log("BODY: " + chunk);
                 self.result = JSON.parse(chunk);
-                callback(result);
+                callback(self.result);
             });
 
     });
@@ -63,7 +63,7 @@ exports.weatherForecast = function(callback) {
         res.on("data", function(chunk) {
             console.log("BODY: " + chunk);
             self.result = JSON.parse(chunk);
-            callback(result);
+            callback(self.result);
         });
     });
 

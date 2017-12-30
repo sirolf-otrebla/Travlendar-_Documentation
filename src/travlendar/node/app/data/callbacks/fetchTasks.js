@@ -26,7 +26,7 @@ exports.fetch = function fetchTasks(msg, dbRef, callback) {
                     let index = 0;
 
                     whilst(
-                        function (index) {
+                        function () {
                             return index <= result.length;
                         },
                         function () {
