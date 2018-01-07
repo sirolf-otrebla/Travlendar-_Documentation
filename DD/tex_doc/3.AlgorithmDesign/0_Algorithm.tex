@@ -8,8 +8,8 @@ In this chapter the attention will be focused on the design of the most critical
 At this point the ones with flexible and variable time behaviour will be assigned a fixed day, trying to uniformly distribute each task with respect to the day load of task and travel time. This will be done using a stochastic approach based on a probability distribution function such as:  
 
 \begin{equation}
-    P( t \in d) = \frac{\tau(d) + \beta \sum\limits_{i \in T(d)}{i \rightarrow B(d)} + \gamma t \rightarrow B(d)}
-    {\sum\limits_{j \in D}{\tau(j)} + \beta \sum\limits_{j \in D}{\sum\limits_{k \in T(j)}{k \rightarrow B(j)}} + \gamma \sum\limits_{j \in D}{t \rightarrow B(j)}}
+    P( t \in d) = 1 - \frac{\tau(d) + \beta \sum\limits_{i \in T(d)}{\delta_{i \rightarrow B(d)}} + \gamma \delta_{t \rightarrow B(d)}}
+    {\sum\limits_{j \in D}{\tau(j)} + \beta \sum\limits_{j \in D}{\sum\limits_{k \in T(j)}{\delta_{k \rightarrow B(j)}}} + \gamma \sum\limits_{j \in D}{\delta_{t \rightarrow B(j)}}}
 \end{equation}  
 
     \newpage
@@ -25,7 +25,7 @@ At this point the ones with flexible and variable time behaviour will be assigne
             \\ $ d \in D $ & \\
             \\ $ \tau(d)$ & is the sum of the duration time of every task in a given day d  \\
             \\ $ B(d) $ & is the barycenter of the task location for a given day d\\
-            \\ $s \rightarrow B(d)$ & is the distance between a task s and the baycenter for a given day d\\
+            \\ $\delta_{s \rightarrow B(d)}$ & is the distance between a task s and the baycenter for a given day d\\
             \\ $\beta, \theta$ & are constants  \\
         \end{tabular}
     \end{table}
@@ -46,7 +46,7 @@ If so, the conflicting tasks will be postponed in the next feasible day at first
 \subsection{Day Scheduler}
 \\Now that from an high point of view it's clear how the scheduling algorithm operates, we will better detail how the assignment of time slot to each task in a given day works.
 \\The time scheduler algorithm will try to organize the tasks in three main phases: at first the ones with a fixed time slot, then the ones with flexible time slot and finally the ones with a variable time slot.
-In each of these phases the scheduling will be based on the Branch and Bound algorithm thus, given a certain task set every possible combination will be explored and evaluated if necessary. For this reason, in the worst case the overall complexity is in the order of $O(\exp(n))$ with n the number of the tasks in the given set. But in average it's proofed, under certain assumptions, that the algorithm has a sub-exponential complexity (see the Reference documents section). 
+In each of these phases the scheduling will be based on the Branch and Bound algorithm thus, given a certain task set every possible combination will be explored and evaluated if necessary. The evaluation function of the Branch and Bound algorithm will take into account travel's duration, their cost, user travel mean preferences and the retaking of the user's private vehicle. For this reason, in the worst case the overall complexity is in the order of $O(\exp(n))$ with n the number of the tasks in the given set. But in average it's proofed, under certain assumptions, that the algorithm has a sub-exponential complexity (see the Reference documents section). 
 If during the Branch and Bound the algorithm discovers that a task inevitably conflicts with the others, then depending on the day behaviour of the task different actions will be taken: if day fixed then the algorithm terminates and signals the conflicting task, otherwise it will postpone the task to the next feasible day and continue the day scheduling process, until all the tasks are parsed.
 
 

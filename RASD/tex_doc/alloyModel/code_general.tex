@@ -15,7 +15,7 @@ sig timeslot{
 sig task{
   time_slot : one timeslot,
 
-//FixedTask Preferences
+//Task Preferences
     car : one Bool,
     bike : one Bool,
     atm : one Bool
@@ -127,7 +127,7 @@ sig schedule{
         some trav : travels | 
             trav.task_from = tas)
             
-    ((no t : travels | 
+    ((no t : travels |
         (t.car = true and t.task_from = dummy_start_task) ) implies ( 
             (no t : travels |
                 t.car = true 

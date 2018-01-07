@@ -41,7 +41,7 @@ As seen in Figure \ref{component:client}, the main components are:
 \end{itemize}
 \subsection{Business logic entities}
 \label{sec:businessEntities}
-In this subsection the core business logic entities will be presented. Though they are not equally implemented between front-end and back-end, the high level design is similar. In this mean we can consider them proper of either the front end and the back end. The chosen design assume to include only data inside these entities, leaving almost any kind of operations outside them. As can be seen in Figure \ref{component:entity_diag}, the most complex entity is the \emph{FixedTask} entity, who is related directly or indirectly to every other.
+In this subsection the core business logic entities will be presented. Though they are not equally implemented between front-end and back-end, the high level design is similar. In this mean we can consider them proper of either the front end and the back end. The chosen design assume to include only data inside these entities, leaving almost any kind of operations outside them. As can be seen in Figure \ref{component:entity_diag}, the most complex entity is the \emph{Task} entity, who is related directly or indirectly to every other.
 \begin{figure}[H]
     \centering
     \includegraphics[scale=0.4]{Pictures/ComponentDiagram/EntityDiagram.png}
@@ -97,7 +97,7 @@ The business logic layer is composed by:
     \item \textbf{General Preferences Manager}: this component's main goal is to manage the user preferences, as described in the \emph{RASD} Document, and then check whether certain solutions are admissible or not. Thus, it needs to communicate both with the Data Access Manager and the \emph{Business WorkFlow}, in order to interpret "complex" preferences such as an \emph{eco friendly} profile in much more simple instructions about how to build the  
     schedule.
     
-    \item \textbf{FixedTask Fetcher}: as the previous component, the main goal of the \emph{task fetcher} is to create an high level representation of data from the data layer. In particular, the task fetcher needs to build the task entities using data from the access manager, from those extracting only the ones who are relevant to the scheduling, modifying them when needed and performing other similar operations.
+    \item \textbf{Task Fetcher}: as the previous component, the main goal of the \emph{task fetcher} is to create an high level representation of data from the data layer. In particular, the task fetcher needs to build the task entities using data from the access manager, from those extracting only the ones who are relevant to the scheduling, modifying them when needed and performing other similar operations.
 \end{itemize}
 
 \begin{figure}[H]

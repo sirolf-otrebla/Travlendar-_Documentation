@@ -38,7 +38,7 @@ This module represents the main part of the \emph{Travlendar+} application. It c
         \item Week Scheduler: module used to divide the tasks in the correct day, in order to simplify the schedule problem.
     \end{itemize}
     
-    \item FixedTask Fetcher: interface used by the Business WorkFlow for the tasks loading. It interacts mainly with the Access Data Manager to load the tasks from the Database. Moreover this component is used to handle properly the tasks' specific preferences.
+    \item Task Fetcher: interface used by the Business WorkFlow for the tasks loading. It interacts mainly with the Access Data Manager to load the tasks from the Database. Moreover this component is used to handle properly the tasks' specific preferences.
     
     \item Access Data Manager: interface that connects the Business Logic Layer with the Data Layer. Indeed is used to do the Input/Output operations. Also, this module is used to ask external services, such as the map service or the transport mean one; in this way the Business Logic can schedule the user's various trips, according to the information given by the external services.
     

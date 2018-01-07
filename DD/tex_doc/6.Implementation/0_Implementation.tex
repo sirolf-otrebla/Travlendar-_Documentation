@@ -23,12 +23,18 @@ The implementation should start with the elementary component of the \emph{Busin
     \item Access Data Manager, in this way the system can interact easily with a database.
     \item Scheduler, the main function of the \emph{Business Logic} layer, that will be developed in the following order:
     \begin{enumerate}
-        \item Cost Evaluator, component used to check the goodness of a travel or a schedule.
-        \item Day Scheduler, used to know if the algorithm works properly.
+        \item Cost Evaluator, component used to check the goodness of a travel or a schedule. Since this component is one of the most complex, firstly will be done a simplified version of it.
+        \item Day Scheduler, used to know if the algorithm works properly. All the functionalities concerning this component will have to be implemented in the following order: 
+        \begin{enumerate}
+            \item Fixed day task scheduling algorithm.
+            \item Flexible day task scheduling algorithm.
+            \item Variable day task scheduling algorithm.
+        \end{enumerate}
+        In that way it is possible to ensure that the most basic features, such as the fixed day scheduling, will be operational before the most complex ones, such as the variable day scheduling. It  is then possible to implement and test all those components that encapsulates basic features without need to develop stubs and placeholders.
         \item Week Scheduler, used to test if the application can divide properly tasks through various days.
     \end{enumerate}
     \item General Preferences Manager, that will interact with the scheduler to set up the user's preferences in a correct way.
-    \item FixedTask Fetcher, that should take various tasks to give them to the scheduler module
+    \item Task Fetcher, that should take various tasks to give them to the scheduler module
 \end{enumerate}
 
 After the development of the \emph{Business Logic} layer, the focus will be moved on the \emph{Presenter Layer}, in order to start the testing of the communication as soon as possible. Moreover, after the implementation and the integration of the \emph{Presenter Layer}, the Application Server can be set up to start its work.
@@ -132,7 +138,7 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
 
 
 
-\subsection*{Add FixedTask System}
+\subsection*{Add Task System}
 
 \begin{table}[H]
     \centering
@@ -148,7 +154,7 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Input Specification}    & FixedTask's Information\\
+        \textbf{Input Specification}    & Task's Information\\
         
         \hline
         
@@ -168,13 +174,13 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         \hline
         
     \end{tabular}
-    \caption{Testing Description of Add FixedTask System}
+    \caption{Testing Description of Add Task System}
 \end{table}
 
 
 
 
-\subsection*{Remove FixedTask System}
+\subsection*{Remove Task System}
 
 \begin{table}[H]
     \centering
@@ -186,11 +192,11 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Involved Components}    & Application Façade, Message Transmitter, Message Receiver, Business                                          WorkFlow, Scheduler, Access Data Manager, FixedTask Fetcher, DBMS\\
+        \textbf{Involved Components}    & Application Façade, Message Transmitter, Message Receiver, Business                                          WorkFlow, Scheduler, Access Data Manager, Task Fetcher, DBMS\\
         
         \hline
         
-        \textbf{Input Specification}    & FixedTask ID that will be removed\\
+        \textbf{Input Specification}    & Task ID that will be removed\\
         
         \hline
         
@@ -198,7 +204,7 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Exception}              & The given FixedTask ID doesn't exist, so the system show an error page\\
+        \textbf{Exception}              & The given Task ID doesn't exist, so the system show an error page\\
         
         \hline
         
@@ -210,13 +216,13 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         \hline
         
     \end{tabular}
-    \caption{Testing Description of Remove FixedTask System}
+    \caption{Testing Description of Remove Task System}
 \end{table}
 
 
 
 
-\subsection*{Modify FixedTask System}
+\subsection*{Modify Task System}
 
 \begin{table}[H]
     \centering
@@ -228,11 +234,11 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Involved Components}    & Application Façade, Message Transmitter, Message Receiver, Business                                          WorkFlow, Scheduler, Access Data Manager, FixedTask Fetcher, DBMS\\
+        \textbf{Involved Components}    & Application Façade, Message Transmitter, Message Receiver, Business                                          WorkFlow, Scheduler, Access Data Manager, Task Fetcher, DBMS\\
         
         \hline
         
-        \textbf{Input Specification}    & FixedTask ID that will be modified\\
+        \textbf{Input Specification}    & Task ID that will be modified\\
         
         \hline
         
@@ -240,7 +246,7 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         
         \hline
         
-        \textbf{Exception}              & The given FixedTask ID doesn't exist, so the system show an error page. The newer preferences creates a non feasible calendar, so the system should return to the previous calendar and show to the user an error page\\
+        \textbf{Exception}              & The given Task ID doesn't exist, so the system show an error page. The newer preferences creates a non feasible calendar, so the system should return to the previous calendar and show to the user an error page\\
         
         \hline
         
@@ -248,12 +254,12 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         \hline
         
         \textbf{Environmental needs}    & T1: the user should be logged in the system\\
-                                        & T3, T4: the system should work properly with the add and the remove procedures of the FixedTask management \\
+                                        & T3, T4: the system should work properly with the add and the remove procedures of the Task management \\
         
         \hline
         
     \end{tabular}
-    \caption{Testing Description of Modify FixedTask System}
+    \caption{Testing Description of Modify Task System}
     
 \end{table}
 
@@ -289,7 +295,7 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         \hline
         
         \textbf{Environmental needs}    & T1: the user should be logged in the system\\
-                                        & T3, T4: the system should work properly with the add and the remove procedures of the FixedTask management \\
+                                        & T3, T4: the system should work properly with the add and the remove procedures of the Task management \\
         
         \hline
         
@@ -338,14 +344,14 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         \hline
         
     \end{tabular}
-    \caption{Testing Description of Modify FixedTask System}
+    \caption{Testing Description of Modify Task System}
     
 \end{table}
 
 
 
 
-\subsection*{Break Time FixedTask}
+\subsection*{Break Time Task}
 
 \begin{table}[H]
     \centering
@@ -383,6 +389,6 @@ Here is detailed the diagram that shows the testing dependencies. As a notation,
         \hline
         
     \end{tabular}
-    \caption{Testing Description of Modify FixedTask System}
+    \caption{Testing Description of Modify Task System}
     
 \end{table}
